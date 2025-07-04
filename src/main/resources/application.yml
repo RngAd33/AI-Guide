@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  # 指定环境
+  profiles:
+    active: dev
+  # 应用重命名
+  application:
+    name: Ai-Guide
+  # SpringAI
+  ai:
+    # 阿里灵积
+    dashscope:
+      api-key: ${sky.ai.dashscope.api-key}
+      chat:
+        options:
+          model: ${sky.ai.dashscope.chat.options.model}
+    # 本地模型
+    ollama:
+      base-url: ${sky.ai.ollama.base-url}
+      chat:
+        model: ${sky.ai.ollama.chat.model}
+
+  session:
+    timeout: ${sky.jwt.admin-ttl}
+
+# 接口文档
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+  openapi:
+    title: AiGuide接口文档
+    group:
+      default:
+        group-name: 默认分组
+        api-rule: package
+        api-rule-resources:
+          - com.rngad33.aiguide.controller
