@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 应用文档加载器
+ * 心理咨询应用文档加载器
  */
 @Component
 @Slf4j
@@ -25,6 +25,10 @@ public class PsychologyAppDocumentLoader {
         this.resourcePatternResolver = resourcePatternResolver;
     }
 
+    /**
+     * 加载 Markdown 文档
+     * @return
+     */
     public List<Document> loadMarkdowns() {
         List<Document> allDocuments = new ArrayList<>();
         try {

@@ -1,16 +1,18 @@
 package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
-import com.rngad33.aiguide.advisor.MyRe2Advisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
+import com.rngad33.aiguide.config.PsychologyAppVSConfig;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.FunctionPromptTemplate;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,9 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 public class PsychologyApp {
 
     private final ChatClient chatClient;
+
+    @Resource
+    private VectorStore psychologyAppVectorStore;
 
     private static final String SYSTEM_PROMPT = "你是一位二次元心理咨询师，" +
             "当客户向你提问时，你需要对其进行答疑解惑，提供心理疏导；" +
@@ -79,7 +84,7 @@ public class PsychologyApp {
     record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
-     * 结构化输出
+     * 结构化输出对话（不适用于思考型大模型）
      *
      * @param message
      * @param chatId
@@ -97,6 +102,27 @@ public class PsychologyApp {
                 .entity(PsychologyReport.class);
         log.info("report: {}", psychologyReport);
         return psychologyReport;
+    }
+
+    /**
+     * RAG知识库对话
+     *
+     * @param message
+     * @param chatId
+     */
+    public String doChatWithVectorStore(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .system(SYSTEM_PROMPT)
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
+                .advisors(new QuestionAnswerAdvisor(psychologyAppVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
     }
 
 }

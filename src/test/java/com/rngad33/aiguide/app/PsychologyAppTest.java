@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * 心理咨询应用测试类
+ */
 @SpringBootTest
 class PsychologyAppTest {
 
@@ -24,7 +27,7 @@ class PsychologyAppTest {
         answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // No.3
-        message = "我喜欢吃什么？";
+        message = "我喜欢吃什么来着？";
         answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
     }
@@ -34,6 +37,15 @@ class PsychologyAppTest {
         String chatId = UUID.randomUUID().toString();
         String message = "你好，我是俊达萌，喜欢吃俊达饼";
         PsychologyApp.PsychologyReport answer = psychologyApp.doChatWithReport(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
+    @Test
+    void doChatWithVectorStore() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "你好，我是俊达萌，喜欢吃俊达饼";
+        String answer = psychologyApp.doChatWithVectorStore(message, chatId);
+        Assertions.assertNotNull(answer);
     }
 
 }
