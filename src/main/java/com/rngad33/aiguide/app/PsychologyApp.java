@@ -2,7 +2,6 @@ package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
-import com.rngad33.aiguide.config.PsychologyAppVSConfig;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -12,7 +11,6 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -84,7 +82,7 @@ public class PsychologyApp {
     record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
-     * 结构化输出对话（不适用于思考型大模型）
+     * 结构化输出对话（不适用于深度思考大模型）
      *
      * @param message
      * @param chatId
@@ -117,6 +115,7 @@ public class PsychologyApp {
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
+                .advisors(new MyLoggerAdvisor())
                 .advisors(new QuestionAnswerAdvisor(psychologyAppVectorStore))
                 .call()
                 .chatResponse();
