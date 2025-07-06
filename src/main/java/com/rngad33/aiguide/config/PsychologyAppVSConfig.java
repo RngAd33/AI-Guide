@@ -22,8 +22,8 @@ public class PsychologyAppVSConfig {
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
 
     @Bean
-    VectorStore psychologyAppVectorStore(@Qualifier("ollamaEmbeddingModel") EmbeddingModel dash) {
-        SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(dash).build();
+    VectorStore psychologyAppVectorStore(@Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
+        SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(ollamaEmbeddingModel).build();
         List<Document> documentList = psychologyAppDocumentLoader.loadMarkdowns();
         simpleVectorStore.add(documentList);
         return simpleVectorStore;

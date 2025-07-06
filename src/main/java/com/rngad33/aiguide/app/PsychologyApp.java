@@ -111,7 +111,6 @@ public class PsychologyApp {
     public String doChatWithVectorStore(String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
-                .system(SYSTEM_PROMPT)
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))

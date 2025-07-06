@@ -25,7 +25,17 @@ public class LockUtils {
     private static final Map<String, Object> KEY_LOCK = new ConcurrentHashMap<>();
 
     /**
-     * 读写锁
+     * 公平锁（悲观独占）
+     */
+    private static final ReentrantLock PAIR_LOCK_T = new ReentrantLock(true);
+
+    /**
+     * 非公平锁（悲观独占）
+     */
+    private static final ReentrantLock PAIR_LOCK_F = new ReentrantLock(false);
+
+    /**
+     * 读写锁（乐观共享）
      */
     private static final ReadWriteLock RW_LOCK = new ReentrantReadWriteLock();
 
@@ -53,6 +63,32 @@ public class LockUtils {
      */
     public static Object getKeyLock(String key) {
         return KEY_LOCK.computeIfAbsent(key, k -> new Object());
+    }
+
+    /**
+     * 公平锁用法：
+     *      LockUtils.getFairLock().lock();
+     *      try {
+     *          // 执行需要同步的操作
+     *      } finally {
+     *          LockUtils.getFairLock().unlock();
+     *      }
+     */
+    public static ReentrantLock getFairLock() {
+        return PAIR_LOCK_T;
+    }
+
+    /**
+     * 非公平锁用法：
+     *      LockUtils.getNonFairLock().lock();
+     *      try {
+     *          // 执行需要同步的操作
+     *      } finally {
+     *          LockUtils.getNonFairLock().unlock();
+     *      }
+     */
+    public static ReentrantLock getNonFairLock() {
+        return PAIR_LOCK_F;
     }
 
     /**
