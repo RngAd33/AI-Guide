@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * 心理咨询应用向量数据库配置（初始化基于内存的向量数据库 Bean）
+ * 心理咨询应用向量数据库配置
  */
 @Configuration
 public class PsychologyAppVSConfig {
@@ -21,6 +21,12 @@ public class PsychologyAppVSConfig {
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
 
+    /**
+     * 初始化基于内存的向量数据库 Bean
+     *
+     * @param ollamaEmbeddingModel
+     * @return
+     */
     @Bean
     VectorStore psychologyAppVectorStore(@Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
         SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(ollamaEmbeddingModel).build();

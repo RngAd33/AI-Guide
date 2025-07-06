@@ -8,6 +8,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -26,10 +27,12 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 @Slf4j
 public class PsychologyApp {
 
-    private final ChatClient chatClient;
-
     @Resource
     private VectorStore psychologyAppVectorStore;
+
+    record PsychologyReport(String title, List<String> suggestions) {}
+
+    private final ChatClient chatClient;
 
     private static final String SYSTEM_PROMPT = "你是一位二次元心理咨询师，" +
             "当客户向你提问时，你需要对其进行答疑解惑，提供心理疏导；" +
@@ -42,10 +45,10 @@ public class PsychologyApp {
      */
     public PsychologyApp(@Qualifier("ollamaChatModel") ChatModel ollamaChatModel) {
         // 初始化基于文件的对话记忆
-        String fileDir = System.getProperty("user.dir") + "/tmp/chatHistory";
-        ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
+        // String fileDir = System.getProperty("user.dir") + "/tmp/chatHistory";
+        // ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
         // 初始化基于内存的对话记忆
-        // ChatMemory chatMemory = new InMemoryChatMemory();
+        ChatMemory chatMemory = new InMemoryChatMemory();
         chatClient = ChatClient.builder(ollamaChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
@@ -78,8 +81,6 @@ public class PsychologyApp {
         log.info("content: {}", content);
         return content;
     }
-
-    record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
      * 结构化输出对话（不适用于深度思考大模型）
@@ -114,7 +115,9 @@ public class PsychologyApp {
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
+                // 开启日志
                 .advisors(new MyLoggerAdvisor())
+                // RAG知识库问答
                 .advisors(new QuestionAnswerAdvisor(psychologyAppVectorStore))
                 .call()
                 .chatResponse();

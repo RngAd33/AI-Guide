@@ -43,7 +43,7 @@ class PsychologyAppTest {
     @Test
     void doChatWithVectorStore() {
         String chatId = UUID.randomUUID().toString();
-        String message = "如何缓解焦虑？";
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         String answer = psychologyApp.doChatWithVectorStore(message, chatId);
         Assertions.assertNotNull(answer);
     }
