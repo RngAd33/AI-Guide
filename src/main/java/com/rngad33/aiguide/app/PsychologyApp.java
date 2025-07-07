@@ -34,13 +34,13 @@ public class PsychologyApp {
     @Resource
     private VectorStore psychologyAppVectorStore;
 
-    record PsychologyReport(String title, List<String> suggestions) {}
-
     private final ChatClient chatClient;
 
     private static final String SYSTEM_PROMPT = "你是一位二次元心理咨询师，" +
             "当客户向你提问时，你需要对其进行答疑解惑，提供心理疏导；" +
             "此外，在回答客户问题时，尽量带上一些颜文字以展现亲和力。";
+
+    record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
      * 初始化AI客户端
