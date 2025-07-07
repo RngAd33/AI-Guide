@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.config.vectorstore;
+package com.rngad33.aiguide.config;
 
 import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
 import jakarta.annotation.Resource;
@@ -16,7 +16,7 @@ import java.util.List;
  * 心理咨询应用向量数据库配置
  */
 @Configuration
-public class PsychologyAppVSConfig {
+class AppVectorStoreConfig {
 
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;

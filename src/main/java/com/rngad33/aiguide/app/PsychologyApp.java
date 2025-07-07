@@ -27,6 +27,9 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 @Slf4j
 public class PsychologyApp {
 
+    /**
+     * 向量数据库Bean注入
+     */
     @Resource
     private VectorStore psychologyAppVectorStore;
 
