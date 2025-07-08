@@ -21,7 +21,7 @@ public class MyLoggerAdvisor implements CallAroundAdvisor, StreamAroundAdvisor {
     }
 
     /**
-     * 设置优先级
+     * 设置执行优先级
      *
      * @return
      */
