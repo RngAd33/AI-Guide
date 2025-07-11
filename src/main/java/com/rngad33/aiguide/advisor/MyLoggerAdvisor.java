@@ -3,6 +3,7 @@ package com.rngad33.aiguide.advisor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.advisor.api.*;
 import org.springframework.ai.chat.model.MessageAggregator;
+import org.springframework.ai.document.Document;
 import reactor.core.publisher.Flux;
 
 /**
