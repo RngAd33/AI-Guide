@@ -66,13 +66,13 @@
             <artifactId>spring-ai-markdown-document-reader</artifactId>
             <version>1.0.0-M8</version>
         </dependency>
-        <!-- Spring AI PgVector
+        <!-- Spring AI PgVector -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-pgvector-store</artifactId>
             <version>1.0.0-M6</version>
-        </dependency>  -->
-        <!-- 手动整合 PGVector 向量存储
+        </dependency>
+        <!-- 手动整合 PGVector 向量存储 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -81,7 +81,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
-        </dependency> -->
+        </dependency>
         <!-- Spring AI MCP Client -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
