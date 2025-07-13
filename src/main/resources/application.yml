@@ -21,6 +21,13 @@ spring:
       base-url: ${sky.ai.ollama.base-url}
       chat:
         model: ${sky.ai.ollama.chat.model}
+    # 向量数据库
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000
 
   session:
     timeout: ${sky.jwt.admin-ttl}
