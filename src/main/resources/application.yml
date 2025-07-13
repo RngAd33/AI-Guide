@@ -8,6 +8,11 @@ spring:
   # 应用重命名
   application:
     name: Ai-Guide
+  # 数据库配置
+  datasource:
+    url: ${sky.datasource.url}
+    username: ${sky.datasource.username}
+    password: ${sky.datasource.password}
   # SpringAI
   ai:
     # 阿里灵积
