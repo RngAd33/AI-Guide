@@ -1,7 +1,5 @@
 package com.rngad33.aiguide.config;
 
-import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
-import jakarta.annotation.Resource;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
@@ -17,9 +15,6 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexT
  */
 @Configuration
 public class PGVectorStoreConfig {
-
-    @Resource
-    private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
 
     /**
      * 初始化基于PostgreSQL的向量数据库 Bean
