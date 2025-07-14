@@ -58,7 +58,7 @@ public class PsychologyApp {
                 .defaultAdvisors(
                         new MessageChatMemoryAdvisor(chatMemory)
                         // 自定义日志拦截器（按需开启）
-                        , new MyLoggerAdvisor()
+                        // , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
                         // , new MyRe2Advisor()
                 )
