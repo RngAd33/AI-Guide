@@ -20,7 +20,7 @@ class PGVectorStoreConfigTest {
     @Test
     void pgVectorStore() {
         List<Document> documentList = List.of(
-                new Document("我这心理咨询师有什么特点？和善啊", Map.of("meta1", "meta2")),
+                new Document("我这心理咨询师有什么特点？很可爱啊", Map.of("meta1", "meta2")),
                 new Document("2"),
                 new Document("3", Map.of("meta1", "meta2"))
         );

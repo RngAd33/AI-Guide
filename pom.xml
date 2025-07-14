@@ -83,12 +83,12 @@
             <version>1.0.0</version>
         </dependency>
         <!-- 自动整合 PGVector 向量存储 -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency> -->
         <!-- Spring AI MCP Client -->
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
         <dependency>
