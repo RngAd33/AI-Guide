@@ -32,7 +32,7 @@ public class PGVectorStoreConfig {
     @Bean
     public VectorStore pgVectorStore(JdbcTemplate jdbcTemplate, @Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
         return PgVectorStore.builder(jdbcTemplate, ollamaEmbeddingModel)
-                .dimensions(1536)
+                .dimensions(1024)
                 .distanceType(COSINE_DISTANCE)
                 .indexType(HNSW)
                 .initializeSchema(true)
