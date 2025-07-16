@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 文档切割器
+ * 文档切割器（官方特供）
  */
 @Component
 public class MyTokenTextSplitter {

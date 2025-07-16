@@ -1,5 +1,7 @@
 package com.rngad33.aiguide.rag.config;
 
+import com.rngad33.aiguide.rag.MyKeywordEnricher;
+import com.rngad33.aiguide.rag.MyTokenTextSplitter;
 import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
 import jakarta.annotation.Resource;
 import org.springframework.ai.document.Document;
@@ -13,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * 心理咨询应用向量数据库配置
+ * 向量数据库配置
  */
 @Configuration
 public class AppVectorStoreConfig {
@@ -22,7 +24,10 @@ public class AppVectorStoreConfig {
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
 
     @Resource
-    private
+    private MyTokenTextSplitter myTokenTextSplitter;
+
+    @Resource
+    private MyKeywordEnricher myKeywordEnricher;
 
     /**
      * 初始化基于内存的向量数据库 Bean
@@ -34,10 +39,13 @@ public class AppVectorStoreConfig {
     VectorStore psychologyAppVectorStore(@Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
         SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(ollamaEmbeddingModel).build();
         // 加载文档
-        List<Document> documentList = psychologyAppDocumentLoader.loadMarkdowns();
+        List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
         // 切割文档
-
-        simpleVectorStore.add(documentList);
+        List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
+        // 元信息增强
+        List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
+        // simpleVectorStore.add(splitDocuments);
+        simpleVectorStore.add(enrichedDocuments);
         return simpleVectorStore;
     }
 
