@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.config;
+package com.rngad33.aiguide.rag.config;
 
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;

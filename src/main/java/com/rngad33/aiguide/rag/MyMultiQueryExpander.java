@@ -2,8 +2,10 @@ package com.rngad33.aiguide.rag;
 
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.rag.Query;
 import org.springframework.ai.rag.preretrieval.query.expansion.MultiQueryExpander;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,15 +16,18 @@ import java.util.List;
 @Component
 public class MyMultiQueryExpander {
 
-    @Resource
-    private ChatClient.Builder chatClientBuilder;
+    private final ChatClient.Builder chatClientBuilder;
+
+    public MyMultiQueryExpander(@Qualifier("ollamaChatModel") ChatModel ollamaChatModel) {
+        this.chatClientBuilder = ChatClient.builder(ollamaChatModel);
+    }
 
     public List<Query> expand(String query) {
         MultiQueryExpander queryExpander = MultiQueryExpander.builder()
                 .chatClientBuilder(chatClientBuilder)
                 .numberOfQueries(3)
                 .build();
-        List<Query> queries = queryExpander.expand(new Query(""));
+        List<Query> queries = queryExpander.expand(new Query(query));
         return queries;
     }
 
