@@ -4,6 +4,7 @@ import cn.hutool.core.lang.UUID;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**

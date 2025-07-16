@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.config;
+package com.rngad33.aiguide.rag.config;
 
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;

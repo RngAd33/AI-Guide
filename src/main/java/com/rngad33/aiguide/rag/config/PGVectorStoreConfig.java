@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.config;
+package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
 import jakarta.annotation.Resource;
