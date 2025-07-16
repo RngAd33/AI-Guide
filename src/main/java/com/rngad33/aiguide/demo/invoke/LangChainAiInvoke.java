@@ -6,6 +6,7 @@ import dev.langchain4j.model.chat.ChatModel;
 /**
  * LangChain4j 调用 Ai
  */
+@Deprecated
 public class LangChainAiInvoke {
 
     public static void main(String[] args) {

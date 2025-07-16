@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * Http调用Ai
  */
+@Deprecated
 public class HttpAiInvoke {
     public static void main(String[] args) {
         // 替换为你的实际 API 密钥

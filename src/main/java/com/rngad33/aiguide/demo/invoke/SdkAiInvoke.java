@@ -16,6 +16,7 @@ import java.util.Arrays;
  * 阿里灵积调用AI
  * 建议dashscope SDK的版本 >= 2.12.0
  */
+@Deprecated
 public class SdkAiInvoke {
     public static GenerationResult callWithMessage() throws ApiException, NoApiKeyException, InputRequiredException {
         Generation gen = new Generation();

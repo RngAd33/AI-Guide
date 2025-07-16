@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
  * Ollama调用Ai
  * 取消注释即可在 SpringBoot 项目启动时执行
  */
+@Deprecated
 // @Component
 public class OllamaAiInvoke implements CommandLineRunner {
 

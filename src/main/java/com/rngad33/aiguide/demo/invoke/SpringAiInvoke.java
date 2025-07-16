@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
  * SpringAI调用AI
  * 取消注释即可在 SpringBoot 项目启动时执行
  */
+@Deprecated
 // @Component
 public class SpringAiInvoke implements CommandLineRunner {
 
