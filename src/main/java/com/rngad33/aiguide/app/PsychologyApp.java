@@ -1,17 +1,14 @@
 package com.rngad33.aiguide.app;
 
-import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
-import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
+import com.rngad33.aiguide.manager.ChatManager;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -40,6 +37,9 @@ public class PsychologyApp {
 
     @Resource
     private VectorStore pgVectorStore;
+
+    @Resource
+    private ChatManager chatManager;
 
     private final ChatClient chatClient;
 
@@ -80,17 +80,7 @@ public class PsychologyApp {
      * @return
      */
     public String doChat(String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)
-                )
-                .call()
-                .chatResponse();
-        String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
-        return content;
+        return chatManager.doChat(chatClient, message, chatId);
     }
 
     /**
@@ -101,16 +91,7 @@ public class PsychologyApp {
      * @return
      */
     public Flux<String> doChatWithStream(String message, String chatId) {
-        return chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)
-                )
-                .stream()
-                .chatResponse()
-                .map(chatResponse -> chatResponse.getResult().getOutput().getText());
-
+        return chatManager.doChatWithStream(chatClient, message, chatId);
     }
 
     /**
@@ -141,24 +122,7 @@ public class PsychologyApp {
      * @param chatId
      */
     public String doChatWithRag(String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
-                // 开启日志
-                // .advisors(new MyLoggerAdvisor())
-                // RAG知识库问答
-                .advisors(new QuestionAnswerAdvisor(psychologyAppVectorStore))
-                // RAG检索增强（基于云知识库）
-                // .advisors(psychologyAppRagCloudAdvisor)
-                // RAG检索增强（基于PgVector向量存储）
-                .advisors(new QuestionAnswerAdvisor(pgVectorStore))
-                .call()
-                .chatResponse();
-        String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
-        return content;
+        return chatManager.doChatWithRag(chatClient, psychologyAppVectorStore, pgVectorStore, message, chatId);
     }
 
 }
