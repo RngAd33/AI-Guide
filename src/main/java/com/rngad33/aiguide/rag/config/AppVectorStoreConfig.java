@@ -42,9 +42,9 @@ public class AppVectorStoreConfig {
         List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
         // 切割文档
         List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
+        // simpleVectorStore.add(splitDocuments);
         // 元信息增强
         List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
-        // simpleVectorStore.add(splitDocuments);
         simpleVectorStore.add(enrichedDocuments);
         return simpleVectorStore;
     }
