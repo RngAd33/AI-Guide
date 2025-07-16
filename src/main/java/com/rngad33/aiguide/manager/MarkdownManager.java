@@ -33,11 +33,14 @@ public class MarkdownManager {
             Resource[] resources = resourcePatternResolver.getResources(path);
             for (Resource resource : resources) {
                 String fileName = resource.getFilename();
+                // 提取文档名称的倒数第二、三个字作为标签（表示应对场景）
+                String scene = fileName.substring(fileName.length() - 6, fileName.length() - 4);
                 MarkdownDocumentReaderConfig config = MarkdownDocumentReaderConfig.builder()
                         .withHorizontalRuleCreateDocument(true)
                         .withIncludeCodeBlock(false)
                         .withIncludeBlockquote(false)
                         .withAdditionalMetadata("filename", fileName)
+                        .withAdditionalMetadata("scene", scene)
                         .build();
                 MarkdownDocumentReader reader = new MarkdownDocumentReader(resource, config);
                 allDocuments.addAll(reader.get());

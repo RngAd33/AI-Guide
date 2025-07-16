@@ -19,7 +19,7 @@ public class MainController {
      */
     @GetMapping("/health")
     public String healthCheck() {
-        return "ok";
+        return "OK";
     }
 
 }

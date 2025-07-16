@@ -122,7 +122,7 @@ public class PsychologyApp {
      * @param chatId
      */
     public String doChatWithRag(String message, String chatId) {
-        return chatManager.doChatWithRag(chatClient, psychologyAppVectorStore, pgVectorStore, message, chatId);
+        return chatManager.doChatWithRag(chatClient, psychologyAppRagCloudAdvisor, psychologyAppVectorStore, pgVectorStore, message, chatId);
     }
 
 }
