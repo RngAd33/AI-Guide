@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+ai:
+  model-type: ${sky.ai.model-type}
+
 spring:
   # 指定环境
   profiles:

@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.rag;
+package com.rngad33.aiguide.rag.custom;
 
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;

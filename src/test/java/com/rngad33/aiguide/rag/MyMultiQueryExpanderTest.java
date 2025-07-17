@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.rag;
 
+import com.rngad33.aiguide.rag.custom.MyMultiQueryExpander;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
