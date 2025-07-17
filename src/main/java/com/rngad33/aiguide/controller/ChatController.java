@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
  * AI会话接口
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/chat")
 public class ChatController {
 
     @Resource
     private AiModelUtils.ChatModelUtil chatModel;
 
-    @PostMapping("/chat")
+    @PostMapping("/doChat")
     public String doChat(@RequestBody String prompt) {
         return chatModel.call(new Prompt(prompt)).getResult().getOutput().getText();
     }
