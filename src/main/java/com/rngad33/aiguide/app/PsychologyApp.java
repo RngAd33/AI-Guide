@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +44,6 @@ public class PsychologyApp {
 
     private final ChatClient chatClient;
 
-    private static final String SYSTEM_PROMPT = "你是一位二次元心理咨询师，" +
-            "当客户向你提问时，你需要对其进行答疑解惑，提供心理疏导；" +
-            "此外，在回答客户问题时，尽量带上一些颜文字以展现亲和力。";
-
     record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
@@ -61,7 +58,7 @@ public class PsychologyApp {
         // 初始化基于内存的对话记忆
         ChatMemory chatMemory = new InMemoryChatMemory();
         chatClient = ChatClient.builder(ollamaChatModel)
-                .defaultSystem(SYSTEM_PROMPT)
+                .defaultSystem(SystemPromptsConstant.PSYCHOLOGY)
                 .defaultAdvisors(
                         new MessageChatMemoryAdvisor(chatMemory)
                         // 自定义日志拦截器（按需开启）
@@ -104,7 +101,7 @@ public class PsychologyApp {
     public PsychologyReport doChatWithReport(String message, String chatId) {
         PsychologyReport psychologyReport = chatClient
                 .prompt()
-                .system(SYSTEM_PROMPT + "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
+                .system(SystemPromptsConstant.PSYCHOLOGY + "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)   // 最大记忆条数
