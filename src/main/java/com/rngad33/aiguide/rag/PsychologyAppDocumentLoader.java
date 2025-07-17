@@ -28,4 +28,5 @@ public class PsychologyAppDocumentLoader {
     public List<Document> loadMarkdowns() {
         return MarkdownManager.doLoad(resourcePatternResolver, "psychology");
     }
+
 }
