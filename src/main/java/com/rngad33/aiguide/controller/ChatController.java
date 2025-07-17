@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
 
     @Resource
-    private AiModelUtils chatModel;
+    private AiModelUtils.ChatModelUtil chatModel;
 
     @PostMapping("/chat")
     public String doChat(@RequestBody String prompt) {
