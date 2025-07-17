@@ -14,6 +14,7 @@
 
     </properties>
     <dependencies>
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -55,6 +56,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Spring AI MCP Client -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
+            <version>1.0.0-M6</version>
+        </dependency>
         <!-- Spring AI ollama 本地模型调用 -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -89,13 +97,6 @@
             <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
             <version>1.0.0</version>
         </dependency> -->
-        <!-- Spring AI MCP Client -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
-            <version>1.0.0-M6</version>
-        </dependency>
         <!-- victools 结构化输出支持 -->
         <dependency>
             <groupId>com.github.victools</groupId>
