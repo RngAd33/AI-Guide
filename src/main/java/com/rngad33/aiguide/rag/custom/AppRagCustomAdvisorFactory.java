@@ -2,34 +2,40 @@ package com.rngad33.aiguide.rag.custom;
 
 import org.springframework.ai.chat.client.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 
 /**
- * 工厂模式（创建自定义RAG检索增强拦截器）
+ * 工厂模式
  */
 public class AppRagCustomAdvisorFactory {
 
     /**
-     * 创建拦截器
+     * 创建自定义RAG检索增强拦截器
      *
-     * @return
+     * @param vectorStore 向量存储
+     * @param status
+     * @return 自定义RAG检索增强拦截器
      */
     public Advisor createRagCustomAdvisor(VectorStore vectorStore, String status) {
-        // 创建过滤表达式
+        // 创建过滤表达式（过滤条件）
         Filter.Expression expression = new FilterExpressionBuilder()
-                .eq("status", status);
-
+                .eq("status", status)
+                .build();
         // 创建文档检索器
-        VectorStoreDocumentRetriever.builder()
+        DocumentRetriever documentRetriever = VectorStoreDocumentRetriever.builder()
                 .vectorStore(vectorStore)
-                .filterExpression(filterExpression);
-
+                .filterExpression(expression)   // 过滤条件
+                .similarityThreshold(0.5)   // 相似度阈值
+                .topK(3)   // 文档数量
+                .build();
+        // 创建拦截器
         return RetrievalAugmentationAdvisor.builder()
-                .documentRetriever()
-                .queryAugmenter()
+                .documentRetriever(documentRetriever)
+                // .queryAugmenter()
                 .build();
     }
 
