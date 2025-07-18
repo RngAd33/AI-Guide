@@ -34,7 +34,7 @@ public class PsychologyApp {
     private VectorStore pgVectorStore;
 
     @Resource
-    private MyQueryRewriter myQueryRewriter;
+    private MyQueryRewriter queryRewriter;
 
     @Resource
     private VectorStore psychologyAppVectorStore;
@@ -121,10 +121,7 @@ public class PsychologyApp {
      */
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
-        String rewritedMessage = myQueryRewriter.doRewrite(message);
-        /* return chatManager.doChatWithRag(chatClient, pgVectorStore,
-                psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
-                message, chatId);*/
+        String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
         return chatManager.doChatWithRag(chatClient, pgVectorStore,
                 psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
