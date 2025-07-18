@@ -17,13 +17,13 @@ public class AppRagCustomAdvisorFactory {
      * 创建自定义RAG检索增强拦截器
      *
      * @param vectorStore 向量存储
-     * @param status
+     * @param scene 场景
      * @return 自定义RAG检索增强拦截器
      */
-    public Advisor createRagCustomAdvisor(VectorStore vectorStore, String status) {
+    public Advisor createRagCustomAdvisor(VectorStore vectorStore, String scene) {
         // 创建过滤表达式（过滤条件）
         Filter.Expression expression = new FilterExpressionBuilder()
-                .eq("status", status)
+                .eq("scene", scene)
                 .build();
         // 创建文档检索器
         DocumentRetriever documentRetriever = VectorStoreDocumentRetriever.builder()
