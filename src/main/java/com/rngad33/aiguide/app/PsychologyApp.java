@@ -2,6 +2,7 @@ package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
+import com.rngad33.aiguide.rag.custom.MyQueryRewriter;
 import com.rngad33.aiguide.utils.AiModelUtils.MyChatModel;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,13 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 public class PsychologyApp {
 
     @Resource
+    private ChatManager chatManager;
+
+    @Resource
     private VectorStore pgVectorStore;
 
     @Resource
-    private ChatManager chatManager;
+    private MyQueryRewriter myQueryRewriter;
 
     @Resource
     private VectorStore psychologyAppVectorStore;
@@ -97,7 +101,8 @@ public class PsychologyApp {
     public PsychologyReport doChatWithReport(String message, String chatId) {
         PsychologyReport psychologyReport = chatClient
                 .prompt()
-                .system(SystemPromptsConstant.PSYCHOLOGY + "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
+                .system(SystemPromptsConstant.PSYCHOLOGY +
+                        "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)   // 最大记忆条数
@@ -115,7 +120,11 @@ public class PsychologyApp {
      * @param chatId
      */
     public String doChatWithRag(String message, String chatId) {
-        return chatManager.doChatWithRag(chatClient, psychologyAppRagCloudAdvisor, psychologyAppVectorStore, pgVectorStore, message, chatId);
+        // 查询重写
+        String rewritedMessage = myQueryRewriter.doRewrite(message);
+        return chatManager.doChatWithRag(chatClient, pgVectorStore,
+                psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
+                message, chatId);
     }
 
 }

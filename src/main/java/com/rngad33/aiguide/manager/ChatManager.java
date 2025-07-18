@@ -92,13 +92,16 @@ public class ChatManager {
      * RAG知识库对话（开启增强）
      *
      * @param chatClient
-     * @param appVectorStore
      * @param pgVectorStore
+     * @param psychologyAppRagCloudAdvisor
+     * @param appVectorStore
      * @param message
      * @param chatId
      * @return
      */
-    public String doChatWithRag(ChatClient chatClient, Advisor psychologyAppRagCloudAdvisor, VectorStore appVectorStore, VectorStore pgVectorStore, String message, String chatId) {
+    public String doChatWithRag(ChatClient chatClient, VectorStore pgVectorStore,
+                                Advisor psychologyAppRagCloudAdvisor, VectorStore appVectorStore,
+                                String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
                 .user(message)

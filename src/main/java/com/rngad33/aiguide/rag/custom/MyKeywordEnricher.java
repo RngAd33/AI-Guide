@@ -1,9 +1,9 @@
 package com.rngad33.aiguide.rag.custom;
 
+import com.rngad33.aiguide.utils.AiModelUtils.MyChatModel;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.model.transformer.KeywordMetadataEnricher;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class MyKeywordEnricher {
 
     private final ChatModel chatModel;
 
-    MyKeywordEnricher(@Qualifier("ollamaChatModel") ChatModel chatModel) {
+    MyKeywordEnricher(MyChatModel chatModel) {
         this.chatModel = chatModel;
     }
 
