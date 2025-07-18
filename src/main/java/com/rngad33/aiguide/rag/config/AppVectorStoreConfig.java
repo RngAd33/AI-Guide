@@ -34,7 +34,7 @@ public class AppVectorStoreConfig {
      * @param embeddingModel
      * @return
      */
-    @Bean(name = "psychologyAppVectorStore")
+    @Bean("psychologyAppVectorStore")
     VectorStore psychologyAppVectorStore(MyEmbeddingModel embeddingModel) {
         SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
         // 加载文档

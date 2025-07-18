@@ -23,7 +23,7 @@ public class AppRagCloudAdvisorConfig {
      * 初始化RAG云知识库
      * @return
      */
-    @Bean
+    @Bean("psychologyAppRagCloudAdvisor")
     public Advisor psychologyAppRagCloudAdvisor() {
         DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
         final String KNOWLEDGE_INDEX = "小姐姐心理疏导";
