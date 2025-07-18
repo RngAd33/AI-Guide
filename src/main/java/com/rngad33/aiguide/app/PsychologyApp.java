@@ -2,6 +2,7 @@ package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
+import com.rngad33.aiguide.utils.AiModelUtils.MyChatModel;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -9,9 +10,7 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -27,20 +26,17 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 @Slf4j
 public class PsychologyApp {
 
-    /**
-     * 向量数据库Bean注入
-     */
-    @Resource
-    private VectorStore psychologyAppVectorStore;
-
-    @Resource
-    private Advisor psychologyAppRagCloudAdvisor;
-
     @Resource
     private VectorStore pgVectorStore;
 
     @Resource
     private ChatManager chatManager;
+
+    @Resource
+    private VectorStore psychologyAppVectorStore;
+
+    @Resource
+    private Advisor psychologyAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
 
@@ -49,15 +45,15 @@ public class PsychologyApp {
     /**
      * 初始化AI客户端
      *
-     * @param ollamaChatModel
+     * @param chatModel
      */
-    public PsychologyApp(@Qualifier("ollamaChatModel") ChatModel ollamaChatModel) {
+    public PsychologyApp(MyChatModel chatModel) {
         // 初始化基于文件的对话记忆
         // String fileDir = System.getProperty("user.dir") + "/tmp/chatHistory1";
         // ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
         // 初始化基于内存的对话记忆
         ChatMemory chatMemory = new InMemoryChatMemory();
-        chatClient = ChatClient.builder(ollamaChatModel)
+        chatClient = ChatClient.builder(chatModel)
                 .defaultSystem(SystemPromptsConstant.PSYCHOLOGY)
                 .defaultAdvisors(
                         new MessageChatMemoryAdvisor(chatMemory)

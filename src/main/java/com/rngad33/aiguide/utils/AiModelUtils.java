@@ -23,7 +23,7 @@ import java.util.List;
 public class AiModelUtils {
 
     @Component
-    public static class ChatModelUtil implements ChatModel {
+    public static class MyChatModel implements ChatModel {
 
         @Resource
         private ApplicationContext context;
@@ -51,7 +51,7 @@ public class AiModelUtils {
     }
 
     @Component
-    public static class EmbeddingModelUtil implements EmbeddingModel {
+    public static class MyEmbeddingModel implements EmbeddingModel {
 
         @Resource
         private ApplicationContext context;

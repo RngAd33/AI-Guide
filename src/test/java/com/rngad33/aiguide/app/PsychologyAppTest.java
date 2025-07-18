@@ -24,7 +24,7 @@ class PsychologyAppTest {
         String answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // No.2
-        message = "你认识春日部吗？";
+        message = "你认识东北切蒲英吗？";
         answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // No.3

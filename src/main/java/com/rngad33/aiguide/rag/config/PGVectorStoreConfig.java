@@ -1,11 +1,10 @@
 package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
+import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,12 +25,12 @@ public class PGVectorStoreConfig {
      * 初始化基于PostgreSQL的向量数据库 Bean
      *
      * @param jdbcTemplate
-     * @param ollamaEmbeddingModel
+     * @param embeddingModel
      * @return
      */
     @Bean
-    public VectorStore pgVectorStore(JdbcTemplate jdbcTemplate, @Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
-        return PgVectorStore.builder(jdbcTemplate, ollamaEmbeddingModel)
+    public VectorStore pgVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
+        return PgVectorStore.builder(jdbcTemplate, embeddingModel)
                 .dimensions(1024)
                 .distanceType(COSINE_DISTANCE)
                 .indexType(HNSW)

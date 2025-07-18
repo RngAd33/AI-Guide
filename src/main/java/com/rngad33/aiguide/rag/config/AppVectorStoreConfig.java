@@ -3,19 +3,18 @@ package com.rngad33.aiguide.rag.config;
 import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
 import com.rngad33.aiguide.rag.custom.MyTokenTextSplitter;
 import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
+import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 /**
- * 向量数据库配置
+ * 应用向量数据库配置
  */
 @Configuration
 public class AppVectorStoreConfig {
@@ -32,12 +31,12 @@ public class AppVectorStoreConfig {
     /**
      * 初始化基于内存的向量数据库 Bean
      *
-     * @param ollamaEmbeddingModel
+     * @param embeddingModel
      * @return
      */
     @Bean(name = "psychologyAppVectorStore")
-    VectorStore psychologyAppVectorStore(@Qualifier("ollamaEmbeddingModel") EmbeddingModel ollamaEmbeddingModel) {
-        SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(ollamaEmbeddingModel).build();
+    VectorStore psychologyAppVectorStore(MyEmbeddingModel embeddingModel) {
+        SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
         // 加载文档
         List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
         // 切割文档

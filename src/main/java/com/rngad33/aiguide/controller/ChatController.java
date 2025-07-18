@@ -1,5 +1,7 @@
 package com.rngad33.aiguide.controller;
 
+import cn.hutool.core.lang.UUID;
+import com.rngad33.aiguide.app.PsychologyApp;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -16,11 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
 
     @Resource
-    private AiModelUtils.ChatModelUtil chatModel;
+    private PsychologyApp psychologyApp;
 
-    @PostMapping("/doChat")
+    /**
+     * 小姐姐心理疏导
+     *
+     * @param prompt
+     * @return
+     */
+    @PostMapping("/psy")
     public String doChat(@RequestBody String prompt) {
-        return chatModel.call(new Prompt(prompt)).getResult().getOutput().getText();
+        String chatId = UUID.randomUUID().toString();
+        return psychologyApp.doChat(prompt, chatId);
     }
 
 }

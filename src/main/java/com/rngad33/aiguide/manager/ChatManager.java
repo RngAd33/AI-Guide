@@ -6,7 +6,7 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
@@ -15,7 +15,7 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 /**
  * 通用对话方法
  */
-@Service
+@Component
 @Slf4j
 public class ChatManager {
 
