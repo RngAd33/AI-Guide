@@ -97,6 +97,30 @@
             <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
             <version>1.0.0</version>
         </dependency> -->
+        <!-- Mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.7</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter-test</artifactId>
+            <version>3.5.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-bom</artifactId>
+            <version>3.5.9</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
         <!-- victools 结构化输出支持 -->
         <dependency>
             <groupId>com.github.victools</groupId>
