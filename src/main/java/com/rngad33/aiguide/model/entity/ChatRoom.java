@@ -23,9 +23,19 @@ public class ChatRoom implements Serializable {
     private Long chatId;
 
     /**
+     * 标题
+     */
+    private String title;
+
+    /**
      * 消息列表
      */
     private List<Message> chatMessage;
+
+    /**
+     * 创建用户id
+     */
+    private Long userId;
 
     /**
      * 创建时间
