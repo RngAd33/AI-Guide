@@ -11,7 +11,7 @@ import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 /**
  * 工厂模式
  */
-public class AppRagCustomAdvisorFactory {
+public class RagCustomAdvisorFactory {
 
     /**
      * 创建自定义RAG检索增强拦截器
