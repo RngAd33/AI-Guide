@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.rag.custom;
+package com.rngad33.aiguide.rag.factory;
 
 import org.springframework.ai.chat.client.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -20,7 +20,7 @@ public class RagCustomAdvisorFactory {
      * @param scene 场景
      * @return 自定义RAG检索增强拦截器
      */
-    public Advisor createRagCustomAdvisor(VectorStore vectorStore, String scene) {
+    public static Advisor createRagCustomAdvisor(VectorStore vectorStore, String scene) {
         // 创建过滤表达式（过滤条件）
         Filter.Expression expression = new FilterExpressionBuilder()
                 .eq("scene", scene)
@@ -32,10 +32,10 @@ public class RagCustomAdvisorFactory {
                 .similarityThreshold(0.5)   // 相似度阈值
                 .topK(3)   // 文档数量
                 .build();
-        // 创建拦截器
+        // 创建上下文查询增强器
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(documentRetriever)
-                // .queryAugmenter()
+                .queryAugmenter(ContextualQueryAugmenterFactory.createInstance())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.manager;
 
+import com.rngad33.aiguide.rag.factory.RagCustomAdvisorFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
@@ -115,6 +116,9 @@ public class ChatManager {
                 .advisors(ragCloudAdvisor)
                 // RAG检索增强（基于PgVector向量存储）
                 .advisors(new QuestionAnswerAdvisor(pgVectorStore))
+                // 自定义检索增强模式（文档查询器 + 上下文增强器）
+                .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习")
+                )
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

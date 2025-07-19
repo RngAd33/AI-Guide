@@ -28,7 +28,7 @@ public class ChatController {
      * @return
      */
     @PostMapping("/psy")
-    public String doChat(@RequestBody String prompt) {
+    public String psyChat(@RequestBody String prompt) {
         ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCodeEnum.PARAMS_ERROR);
         String chatId = UUID.randomUUID().toString();
         return psychologyApp.doChat(prompt, chatId);
