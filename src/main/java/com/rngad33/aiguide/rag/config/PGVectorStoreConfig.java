@@ -1,6 +1,6 @@
 package com.rngad33.aiguide.rag.config;
 
-import com.rngad33.aiguide.rag.PsychologyAppDocumentLoader;
+import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
 import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;
 import org.springframework.ai.vectorstore.VectorStore;

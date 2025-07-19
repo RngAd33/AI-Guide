@@ -91,16 +91,16 @@ public class ChatManager {
     /**
      * RAG知识库对话（开启增强）
      *
-     * @param chatClient
-     * @param pgVectorStore
-     * @param psychologyAppRagCloudAdvisor
-     * @param appVectorStore
-     * @param message
+     * @param chatClient AI客户端
+     * @param pgVectorStore PostgreSQL向量数据库
+     * @param ragCloudAdvisor RAG云知识库
+     * @param appVectorStore 应用向量存储
+     * @param message 传入消息
      * @param chatId
      * @return
      */
     public String doChatWithRag(ChatClient chatClient, VectorStore pgVectorStore,
-                                Advisor psychologyAppRagCloudAdvisor, VectorStore appVectorStore,
+                                Advisor ragCloudAdvisor, VectorStore appVectorStore,
                                 String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
@@ -112,7 +112,7 @@ public class ChatManager {
                 // RAG知识库问答
                 .advisors(new QuestionAnswerAdvisor(appVectorStore))
                 // RAG检索增强（基于云知识库）
-                .advisors(psychologyAppRagCloudAdvisor)
+                .advisors(ragCloudAdvisor)
                 // RAG检索增强（基于PgVector向量存储）
                 .advisors(new QuestionAnswerAdvisor(pgVectorStore))
                 .call()

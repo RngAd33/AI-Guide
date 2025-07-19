@@ -1,6 +1,8 @@
-package com.rngad33.aiguide.rag;
+package com.rngad33.aiguide.rag.documentloader;
 
 import com.rngad33.aiguide.manager.MarkdownManager;
+import com.rngad33.aiguide.model.enums.app.SystemPromptsEnum;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -17,7 +19,7 @@ public class PsychologyAppDocumentLoader {
 
     private final ResourcePatternResolver resourcePatternResolver;
 
-    PsychologyAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
+    public PsychologyAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
         this.resourcePatternResolver = resourcePatternResolver;
     }
 
@@ -26,7 +28,7 @@ public class PsychologyAppDocumentLoader {
      * @return
      */
     public List<Document> loadMarkdowns() {
-        return MarkdownManager.doLoad(resourcePatternResolver, "psychology");
+        return MarkdownManager.doLoad(resourcePatternResolver, SystemPromptsEnum.PSYCHOLOGY.getName());
     }
 
 }
