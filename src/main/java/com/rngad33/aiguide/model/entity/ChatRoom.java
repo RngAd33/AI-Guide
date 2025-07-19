@@ -1,8 +1,8 @@
 package com.rngad33.aiguide.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
 
@@ -19,7 +19,7 @@ public class ChatRoom implements Serializable {
     /**
      * 房间号
      */
-    @TableId(type = IdType.AUTO)
+    @Id(keyType = KeyType.Auto)
     private Long chatId;
 
     /**
@@ -40,7 +40,7 @@ public class ChatRoom implements Serializable {
     /**
      * 是否删除？ 0-未删，1-已删
      */
-    @TableLogic
+    @Column(isLogicDelete = true)
     private Integer isDelete;
 
     private static final long serialVersionUID = 3191241716373120793L;

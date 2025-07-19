@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 ai:
   model-type: ${sky.ai.model-type}
