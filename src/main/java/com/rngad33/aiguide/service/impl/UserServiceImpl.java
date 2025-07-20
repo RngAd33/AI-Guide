@@ -224,7 +224,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ThrowUtils.throwIf(userQueryRequest == null, ErrorCodeEnum.NOT_PARAMS, "请求参数为空");
         Long id = userQueryRequest.getId();
         String userName = userQueryRequest.getUserName();
-        String planetCode = userQueryRequest.getPlanetCode();
         Integer role = userQueryRequest.getRole();
         String phone = userQueryRequest.getPhone();
         String email = userQueryRequest.getEmail();
@@ -232,7 +231,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("id", id, ObjUtil.isNotNull(id));
         queryWrapper.like("user_name", userName, StrUtil.isNotBlank(userName));
-        queryWrapper.eq("planet_code", planetCode, StrUtil.isNotBlank(planetCode));
         queryWrapper.eq("role", role, ObjUtil.isNotNull(role));
         queryWrapper.eq("phone", phone, StrUtil.isNotBlank(phone));
         queryWrapper.eq("email", email, StrUtil.isNotBlank(email));
