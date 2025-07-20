@@ -1,5 +1,7 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
+import com.rngad33.aiguide.constant.FilePathConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import com.rngad33.aiguide.rag.custom.MyQueryRewriter;
@@ -53,14 +55,14 @@ public class PsychologyApp {
      */
     public PsychologyApp(MyChatModel chatModel) {
         // 初始化基于文件的对话记忆
-        // String fileDir = System.getProperty("user.dir") + "/tmp/chatHistory1";
-        // ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
+        ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
         // 初始化基于内存的对话记忆
-        ChatMemory chatMemory = new InMemoryChatMemory();
+        ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
                 .defaultSystem(SystemPromptsConstant.PSYCHOLOGY)
                 .defaultAdvisors(
-                        new MessageChatMemoryAdvisor(chatMemory)
+                        // new MessageChatMemoryAdvisor(chatMemoryByFile)
+                        new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
                         // , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
