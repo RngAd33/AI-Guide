@@ -3,24 +3,24 @@ package com.rngad33.aiguide.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.rngad33.aiguide.constant.AESConstant;
 import com.rngad33.aiguide.constant.ErrorConstant;
 import com.rngad33.aiguide.constant.UserConstant;
-import com.rngad33.usercenter.exception.MyException;
+import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.manager.UserManager;
-import com.rngad33.aiguide.model.dto.UserAddRequest;
-import com.rngad33.aiguide.model.dto.UserQueryRequest;
+import com.rngad33.aiguide.model.dto.user.UserAddRequest;
+import com.rngad33.aiguide.model.dto.user.UserQueryRequest;
 import com.rngad33.aiguide.utils.AESUtils;
 import com.rngad33.aiguide.utils.SpecialCharValidator;
-import com.rngad33.aiguide.model.enums.ErrorCodeEnum;
+import com.rngad33.aiguide.utils.ThrowUtils;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.model.enums.user.UserStatusEnum;
 import com.rngad33.aiguide.model.vo.UserVO;
 import com.rngad33.aiguide.mapper.UserMapper;
 import com.rngad33.aiguide.model.entity.User;
 import com.rngad33.aiguide.service.UserService;
-import com.rngad33.usercenter.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -86,17 +86,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 2. 账户信息查重
             log.info("正在执行信息查重……");
             // - 名称查重
-            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            QueryWrapper queryWrapper = new QueryWrapper();
             queryWrapper.eq("userName", userName);
-            long count = userMapper.selectCount(queryWrapper);
+            long count = userMapper.selectCountByQuery(queryWrapper);
             if (count > 0) {
                 log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
                 throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
             // - 编号查重
-            queryWrapper = new QueryWrapper<>();
+            queryWrapper = new QueryWrapper();
             queryWrapper.eq("planetCode", planetCode);
-            count = userMapper.selectCount(queryWrapper);
+            count = userMapper.selectCountByQuery(queryWrapper);
             if (count > 0) {
                 log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
                 throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
@@ -115,7 +115,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserName(userName);
             user.setUserPassword(encryptedPassword);
-            user.setPlanetCode(planetCode);
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
@@ -149,10 +148,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
 
         // 3. 连接数据库，核对用户信息
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("userName", userName);
         queryWrapper.eq("userPassword", encryptedPassword);
-        User user = userMapper.selectOne(queryWrapper);
+        User user = userMapper.selectOneByQuery(queryWrapper);
         // - 判断用户是否存在
         if (user == null) {
             log.error(ErrorConstant.USER_NOT_EXIST_OR_PASSWORD_ERROR_RETRY_MESSAGE);
@@ -183,11 +182,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null) {
-            throw new MyException(ErrorCodeEnum.USER_NOT_LOGIN_MESSAGE);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         long id = currentUser.getId();
         if (id <= 0) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
         User user = this.getById(id);
         return userManager.getSafeUser(user);
@@ -214,7 +213,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public List<User> searchUsers(String userName, HttpServletRequest request) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper queryWrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(userName)) {
             queryWrapper.like("userName", userName);   // 默认模糊查询
         }
@@ -234,10 +233,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return QueryWrapper 查询条件构造器
      */
     @Override
-    public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
-        if (userQueryRequest == null) {
-            throw new MyException(ErrorCodeEnum.NO_PARAMS, "请求参数为空");
-        }
+    public QueryWrapper getQueryWrapper(UserQueryRequest userQueryRequest) {
+        ThrowUtils.throwIf(userQueryRequest == null, ErrorCodeEnum.NOT_PARAMS, "请求参数为空");
         Long id = userQueryRequest.getId();
         String userName = userQueryRequest.getUserName();
         String planetCode = userQueryRequest.getPlanetCode();
@@ -245,14 +242,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String phone = userQueryRequest.getPhone();
         String email = userQueryRequest.getEmail();
         Integer userStatus = userQueryRequest.getUserStatus();
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(ObjUtil.isNotNull(id), "id", id);
-        queryWrapper.like(StrUtil.isNotBlank(userName), "user_name", userName);
-        queryWrapper.eq(StrUtil.isNotBlank(planetCode), "planet_code", planetCode);
-        queryWrapper.eq(ObjUtil.isNotNull(role), "role", role);
-        queryWrapper.eq(StrUtil.isNotBlank(phone), "phone", phone);
-        queryWrapper.eq(StrUtil.isNotBlank(email), "email", email);
-        queryWrapper.eq(ObjUtil.isNotNull(userStatus), "user_status", userStatus);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("id", id, ObjUtil.isNotNull(id));
+        queryWrapper.like("user_name", userName, StrUtil.isNotBlank(userName));
+        queryWrapper.eq("planet_code", planetCode, StrUtil.isNotBlank(planetCode));
+        queryWrapper.eq("role", role, ObjUtil.isNotNull(role));
+        queryWrapper.eq("phone", phone, StrUtil.isNotBlank(phone));
+        queryWrapper.eq("email", email, StrUtil.isNotBlank(email));
+        queryWrapper.eq("user_status", userStatus, ObjUtil.isNotNull(userStatus));
         return queryWrapper;
     }
 
@@ -285,7 +282,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Integer userOrBan(@RequestBody Long id, HttpServletRequest request) {
         // 1. 查询用户是否存在
-        User user = userMapper.selectById(id);
+        User user = userMapper.selectOneById(id);
         if (user == null) {
             log.error(ErrorConstant.USER_NOT_EXIST_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -297,7 +294,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUserStatus(newStatus);
 
         // 3. 更新数据库
-        int updateResult = userMapper.updateById(user);
+        int updateResult = userMapper.update(user);
         if (updateResult <= 0) {
             log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -305,9 +302,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 4. 返回操作结果
         if (newStatus != 0) {
-            log.info("用户已封禁>>>");
+            log.info("！用户已封禁>>>");
         } else {
-            log.info("用户已解封>>>");
+            log.info("！用户已解封>>>");
         }
         return 0;
     }
