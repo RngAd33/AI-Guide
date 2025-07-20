@@ -21,7 +21,7 @@ public class ChatRoom implements Serializable {
     /**
      * 房间 id
      */
-    @Id(keyType = KeyType.Generator)
+    @Id(keyType = KeyType.Auto)
     private Long chatId;
 
     /**
