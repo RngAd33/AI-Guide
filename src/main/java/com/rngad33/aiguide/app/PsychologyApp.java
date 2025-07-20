@@ -19,8 +19,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
+import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.*;
 
 /**
  * 心理咨询应用
@@ -107,7 +106,7 @@ public class PsychologyApp {
                         "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)   // 最大记忆条数
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
                 )
                 .call()
                 .entity(PsychologyReport.class);
