@@ -23,6 +23,11 @@ public class ChatVO {
     private List<Message> chatMessage;
 
     /**
+     * 创建用户id
+     */
+    private Long userId;
+
+    /**
      * 创建时间
      */
     private Date createTime;
