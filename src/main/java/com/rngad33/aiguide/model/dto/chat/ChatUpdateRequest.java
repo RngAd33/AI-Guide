@@ -1,17 +1,16 @@
-package com.rngad33.aiguide.model.dto;
+package com.rngad33.aiguide.model.dto.chat;
 
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 对话创建请求体
+ * 对话更新请求体（仅管理员）
  */
 @Data
-public class ChatAddRequest implements Serializable {
+public class ChatUpdateRequest {
 
     /**
      * 房间号
@@ -38,7 +37,9 @@ public class ChatAddRequest implements Serializable {
      */
     private Date createTime;
 
-
-    private static final long serialVersionUID = 3191241716373120793L;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
 }

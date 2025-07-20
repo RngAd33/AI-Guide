@@ -1,10 +1,10 @@
 package com.rngad33.aiguide.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngad33.aiguide.model.dto.UserAddRequest;
-import com.rngad33.aiguide.model.dto.UserQueryRequest;
+import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.service.IService;
+import com.rngad33.aiguide.model.dto.user.UserAddRequest;
+import com.rngad33.aiguide.model.dto.user.UserQueryRequest;
 import com.rngad33.aiguide.model.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngad33.aiguide.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -64,7 +64,7 @@ public interface UserService extends IService<User> {
      * @param userQueryRequest 用户查询请求对象
      * @return QueryWrapper 查询条件构造器
      */
-    QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+    QueryWrapper getQueryWrapper(UserQueryRequest userQueryRequest);
 
     /**
      * 添加用户（仅管理员）

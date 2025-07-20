@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户视图（脱敏）
+ * 用户视图
  */
 @Data
 public class UserVO implements Serializable {
@@ -71,6 +71,6 @@ public class UserVO implements Serializable {
      */
     private Date createTime;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3191241716373120793L;
 
 }

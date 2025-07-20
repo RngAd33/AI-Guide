@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.model.dto;
+package com.rngad33.aiguide.model.dto.chat;
 
 import lombok.Data;
 

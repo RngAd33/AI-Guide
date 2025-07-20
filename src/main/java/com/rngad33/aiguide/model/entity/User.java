@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.model.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.mybatisflex.annotation.*;
+import com.mybatisflex.core.mask.Masks;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,25 +13,19 @@ import java.util.Date;
  * @TableName user
  */
 @Data
-@TableName(value = "user")
+@Table(value = "user")
 public class User implements Serializable {
 
     /**
-     * 用户 id（主要服务于Mapper）
-     * 当前策略为主键自增
+     * 用户 id
      */
-    @TableId(type = IdType.AUTO)
+    @Id(keyType = KeyType.Auto)
     private Long id;
 
     /**
      * 用户昵称
      */
     private String userName;
-
-    /**
-     * 星球编号
-     */
-    private String planetCode;
 
     /**
      * 身份？ 0-普通用户，1-管理员
@@ -50,16 +45,13 @@ public class User implements Serializable {
     /**
      * 密码
      */
+    @ColumnMask(Masks.PASSWORD)
     private String userPassword;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
 
     /**
      * 电话
      */
+    @ColumnMask(Masks.FIXED_PHONE)
     private String phone;
 
     /**
@@ -85,10 +77,10 @@ public class User implements Serializable {
     /**
      * 是否删除？ 0-未删，1-已删
      */
-    @TableLogic
+    @Column(isLogicDelete = true)
     private Integer isDelete;
 
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+    @Column
+    private static final long serialVersionUID = 3191241716373120793L;
 
 }

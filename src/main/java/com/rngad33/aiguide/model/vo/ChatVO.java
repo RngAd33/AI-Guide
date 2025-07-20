@@ -3,6 +3,7 @@ package com.rngad33.aiguide.model.vo;
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * 对话视图
  */
 @Data
-public class ChatVO {
+public class ChatVO implements Serializable {
 
     /**
      * 房间号
@@ -31,5 +32,7 @@ public class ChatVO {
      * 创建时间
      */
     private Date createTime;
+
+    private static final long serialVersionUID = 3191241716373120793L;
 
 }

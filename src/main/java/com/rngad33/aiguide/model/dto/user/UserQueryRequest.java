@@ -1,15 +1,17 @@
-package com.rngad33.aiguide.model.dto;
+package com.rngad33.aiguide.model.dto.user;
 
+import com.rngad33.aiguide.common.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * 用户添加请求体
+ * 用户查询请求体
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UserAddRequest implements Serializable {
+public class UserQueryRequest extends PageRequest implements Serializable {
 
     /**
      * 用户 id
@@ -32,26 +34,6 @@ public class UserAddRequest implements Serializable {
     private Integer role;
 
     /**
-     * 头像地址
-     */
-    private String avatarUrl;
-
-    /**
-     * 性别
-     */
-    private Integer gender;
-
-    /**
-     * 密码
-     */
-    private String userPassword;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
-
-    /**
      * 电话
      */
     private String phone;
@@ -65,17 +47,6 @@ public class UserAddRequest implements Serializable {
      * 用户状态：0-正常，1-封禁
      */
     private Integer userStatus;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
 
     private static final long serialVersionUID = 3191241716373120793L;
 

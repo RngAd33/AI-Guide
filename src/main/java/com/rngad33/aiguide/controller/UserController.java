@@ -1,17 +1,18 @@
 package com.rngad33.aiguide.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rngad33.aiguide.model.dto.*;
+import com.mybatisflex.core.paginate.Page;
 import com.rngad33.aiguide.annotation.AuthCheck;
+import com.rngad33.aiguide.common.BaseResponse;
 import com.rngad33.aiguide.constant.UserConstant;
-import com.rngad33.usercenter.exception.MyException;
-import com.rngad33.aiguide.model.enums.ErrorCodeEnum;
+import com.rngad33.aiguide.exception.MyException;
+import com.rngad33.aiguide.model.dto.user.*;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.manager.UserManager;
 import com.rngad33.aiguide.model.entity.User;
 import com.rngad33.aiguide.model.vo.UserVO;
 import com.rngad33.aiguide.service.UserService;
-import com.rngad33.usercenter.utils.ResultUtils;
-import com.rngad33.usercenter.utils.ThrowUtils;
+import com.rngad33.aiguide.utils.ResultUtils;
+import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -116,6 +117,7 @@ public class UserController {
      */
     @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
+        ThrowUtils.throwIf(StringUtils.isBlank(userName), ErrorCodeEnum.NOT_PARAMS);
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
     }
@@ -128,7 +130,7 @@ public class UserController {
     public BaseResponse<User> getUserById(long id) {
         ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR);
         User user = userService.getById(id);
-        ThrowUtils.throwIf(user == null, ErrorCodeEnum.NO_PARAMS);
+        ThrowUtils.throwIf(user == null, ErrorCodeEnum.NOT_PARAMS);
         return ResultUtils.success(user);
     }
 
@@ -140,6 +142,7 @@ public class UserController {
      */
     @GetMapping("/get/vo")
     public BaseResponse<UserVO> getUserVOById(long id) {
+        ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR);
         BaseResponse<User> response = getUserById(id);
         User user = response.getData();
         return ResultUtils.success(userService.getUserVO(user));
@@ -158,7 +161,7 @@ public class UserController {
         long pageSize = userQueryRequest.getPageSize();
         Page<User> userPage = userService.page(new Page<>(current, pageSize),
                 userService.getQueryWrapper(userQueryRequest));
-        Page<UserVO> userVOPage = new Page<>(current, pageSize, userPage.getTotal());
+        Page<UserVO> userVOPage = new Page<>(current, pageSize, userPage.getTotalPage());
         List<UserVO> userVOList = userService.getUserVOList(userPage.getRecords());
         userVOPage.setRecords(userVOList);
         return ResultUtils.success(userVOPage);

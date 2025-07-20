@@ -1,25 +1,27 @@
 package com.rngad33.aiguide.model.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
+import com.mybatisflex.annotation.*;
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 聊天室模型
+ *
+ * @TableName chat_room
  */
 @Data
+@Table(value = "chat_room")
 public class ChatRoom implements Serializable {
 
     /**
-     * 房间号
+     * 房间 id
      */
-    @Id(keyType = KeyType.Auto)
+    @Id(keyType = KeyType.Generator)
     private Long chatId;
 
     /**
@@ -53,6 +55,7 @@ public class ChatRoom implements Serializable {
     @Column(isLogicDelete = true)
     private Integer isDelete;
 
+    @Column
     private static final long serialVersionUID = 3191241716373120793L;
 
 }

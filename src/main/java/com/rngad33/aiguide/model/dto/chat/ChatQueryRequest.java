@@ -1,10 +1,8 @@
-package com.rngad33.aiguide.model.dto;
+package com.rngad33.aiguide.model.dto.chat;
 
 import lombok.Data;
-import org.springframework.ai.chat.messages.Message;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 对话查询请求体
