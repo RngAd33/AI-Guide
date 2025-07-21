@@ -127,18 +127,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.21.1</version>
         </dependency>
-        <!-- OkHttp3 -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.3</version>
-        </dependency>
-        <!-- org.json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20210307</version>
-        </dependency>
         <!-- PDF 生成库 -->
         <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-core -->
         <dependency>
@@ -153,6 +141,18 @@
             <artifactId>font-asian</artifactId>
             <version>9.1.0</version>
             <scope>test</scope>
+        </dependency>
+        <!-- OkHttp3 -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.3</version>
+        </dependency>
+        <!-- org.json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
         </dependency>
         <!-- HuTool -->
         <dependency>
