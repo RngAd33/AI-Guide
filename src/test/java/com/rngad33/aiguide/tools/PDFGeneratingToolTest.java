@@ -6,13 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class PDFGenerationToolTest {
+class PDFGeneratingToolTest {
 
     @Test
     void generatePDF() {
         String fileName = "test.pdf";
         String content = "This is a test PDF.";
-        PDFGenerationTool tool = new PDFGenerationTool();
+        PDFGeneratingTool tool = new PDFGeneratingTool();
         String result = tool.generatePDF(fileName, content);
         assertTrue(result.contains("PDF generated successfully"));
     }
