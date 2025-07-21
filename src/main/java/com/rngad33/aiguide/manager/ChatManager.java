@@ -1,11 +1,15 @@
 package com.rngad33.aiguide.manager;
 
+import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
+import com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant;
 import com.rngad33.aiguide.rag.factory.RagCustomAdvisorFactory;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -19,6 +23,9 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 @Component
 @Slf4j
 public class ChatManager {
+
+    @Resource
+    private ToolCallback[] allTools;
 
     /**
      * 开启基础对话（支持多轮对话）
@@ -122,6 +129,29 @@ public class ChatManager {
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
+
+    /**
+     * 使用工具
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithTools(ChatClient chatClient, String message, String chatId) {
+        ChatResponse response = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
+                .tools(allTools)
+                .call()
+                .chatResponse();
+        String content = response.getResult().getOutput().getText();
         log.info("content: {}", content);
         return content;
     }

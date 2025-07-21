@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
 import com.rngad33.aiguide.constant.FilePathConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
@@ -13,6 +14,8 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -36,6 +39,9 @@ public class PsychologyApp {
 
     @Resource
     private MyQueryRewriter queryRewriter;
+
+    @Resource
+    private ToolCallback[] allTools;
 
     @Resource
     private VectorStore psychologyAppVectorStore;
@@ -127,6 +133,17 @@ public class PsychologyApp {
         return chatManager.doChatWithRag(chatClient, pgVectorStore,
                 psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
                 rewritedMessage, chatId);
+    }
+
+    /**
+     * 使用工具
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithTools(String message, String chatId) {
+        return chatManager.doChatWithTools(chatClient, message, chatId);
     }
 
 }
