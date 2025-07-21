@@ -1,6 +1,5 @@
 package com.rngad33.aiguide.tools;
 
-import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.model.entity.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,13 +50,20 @@ public class WebSearchTool {
         return parseSearchResults(doSearchRaw(query, limit));
     }
 
+    /**
+     * 官方搜索方法
+     *
+     * @param query
+     * @return
+     * @throws IOException
+     */
     public int doEasySearch(@ToolParam(description = "Search query keyword") String query) throws IOException {
         try {
             URL url = new URL(JINA_SEARCH_URL + query);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Authorization", "Bearer jina_f5ebbb16d0f4425693f4e91adbb52fd5aHxhKKdkMyw0LLThF2FcIZmur4QI");
+            connection.setRequestProperty("Authorization", "Bearer " + searchApiKey);
             connection.setRequestProperty("X-Respond-With", "no-content");
             int responseCode = connection.getResponseCode();
             log.info("Response Code: {}", responseCode);
@@ -108,22 +115,31 @@ public class WebSearchTool {
      * @return
      */
     private List<SearchResult> parseSearchResults(String jsonResponse) {
-        List<SearchResult> results = new ArrayList<>();
-        JSONArray hits = new JSONObject(jsonResponse).getJSONArray("hits");
+        try {
+            // 尝试解析为 JSONObject
+            JSONObject responseObj = new JSONObject(jsonResponse);
+            // JSONArray hits = new JSONObject(jsonResponse).getJSONArray("hits");
+            JSONArray hits = responseObj.getJSONArray("hits");
 
-        for (int i = 0; i < hits.length(); i++) {
-            JSONObject hit = hits.getJSONObject(i);
-            JSONObject document = hit.getJSONObject("document");
-            results.add(SearchResult.builder()
-                    .id(hit.optString("id"))
-                    .score(hit.optDouble("score"))
-                    .title(document.optString("title"))
-                    .content(document.optString("content"))
-                    .url(document.optString("url"))
-                    .metadata(document.optJSONObject("metadata"))
-                    .build());
+            List<SearchResult> results = new ArrayList<>();
+            for (int i = 0; i < hits.length(); i++) {
+                JSONObject hit = hits.getJSONObject(i);
+                JSONObject document = hit.getJSONObject("document");
+                results.add(SearchResult.builder()
+                        .id(hit.optString("id"))
+                        .score(hit.optDouble("score"))
+                        .title(document.optString("title"))
+                        .content(document.optString("content"))
+                        .url(document.optString("url"))
+                        .metadata(document.optJSONObject("metadata"))
+                        .build());
+            }
+            return results;
+        } catch (Exception e) {
+            // 如果是数组格式或其他格式，记录错误并返回空列表
+            log.error("Invalid response format: {}", jsonResponse);
+            return Collections.emptyList();
         }
-        return results;
     }
 
 }
