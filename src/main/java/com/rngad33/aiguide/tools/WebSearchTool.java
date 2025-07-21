@@ -1,10 +1,11 @@
 package com.rngad33.aiguide.tools;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.rngad33.aiguide.model.entity.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -57,7 +59,8 @@ public class WebSearchTool {
      * @return
      * @throws IOException
      */
-    public int doEasySearch(@ToolParam(description = "Search query keyword") String query) throws IOException {
+    public int doEasySearch(@ToolParam(description = "Search query keyword") String query
+    ) throws IOException {
         try {
             URL url = new URL(JINA_SEARCH_URL + query);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -116,22 +119,22 @@ public class WebSearchTool {
      */
     private List<SearchResult> parseSearchResults(String jsonResponse) {
         try {
-            // 尝试解析为 JSONObject
-            JSONObject responseObj = new JSONObject(jsonResponse);
-            // JSONArray hits = new JSONObject(jsonResponse).getJSONArray("hits");
+            // 安全解析为JSONObject
+            JSONObject responseObj = JSONUtil.parseObj(jsonResponse, false);
             JSONArray hits = responseObj.getJSONArray("hits");
 
             List<SearchResult> results = new ArrayList<>();
-            for (int i = 0; i < hits.length(); i++) {
+            for (int i = 0; i < hits.size(); i++) {
                 JSONObject hit = hits.getJSONObject(i);
                 JSONObject document = hit.getJSONObject("document");
+                // 使用optXXX方法避免空指针
                 results.add(SearchResult.builder()
-                        .id(hit.optString("id"))
-                        .score(hit.optDouble("score"))
-                        .title(document.optString("title"))
-                        .content(document.optString("content"))
-                        .url(document.optString("url"))
-                        .metadata(document.optJSONObject("metadata"))
+                        .id(hit.getStr("id", ""))
+                        .score(hit.getDouble("score", 0.0))
+                        .title(document.getStr("title", ""))
+                        .content(document.getStr("content", ""))
+                        .url(document.getStr("url", ""))
+                        .metadata(document.getStr("metadata", "{}"))
                         .build());
             }
             return results;

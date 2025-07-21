@@ -147,7 +147,7 @@ public class ChatManager {
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志
-                .advisors(new MyLoggerAdvisor())
+                // .advisors(new MyLoggerAdvisor())
                 .tools(allTools)
                 .call()
                 .chatResponse();

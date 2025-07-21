@@ -2,7 +2,6 @@ package com.rngad33.aiguide.model.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import org.json.JSONObject;
 
 /**
  * 搜索结果模型
@@ -39,7 +38,7 @@ public class SearchResult {
     /**
      * 元数据
      */
-    private JSONObject metadata;
+    private String metadata;
 
     public String toString() {
         return String.format(

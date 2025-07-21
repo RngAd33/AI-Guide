@@ -148,12 +148,12 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.3</version>
         </dependency>
-        <!-- org.json -->
+        <!-- org.json
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20210307</version>
-        </dependency>
+        </dependency> -->
         <!-- HuTool -->
         <dependency>
             <groupId>cn.hutool</groupId>
