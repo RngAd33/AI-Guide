@@ -16,7 +16,7 @@ class WebSearchToolTest {
     private String searchApiKey;
 
     @Test
-    void searchRaw() throws IOException {
+    void doSearchRaw() throws IOException {
         String query = "Java最新特性";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
         String result = webSearchTool.doSearchRaw(query, 5);
@@ -24,7 +24,7 @@ class WebSearchToolTest {
     }
 
     @Test
-    void search() throws IOException {
+    void doSearch() throws IOException {
         String query = "Java最新特性";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
         List<SearchResult> results = webSearchTool.doSearch(query, 5);

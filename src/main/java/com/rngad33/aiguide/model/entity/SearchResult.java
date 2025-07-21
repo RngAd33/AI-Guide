@@ -41,13 +41,10 @@ public class SearchResult {
      */
     private JSONObject metadata;
 
-    @Override
     public String toString() {
         return String.format(
-                "SearchResult{id='%s', score=%.2f, title='%s', content='%s', url='%s'}",
-                id, score, title,
-                content != null ? content.substring(0, Math.min(50, content.length())) + "..." : "null",
-                url
+                "SearchResult{id='%s', score=%.2f, title='%s', content='%s', url='%s'}", id, score, title,
+                content != null ? content.substring(0, Math.min(50, content.length())) + "..." : "null", url
         );
     }
 

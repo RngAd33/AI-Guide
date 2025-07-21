@@ -137,7 +137,8 @@ public class WebSearchTool {
             return results;
         } catch (Exception e) {
             // 如果是数组格式或其他格式，记录错误并返回空列表
-            log.error("Invalid response format: {}", jsonResponse);
+            // log.error("Invalid response format: {}", jsonResponse);
+            log.error("Invalid response format");
             return Collections.emptyList();
         }
     }
