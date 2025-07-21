@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.tools;
 
+import com.rngad33.aiguide.model.entity.SearchResult;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class WebSearchTool {
 
-    private static final String JINA_API_BASE_URL = "https://api.jina.ai/";
+    private static final String JINA_BASE_URL = "https://r.jina.ai/";
     private static final String SEARCH_ENDPOINT = "/v1/search";
 
     private final OkHttpClient httpClient = new OkHttpClient.Builder()
@@ -38,37 +39,26 @@ public class WebSearchTool {
         this.searchApiKey = searchApiKey;
     }
 
-    @Data
-    @Builder
-    public static class SearchResult {
-        private String id;
-        private double score;
-        private String title;
-        private String content;
-        private String url;
-        private JSONObject metadata;
-
-        @Override
-        public String toString() {
-            return String.format(
-                    "SearchResult{id='%s', score=%.2f, title='%s', content='%s', url='%s'}",
-                    id, score, title,
-                    content != null ? content.substring(0, Math.min(50, content.length())) + "..." : "null",
-                    url
-            );
-        }
+    /**
+     * 执行搜索并返回解析后的最终结果
+     */
+    @Tool(description = "Search for information from Baidu Search Engine")
+    public List<SearchResult> doSearch(@ToolParam(description = "Search query keyword")String query,
+                                     @ToolParam(description = "Search limited tips") int limit
+    ) throws IOException {
+        return parseSearchResults(doSearchRaw(query, limit));
     }
 
     /**
      * 执行搜索并返回原始JSON响应
      */
-    public String searchRaw(String query, int limit) throws IOException {
+    public String doSearchRaw(String query, int limit) throws IOException {
         JSONObject requestBody = new JSONObject();
         requestBody.put("query", query);
         requestBody.put("limit", limit);
 
         Request request = new Request.Builder()
-                .url(JINA_API_BASE_URL + SEARCH_ENDPOINT)
+                .url(JINA_BASE_URL + SEARCH_ENDPOINT)
                 .post(RequestBody.create(
                         requestBody.toString(),
                         MediaType.parse("application/json")
@@ -107,26 +97,16 @@ public class WebSearchTool {
         return results;
     }
 
-    /**
-     * 执行搜索并返回解析后的结果
-     */
-    @Tool(description = "Search for information from Baidu Search Engine")
-    public List<SearchResult> search(@ToolParam(description = "Search query keyword")String query,
-                                     @ToolParam(description = "Search limit num") int limit
-    ) throws IOException {
-        return parseSearchResults(searchRaw(query, limit));
-    }
-
     /* 示例用法
     public static void main(String[] args) {
-        WebSearchTool searcher = new WebSearchTool();
+        WebSearchTool webSearchTool = new WebSearchTool();
         try {
-            List<SearchResult> results = searcher.search("Java最新特性", 3);
+            String query = "Java最新特性";
+            List<SearchResult> results = webSearchTool.doSearch(query, 3);
             log.info("搜索结果: {}", results);
         } catch (IOException e) {
-            log.error("搜索失败", e);
+            log.error("搜索失败！", e);
         }
-    }
-     */
+    }*/
 
 }

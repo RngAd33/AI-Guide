@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.tools;
 
+import com.rngad33.aiguide.model.entity.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ class WebSearchToolTest {
     void searchRaw() throws IOException {
         String query = "Java最新特性";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
-        String result = webSearchTool.searchRaw(query, 5);
+        String result = webSearchTool.doSearchRaw(query, 5);
         Assertions.assertNotNull(result);
     }
 
@@ -27,7 +28,7 @@ class WebSearchToolTest {
     void search() throws IOException {
         String query = "Java最新特性";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
-        List<WebSearchTool.SearchResult> results = webSearchTool.search(query, 5);
+        List<SearchResult> results = webSearchTool.doSearch(query, 5);
         Assertions.assertNotNull(results);
     }
 
