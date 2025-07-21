@@ -19,21 +19,24 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 联网搜索工具
+ * 联网搜索工具（采用JINA引擎）
  */
 @Slf4j
 public class WebSearchTool {
 
-    private static final String JINA_BASE_URL = "https://r.jina.ai/";
-    private static final String SEARCH_ENDPOINT = "/v1/search";
+    // 网页抓取
+    private static final String JINA_READ_URL = "https://r.jina.ai/";
+
+    // 关键词搜索
+    private static final String JINA_SEARCH_URL = "https://s.jina.ai/?q=";
+
+    private final String searchApiKey;
 
     private final OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .build();
-
-    private final String searchApiKey;
 
     public WebSearchTool(String searchApiKey) {
         this.searchApiKey = searchApiKey;
@@ -51,14 +54,19 @@ public class WebSearchTool {
 
     /**
      * 执行搜索并返回原始JSON响应
+     *
+     * @param query
+     * @param limit
+     * @return
+     * @throws IOException
      */
     public String doSearchRaw(String query, int limit) throws IOException {
         JSONObject requestBody = new JSONObject();
         requestBody.put("query", query);
         requestBody.put("limit", limit);
-
+        // 创建请求
         Request request = new Request.Builder()
-                .url(JINA_BASE_URL + SEARCH_ENDPOINT)
+                .url(JINA_SEARCH_URL + SEARCH_ENDPOINT)
                 .post(RequestBody.create(
                         requestBody.toString(),
                         MediaType.parse("application/json")
@@ -66,7 +74,7 @@ public class WebSearchTool {
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", "Bearer " + searchApiKey)
                 .build();
-
+        // 执行搜索
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 log.error("搜索请求失败: {}", response);
@@ -77,6 +85,12 @@ public class WebSearchTool {
         }
     }
 
+    /**
+     * 解析搜索结果
+     *
+     * @param jsonResponse
+     * @return
+     */
     private List<SearchResult> parseSearchResults(String jsonResponse) {
         List<SearchResult> results = new ArrayList<>();
         JSONArray hits = new JSONObject(jsonResponse).getJSONArray("hits");
@@ -84,7 +98,6 @@ public class WebSearchTool {
         for (int i = 0; i < hits.length(); i++) {
             JSONObject hit = hits.getJSONObject(i);
             JSONObject document = hit.getJSONObject("document");
-
             results.add(SearchResult.builder()
                     .id(hit.optString("id"))
                     .score(hit.optDouble("score"))
@@ -96,17 +109,5 @@ public class WebSearchTool {
         }
         return results;
     }
-
-    /* 示例用法
-    public static void main(String[] args) {
-        WebSearchTool webSearchTool = new WebSearchTool();
-        try {
-            String query = "Java最新特性";
-            List<SearchResult> results = webSearchTool.doSearch(query, 3);
-            log.info("搜索结果: {}", results);
-        } catch (IOException e) {
-            log.error("搜索失败！", e);
-        }
-    }*/
 
 }

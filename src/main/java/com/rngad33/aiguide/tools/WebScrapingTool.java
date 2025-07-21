@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebScrapingTool {
 
+    /**
+     * Jsoup抓取
+     *
+     * @param url
+     * @return
+     */
     @Tool(description = "Scrape the content of a web page")
     public String doScrape(@ToolParam(description = "URL of thw web page to sarape") String url
     ) {
@@ -21,7 +27,6 @@ public class WebScrapingTool {
         } catch (Exception e) {
             return "Error scraping web page: " + e.getMessage();
         }
-
     }
 
 }
