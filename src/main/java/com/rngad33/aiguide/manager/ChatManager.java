@@ -134,7 +134,7 @@ public class ChatManager {
     }
 
     /**
-     * 使用工具
+     * 工具调用
      *
      * @param message
      * @param chatId

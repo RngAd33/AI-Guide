@@ -41,9 +41,6 @@ public class PsychologyApp {
     private MyQueryRewriter queryRewriter;
 
     @Resource
-    private ToolCallback[] allTools;
-
-    @Resource
     private VectorStore psychologyAppVectorStore;
 
     @Resource
