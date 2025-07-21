@@ -5,23 +5,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class FileOperationToolTest {
+class FileOperatingToolTest {
 
     @Resource
-    private FileOperationTool fileOperationTool;
+    private FileOperatingTool fileOperatingTool;
 
     @Test
     void doRead() {
-        String result = fileOperationTool.doRead("test.txt");
+        String result = fileOperatingTool.doRead("test.txt");
         Assertions.assertNotNull(result);
     }
 
     @Test
     void doWrite() {
-        String result = fileOperationTool.doWrite("test.txt", "Hello World!");
+        String result = fileOperatingTool.doWrite("test.txt", "Hello World!");
         Assertions.assertNotNull(result);
     }
 

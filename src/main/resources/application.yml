@@ -36,9 +36,12 @@ spring:
         dimensions: 1536
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000
-
   session:
     timeout: ${sky.jwt.admin-ttl}
+
+# 联网搜索
+search:
+  api-key: ${sky.search.api-key}
 
 # 接口文档
 knife4j:
