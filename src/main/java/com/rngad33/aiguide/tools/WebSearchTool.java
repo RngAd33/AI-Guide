@@ -1,19 +1,17 @@
 package com.rngad33.aiguide.tools;
 
+import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.model.entity.SearchResult;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +50,24 @@ public class WebSearchTool {
         return parseSearchResults(doSearchRaw(query, limit));
     }
 
+    public int doEasySearch(@ToolParam(description = "Search query keyword") String query) throws IOException {
+        try {
+            URL url = new URL(JINA_SEARCH_URL + query);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Authorization", "Bearer jina_f5ebbb16d0f4425693f4e91adbb52fd5aHxhKKdkMyw0LLThF2FcIZmur4QI");
+            connection.setRequestProperty("X-Respond-With", "no-content");
+            int responseCode = connection.getResponseCode();
+            log.info("Response Code: {}", responseCode);
+            connection.disconnect();
+            return responseCode;
+        } catch (Exception e) {
+            log.error("Error: " + e.getMessage());
+            return -1;
+        }
+    }
+
     /**
      * 执行搜索并返回原始JSON响应
      *
@@ -66,7 +82,7 @@ public class WebSearchTool {
         requestBody.put("limit", limit);
         // 创建请求
         Request request = new Request.Builder()
-                .url(JINA_SEARCH_URL + SEARCH_ENDPOINT)
+                .url(JINA_SEARCH_URL + query)
                 .post(RequestBody.create(
                         requestBody.toString(),
                         MediaType.parse("application/json")

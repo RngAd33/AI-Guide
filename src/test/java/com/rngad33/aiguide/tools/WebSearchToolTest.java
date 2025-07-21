@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.List;
 
-
 @SpringBootTest
 class WebSearchToolTest {
 
