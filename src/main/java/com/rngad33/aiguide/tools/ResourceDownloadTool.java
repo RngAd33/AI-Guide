@@ -13,7 +13,7 @@ import java.io.File;
  */
 public class ResourceDownloadTool {
 
-    @Tool(description = "Download source")
+    @Tool(description = "Download a resource from a given URL")
     public String doDownload(@ToolParam(description = "URL of the resource to download") String url,
                              @ToolParam(description = "Name of the file to save the downloaded resource") String fileName
     ) {

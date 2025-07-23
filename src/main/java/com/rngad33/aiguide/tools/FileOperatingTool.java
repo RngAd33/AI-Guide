@@ -37,8 +37,8 @@ public class FileOperatingTool {
      * @param content
      * @return
      */
-    @Tool(description = "Write content from a file")
-    public String doWrite(@ToolParam(description = "Name of a file to write") String fileName,
+    @Tool(description = "Write content to a file")
+    public String doWrite(@ToolParam(description = "Name of the file to write") String fileName,
                           @ToolParam(description = "Content to write to the file") String content
     ) {
         String filePath = FILE_DIR + "/" + fileName;
