@@ -143,8 +143,6 @@ public class ChatManager {
     public String doChatWithTools(ChatClient chatClient, String message, String chatId) {
         ChatResponse response = chatClient
                 .prompt()
-                // 工具集调用
-                .tools(allTools)
                 // 接收用户输入
                 .user(message)
                 // 历史上下文
@@ -152,6 +150,8 @@ public class ChatManager {
                         .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())
+                // 工具集调用
+                .tools(allTools)
                 .call()
                 .chatResponse();
         String content = response.getResult().getOutput().getText();

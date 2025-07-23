@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 /**
  * 网页抓取工具
  */
-@Component
 public class WebScrapingTool {
 
     /**

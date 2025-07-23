@@ -192,14 +192,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- 统一 Spring AI 版本
+            <!-- 统一 Spring AI 版本 -->
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
                 <version>1.0.0-M6</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency> -->
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

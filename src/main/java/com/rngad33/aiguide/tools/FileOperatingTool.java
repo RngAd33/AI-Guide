@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 /**
  * 文件操作工具（提供文件读写功能）
  */
-@Component
 public class FileOperatingTool {
 
     private final String FILE_DIR = FilePathConstant.FILE_SAVE_PATH + "/file";

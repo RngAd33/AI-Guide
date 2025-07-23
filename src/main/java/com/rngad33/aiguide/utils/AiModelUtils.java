@@ -22,6 +22,9 @@ import java.util.List;
 @Component
 public class AiModelUtils {
 
+    /**
+     * 对话模型
+     */
     @Component
     public static class MyChatModel implements ChatModel {
 
@@ -33,7 +36,7 @@ public class AiModelUtils {
 
         private ChatModel delegate() {
             return switch (activeModelType.toLowerCase()) {
-                case "dashscope" -> context.getBean("dashScopeChatModel", ChatModel.class);
+                case "dashscope" -> context.getBean("dashscopeChatModel", ChatModel.class);
                 case "ollama" -> context.getBean("ollamaChatModel", ChatModel.class);
                 default -> throw new IllegalArgumentException("未知模型类型：" + activeModelType);
             };
@@ -50,6 +53,9 @@ public class AiModelUtils {
         }
     }
 
+    /**
+     * 嵌入式模型
+     */
     @Component
     public static class MyEmbeddingModel implements EmbeddingModel {
 
@@ -61,7 +67,7 @@ public class AiModelUtils {
 
         private EmbeddingModel delegate() {
             return switch (activeModelType.toLowerCase()) {
-                case "dashscope" -> context.getBean("dashScopeEmbeddingModel", EmbeddingModel.class);
+                case "dashscope" -> context.getBean("dashscopeEmbeddingModel", EmbeddingModel.class);
                 case "ollama" -> context.getBean("ollamaEmbeddingModel", EmbeddingModel.class);
                 default -> throw new IllegalArgumentException("未知模型类型：" + activeModelType);
             };

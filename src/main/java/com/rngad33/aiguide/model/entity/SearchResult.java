@@ -40,6 +40,11 @@ public class SearchResult {
      */
     private String metadata;
 
+    /**
+     * 格式化方法
+     *
+     * @return
+     */
     public String toString() {
         return String.format(
                 "SearchResult{id='%s', score=%.2f, title='%s', content='%s', url='%s'}", id, score, title,
