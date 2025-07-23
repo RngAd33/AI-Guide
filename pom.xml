@@ -56,7 +56,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Spring AI MCP Client -->
+        <!-- Spring AI -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-core</artifactId>
+            <version>1.0.0-M6</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
