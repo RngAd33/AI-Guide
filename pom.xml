@@ -90,11 +90,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <!-- 自动整合 PGVector 向量存储 -->
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector
         <dependency>
@@ -113,6 +108,13 @@
             <artifactId>mybatis-flex-processor</artifactId>
             <version>1.11.0</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+            <version>42.7.7</version>
         </dependency>
         <!-- victools 结构化输出支持 -->
         <dependency>
@@ -153,12 +155,6 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.3</version>
         </dependency>
-        <!-- org.json
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20210307</version>
-        </dependency> -->
         <!-- HuTool -->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -187,6 +183,7 @@
     </dependencies>
 
     <dependencyManagement>
+        <!-- 统一 Spring Boot 版本 -->
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -195,6 +192,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- 统一 Spring AI 版本
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>1.0.0-M6</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency> -->
         </dependencies>
     </dependencyManagement>
 
@@ -231,6 +236,14 @@
     </build>
     <!-- 需要引入仓库配置，才能下载到最新的 Spring AI 相关的依赖 -->
     <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
