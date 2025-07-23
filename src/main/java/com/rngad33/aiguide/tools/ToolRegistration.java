@@ -15,6 +15,11 @@ public class ToolRegistration {
     @Value("${search.api-key}")
     private String searchApiKey;
 
+    /**
+     * 初始化工具集成Bean
+     *
+     * @return
+     */
     @Bean
     public ToolCallback[] allTools() {
         FileOperatingTool fileOperationTool = new FileOperatingTool();
