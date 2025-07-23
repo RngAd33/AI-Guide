@@ -14,7 +14,9 @@ import java.io.File;
 public class ResourceDownloadTool {
 
     @Tool(description = "Download source")
-    public String doDownload(@ToolParam(description = "URL of the resource to download") String url, @ToolParam(description = "Name of the file to save the downloaded resource") String fileName) {
+    public String doDownload(@ToolParam(description = "URL of the resource to download") String url,
+                             @ToolParam(description = "Name of the file to save the downloaded resource") String fileName
+    ) {
         String fileDir = FilePathConstant.FILE_SAVE_PATH + "/download";
         String filePath = fileDir + "/" + fileName;
         try {

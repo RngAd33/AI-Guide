@@ -144,10 +144,12 @@ public class ChatManager {
         ChatResponse response = chatClient
                 .prompt()
                 .user(message)
+                // 历史上下文
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志
-                // .advisors(new MyLoggerAdvisor())
+                .advisors(new MyLoggerAdvisor())
+                // 工具集调用
                 .tools(allTools)
                 .call()
                 .chatResponse();
