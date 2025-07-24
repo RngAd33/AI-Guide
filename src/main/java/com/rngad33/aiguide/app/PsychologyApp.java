@@ -14,6 +14,7 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -46,6 +47,8 @@ public class PsychologyApp {
 
     private final ChatClient chatClient;
 
+    private final ToolCallback[] allTools;
+
     record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
@@ -53,13 +56,16 @@ public class PsychologyApp {
      *
      * @param chatModel
      */
-    public PsychologyApp(MyChatModel chatModel) {
+    public PsychologyApp(MyChatModel chatModel, ToolCallback[] allTools) {
+        this.allTools = allTools;
         // 初始化基于文件的对话记忆
         ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
                 .defaultSystem(SystemPromptsConstant.PSYCHOLOGY)
+                // 全局工具调用
+                .defaultTools(allTools)
                 .defaultAdvisors(
                         // new MessageChatMemoryAdvisor(chatMemoryByFile)
                         new MessageChatMemoryAdvisor(chatMemoryByCache)

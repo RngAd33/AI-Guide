@@ -33,7 +33,7 @@ public class ChatController {
     public BaseResponse<String> psyChat(@RequestBody String prompt) {
         ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCodeEnum.PARAMS_ERROR);
         String chatId = UUID.randomUUID().toString();
-        String result =  psychologyApp.doChat(prompt, chatId);
+        String result = psychologyApp.doChat(prompt, chatId);
         return ResultUtils.success(result);
     }
 

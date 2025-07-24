@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 业务接口层
+ * 用户业务接口层
  */
 public interface UserService extends IService<User> {
 
