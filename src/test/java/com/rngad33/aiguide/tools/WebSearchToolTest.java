@@ -17,7 +17,7 @@ class WebSearchToolTest {
 
     @Test
     void doSearchRaw() throws IOException {
-        String query = "Java最新特性";
+        String query = "CHUNITHM";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
         String result = webSearchTool.doSearchRaw(query, 5);
         Assertions.assertNotNull(result);
@@ -25,7 +25,7 @@ class WebSearchToolTest {
 
     @Test
     void doSearch() throws IOException {
-        String query = "Java最新特性";
+        String query = "CHUNITHM";
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
         List<SearchResult> results = webSearchTool.doSearch(query, 5);
         Assertions.assertNotNull(results);

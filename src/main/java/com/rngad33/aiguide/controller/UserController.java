@@ -44,9 +44,7 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest)
             throws Exception {
-        if (userRegisterRequest == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        ThrowUtils.throwIf(userRegisterRequest == null, ErrorCodeEnum.USER_LOSE_ACTION);
         String userName = userRegisterRequest.getUserName();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
@@ -68,9 +66,7 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest,
                                         HttpServletRequest request) throws Exception {
-        if (userLoginRequest == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        ThrowUtils.throwIf(userLoginRequest == null, ErrorCodeEnum.USER_LOSE_ACTION);
         String userName = userLoginRequest.getUserName();
         String userPassword = userLoginRequest.getUserPassword();
         // 校验参数
@@ -101,9 +97,7 @@ public class UserController {
      */
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
-        if (request == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        ThrowUtils.throwIf(request == null, ErrorCodeEnum.USER_LOSE_ACTION);
         Integer result = userService.userLogout(request);
         return ResultUtils.success(result);
     }
@@ -158,6 +152,9 @@ public class UserController {
         ThrowUtils.throwIf(userQueryRequest == null, ErrorCodeEnum.PARAMS_ERROR);
         long current = userQueryRequest.getCurrent();
         long pageSize = userQueryRequest.getPageSize();
+        if (current <= 0 || pageSize <= 0) {
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
+        }
         Page<User> userPage = userService.page(new Page<>(current, pageSize),
                 userService.getQueryWrapper(userQueryRequest));
         Page<UserVO> userVOPage = new Page<>(current, pageSize, userPage.getTotalPage());
@@ -192,9 +189,7 @@ public class UserController {
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest,
                                            HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
-        if (id == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        ThrowUtils.throwIf(id == null, ErrorCodeEnum.USER_LOSE_ACTION);
         Integer result = userService.userOrBan(id, request);
         return ResultUtils.success(result);
     }
@@ -210,9 +205,7 @@ public class UserController {
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
                                             HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
-        if (id == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        ThrowUtils.throwIf(id == null, ErrorCodeEnum.USER_LOSE_ACTION);
         boolean result = userService.removeById(id);   // 无需业务层
         ThrowUtils.throwIf(!result, ErrorCodeEnum.USER_LOSE_ACTION);
         return ResultUtils.success(true);

@@ -3,7 +3,9 @@ package com.rngad33.aiguide.controller;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.rngad33.aiguide.app.PsychologyApp;
+import com.rngad33.aiguide.common.BaseResponse;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +30,11 @@ public class ChatController {
      * @return
      */
     @PostMapping("/psy")
-    public String psyChat(@RequestBody String prompt) {
+    public BaseResponse<String> psyChat(@RequestBody String prompt) {
         ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCodeEnum.PARAMS_ERROR);
         String chatId = UUID.randomUUID().toString();
-        return psychologyApp.doChat(prompt, chatId);
+        String result =  psychologyApp.doChat(prompt, chatId);
+        return ResultUtils.success(result);
     }
 
 }
