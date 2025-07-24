@@ -10,6 +10,7 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -151,7 +152,7 @@ public class ChatManager {
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())
                 // 工具集调用
-                // .tools(allTools)
+                .tools(allTools)
                 .call()
                 .chatResponse();
         String content = response.getResult().getOutput().getText();
