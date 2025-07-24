@@ -47,8 +47,6 @@ public class PsychologyApp {
 
     private final ChatClient chatClient;
 
-    private final ToolCallback[] allTools;
-
     record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
@@ -57,7 +55,7 @@ public class PsychologyApp {
      * @param chatModel
      */
     public PsychologyApp(MyChatModel chatModel, ToolCallback[] allTools) {
-        this.allTools = allTools;
+
         // 初始化基于文件的对话记忆
         ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
         // 初始化基于内存的对话记忆
