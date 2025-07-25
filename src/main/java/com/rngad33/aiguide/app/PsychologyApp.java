@@ -111,6 +111,8 @@ public class PsychologyApp {
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
                 )
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
                 .call()
                 .entity(PsychologyReport.class);
         log.info("report: {}", psychologyReport);
