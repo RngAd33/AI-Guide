@@ -18,11 +18,11 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 /**
- * 应用向量数据库配置
+ * 本地向量数据库配置
  */
 @Slf4j
 @Configuration
-public class AppVectorStoreConfig {
+public class LocalVectorStoreConfig {
 
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;

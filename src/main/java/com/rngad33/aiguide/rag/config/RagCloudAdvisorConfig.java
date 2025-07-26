@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * RAG云知识库配置
  */
 @Configuration
-public class AppRagCloudAdvisorConfig {
+public class RagCloudAdvisorConfig {
 
     @Value("${spring.ai.dashscope.api-key}")
     private String dashScopeApiKey;
