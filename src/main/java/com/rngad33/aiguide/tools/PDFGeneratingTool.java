@@ -17,7 +17,6 @@ import java.io.IOException;
  * PDF生成工具
  */
 public class PDFGeneratingTool {
-
     @Tool(description = "Generate a PDF file with given content")
     public String generatePDF(
             @ToolParam(description = "Name of the file to save the generated PDF") String fileName,

@@ -2,8 +2,8 @@ spring:
   application:
     name: my-image-search-mcp-server
   profiles:
-    active: stdio
-    # active: sse
+    # active: stdio
+    active: sse
 
 server:
   port: 8081
