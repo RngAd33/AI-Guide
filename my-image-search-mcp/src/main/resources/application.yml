@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: my-image-search-mcp-server
+  profiles:
+    active: stdio
+
+server:
+  port: 8081
