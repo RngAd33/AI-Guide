@@ -10,7 +10,7 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.ToolCallback;
-import org.springframework.ai.tool.ToolCallbacks;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -28,6 +28,9 @@ public class ChatManager {
     @Resource
     private ToolCallback[] allTools;
 
+    @Resource
+    private ToolCallbackProvider toolCallbackProvider;
+
     /**
      * 开启基础对话（支持多轮对话）
      *
@@ -39,10 +42,16 @@ public class ChatManager {
     public String doChat(ChatClient chatClient, String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
+                // 接收用户输入
                 .user(message)
+                // 历史上下文
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)
                 )
+                // 开启日志
+                // .advisors(new MyLoggerAdvisor())
+                // 开启推理增强
+                // .advisors(new MyRe2Advisor())
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
@@ -82,7 +91,8 @@ public class ChatManager {
      * @param chatId
      * @return
      */
-    public String doChatWithRag(ChatClient chatClient, VectorStore appVectorStore, String message, String chatId) {
+    public String doChatWithRag(ChatClient chatClient, VectorStore appVectorStore,
+                                String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
                 .user(message)
@@ -146,15 +156,38 @@ public class ChatManager {
     public String doChatWithTools(ChatClient chatClient, String message, String chatId) {
         ChatResponse response = chatClient
                 .prompt()
-                // 接收用户输入
                 .user(message)
                 // 历史上下文
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())
-                // 工具集调用
+                // 工具调用
                 .tools(allTools)
+                .call()
+                .chatResponse();
+        String content = response.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
+
+    /**
+     * 调用MCP服务
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithMcp(ChatClient chatClient, String message, String chatId) {
+        ChatResponse response = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
+                // 调用MCP服务
+                .tools(toolCallbackProvider)
                 .call()
                 .chatResponse();
         String content = response.getResult().getOutput().getText();

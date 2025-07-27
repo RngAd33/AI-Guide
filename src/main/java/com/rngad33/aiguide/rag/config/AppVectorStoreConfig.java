@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-public class LocalVectorStoreConfig {
+public class AppVectorStoreConfig {
 
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;

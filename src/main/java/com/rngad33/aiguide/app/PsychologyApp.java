@@ -135,7 +135,7 @@ public class PsychologyApp {
     }
 
     /**
-     * 使用工具
+     * 工具调用
      *
      * @param message
      * @param chatId
@@ -143,6 +143,17 @@ public class PsychologyApp {
      */
     public String doChatWithTools(String message, String chatId) {
         return chatManager.doChatWithTools(chatClient, message, chatId);
+    }
+
+    /**
+     * 调用MCP服务
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithMcp(String message, String chatId) {
+        return chatManager.doChatWithMcp(chatClient, message, chatId);
     }
 
 }

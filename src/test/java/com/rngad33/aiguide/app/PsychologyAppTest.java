@@ -28,7 +28,7 @@ class PsychologyAppTest {
         answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // No.3
-        message = "我喜欢吃什么来着？";
+        message = "我刚才说喜欢吃什么来着？";
         answer = psychologyApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
     }
@@ -36,13 +36,37 @@ class PsychologyAppTest {
     @Test
     void doChatWithReport() {
         String chatId = UUID.randomUUID().toString();
-        String message = "你好，我是俊达萌，喜欢吃俊达饼";
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         PsychologyApp.PsychologyReport answer = psychologyApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(answer);
     }
 
     @Test
     void doChatWithRag() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
+        String answer = psychologyApp.doChatWithRag(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
+    @Test
+    void doChatWithStream() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
+        String answer = psychologyApp.doChatWithRag(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
+    @Test
+    void doChatWithTools() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
+        String answer = psychologyApp.doChatWithRag(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
+    @Test
+    void doChatWithMcp() {
         String chatId = UUID.randomUUID().toString();
         String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         String answer = psychologyApp.doChatWithRag(message, chatId);
