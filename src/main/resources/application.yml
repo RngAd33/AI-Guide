@@ -4,6 +4,10 @@ server:
 ai:
   model-type: ${sky.ai.model-type}
 
+# 联网搜索（jina）
+search:
+  api-key: ${sky.search.api-key}
+
 spring:
   # 指定环境
   profiles:
@@ -41,21 +45,13 @@ spring:
         max-document-batch-size: 10000
     # MCP
     mcp:
-      server:
-        name: my-mcp-server
-        version: 1.0.0
-        type: SYNC
+      client:
         sse:
           connections:
             server1:
-              url: http://localhost:8081
-        stdio:
-          server-configuration: classpath:mcp-servers.json
-
-
-# 联网搜索（jina）
-search:
-  api-key: ${sky.search.api-key}
+              url: http://localhost:8082
+        # stdio:
+          # server-configuration: classpath:mcp-servers.json
 
 # 接口文档
 knife4j:

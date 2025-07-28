@@ -6,4 +6,4 @@ spring:
     active: sse
 
 server:
-  port: 8081
+  port: 8082
