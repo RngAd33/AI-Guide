@@ -73,7 +73,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.rngad33.myimagesearchmcpserver.MyImageSearchMcpApplication</mainClass>
+                    <mainClass>com.rngad33.myimagesearchmcpserver.MyImageSearchMcpServerApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
