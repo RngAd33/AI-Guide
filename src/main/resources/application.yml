@@ -16,6 +16,9 @@ spring:
     url: ${sky.datasource.url}
     username: ${sky.datasource.username}
     password: ${sky.datasource.password}
+  # 超时时间
+  session:
+    timeout: ${sky.jwt.admin-ttl}
   # SpringAI
   ai:
     # 阿里灵积
@@ -36,10 +39,21 @@ spring:
         dimensions: 1536
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000
-  session:
-    timeout: ${sky.jwt.admin-ttl}
+    # MCP
+    mcp:
+      server:
+        name: my-mcp-server
+        version: 1.0.0
+        type: SYNC
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8081
+        stdio:
+          server-configuration: classpath:mcp-servers.json
 
-# 联网搜索
+
+# 联网搜索（jina）
 search:
   api-key: ${sky.search.api-key}
 
