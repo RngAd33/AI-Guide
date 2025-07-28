@@ -7,7 +7,7 @@
         "-Dspring.main.web-application-type=none",
         "-Dlogging.pattern.console=",
         "-jar",
-        "my-image-search-mcp/target/my-image-search-mcp-0.0.1-SNAPSHOT.jar"
+        "my-image-search-mcp-server/target/my-image-search-mcp-server-0.0.1-SNAPSHOT.jar"
       ],
       "env": {}
     }
