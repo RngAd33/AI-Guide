@@ -57,26 +57,19 @@
             </exclusions>
         </dependency>
         <!-- Spring AI -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-client-chat -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-client-chat</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <!-- Spring AI MCP Client -->
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
             <version>1.0.0-M6</version>
         </dependency>
-        <!-- Spring AI ollama 本地模型调用 -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-ollama-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
             <version>1.0.0-M6</version>
         </dependency>
-        <!-- Spring AI Markdown -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-markdown-document-reader -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-markdown-document-reader</artifactId>
