@@ -12,6 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EmbeddingConfig {
 
+    /**
+     * 初始化自定义 token 计数批处理策略
+     *
+     * @return
+     */
     @Bean
     public BatchingStrategy customTokenCountBatchingStrategy() {
         return new TokenCountBatchingStrategy(
