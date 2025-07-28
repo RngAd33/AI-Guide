@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rngad33</groupId>
-    <artifactId>my-image-search-mcp</artifactId>
+    <artifactId>my-image-search-mcp-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>my-image-search-mcp</name>
     <description>my-image-search-mcp</description>
@@ -29,6 +29,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Spring AI MCP Server -->
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-server-webmvc-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>

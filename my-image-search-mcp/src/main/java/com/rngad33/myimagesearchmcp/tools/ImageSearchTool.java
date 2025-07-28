@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.rngad33.myimagesearchmcp.ApiKeyConstant;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class ImageSearchTool {
 
     // Pexels API-KEY
-    private static final String API_KEY = "4oSOWya5MVQPNA5OLv2lesuE8eCJU7vCa9Xv4DNetuFq1IFbgEWS5e3q";
+    private static final String API_KEY = ApiKeyConstant.PEXELS_API_KEY;
 
     // Pexels 常规搜索接口（请以文档为准）
     private static final String API_URL = "https://api.pexels.com/v1/search";
