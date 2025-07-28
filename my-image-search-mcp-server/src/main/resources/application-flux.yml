@@ -1,0 +1,10 @@
+# 使用 spring-ai-starter-mcp-server-webflux
+spring:
+  ai:
+    mcp:
+      server:
+        name: webflux-mcp-server
+        version: 1.0.0
+        type: ASYNC  # 异步
+        sse-message-endpoint: /mcp/messages # SSE 消息端点路径
+        sse-endpoint: /sse                  # SSE 端点路径
