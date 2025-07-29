@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public enum SystemPromptsEnum {
 
-    PSYCHOLOGY("psychology", SystemPromptsConstant.PSYCHOLOGY);
+    PSYCHOLOGY("psychology", SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT);
 
     private final String name;
 

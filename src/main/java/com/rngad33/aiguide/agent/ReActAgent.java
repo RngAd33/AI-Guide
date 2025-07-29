@@ -3,7 +3,6 @@ package com.rngad33.aiguide.agent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.ChatClient;
 
 /**
  * ReAct模式代理

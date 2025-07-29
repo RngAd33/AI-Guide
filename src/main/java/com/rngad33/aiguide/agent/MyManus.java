@@ -8,12 +8,12 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.stereotype.Component;
 
 /**
- * Manus代理
+ * Manus AI智能体
  */
 @Component
-public class ManusAgent extends ToolCallAgent {
+public class MyManus extends ToolCallAgent {
 
-    public ManusAgent(ToolCallback[] allTools, MyChatModel chatModel) {
+    public MyManus(ToolCallback[] allTools, MyChatModel chatModel) {
         super(allTools);
         this.setName("ManusAgent");
         this.setSystemPrompt(SystemPromptsConstant.MANUS_SYSTEM_PROMPT);

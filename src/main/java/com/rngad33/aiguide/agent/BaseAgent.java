@@ -22,7 +22,7 @@ public abstract class BaseAgent {
 
     // 核心属性
     private String name;
-    private final String description;
+    private String description;
 
     // 提示词
     private String systemPrompt;
