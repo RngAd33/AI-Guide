@@ -59,7 +59,7 @@ public class PsychologyApp {
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
-                .defaultSystem(SystemPromptsConstant.PSYCHOLOGY)
+                .defaultSystem(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT)
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
@@ -103,8 +103,9 @@ public class PsychologyApp {
      * @return
      */
     public PsychologyReport doChatWithReport(String message, String chatId) {
-        PsychologyReport psychologyReport = chatClient.prompt()
-                .system(SystemPromptsConstant.PSYCHOLOGY +
+        PsychologyReport psychologyReport = chatClient
+                .prompt()
+                .system(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT +
                         "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)

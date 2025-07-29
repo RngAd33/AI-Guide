@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.caller.CallerUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.rngad33.aiguide.model.enums.agent.AgentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class ToolCallAgent extends ReActAgent {
     // 响应结果
     private ChatResponse toolCallChatResponse;
 
-    // 工具管理者
+    // 工具管理器
     private final ToolCallingManager toolCallingManager;
 
     // 禁用Spring AI内部工具调用机制，改为自行维护
@@ -125,7 +126,12 @@ public class ToolCallAgent extends ReActAgent {
         String results = toolResponseMessage.getResponses().stream()
                 .map(response -> "工具" +  response.name() + "返回的结果：" + response.responseData())
                 .collect(Collectors.joining("\n"));
-        // 返回结果
+        // 判断是否调用了任务终止工具
+        if (toolResponseMessage.getResponses().stream()
+                .anyMatch(response -> response.name().equals("doTerminate"))) {
+            // 任务结束，更改代理状态
+            setStatus(AgentStatus.FINISHED);
+        }
         log.info(results);
         return results;
     }

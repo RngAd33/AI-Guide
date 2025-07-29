@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class BaseAgent {
 
     // 核心属性
-    private final String name;
+    private String name;
     private final String description;
 
     // 提示词
@@ -32,11 +32,11 @@ public abstract class BaseAgent {
     private AgentStatus status = AgentStatus.IDLE;
 
     // 执行步数控制
-    private final int maxSteps = 10;
+    private int maxSteps = 20;
     private int currentStep = 0;
 
     // LLM大模型
-    private final ChatClient chatClient;
+    private ChatClient chatClient;
 
     // 自主维护对话上下文记忆
     private List<Message> messages = new ArrayList<>();
