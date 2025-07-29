@@ -172,7 +172,7 @@ public class ChatManager {
     }
 
     /**
-     * 调用MCP服务
+     * 调用 MCP 服务
      *
      * @param message
      * @param chatId

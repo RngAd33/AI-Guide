@@ -41,7 +41,7 @@ public class ImageSearchTool {
      * @param query
      * @return
      */
-    private List<String> searchMediumImages(String query) {
+    protected List<String> searchMediumImages(String query) {
         // 设置请求头（包含API密钥）
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", API_KEY);
