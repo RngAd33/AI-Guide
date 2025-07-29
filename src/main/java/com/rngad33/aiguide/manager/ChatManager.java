@@ -40,8 +40,7 @@ public class ChatManager {
      * @return
      */
     public String doChat(ChatClient chatClient, String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
+        ChatResponse chatResponse = chatClient.prompt()
                 // 接收用户输入
                 .user(message)
                 // 历史上下文
@@ -68,8 +67,7 @@ public class ChatManager {
      * @return
      */
     public Flux<String> doChatWithStream(ChatClient chatClient, String message, String chatId) {
-        return chatClient
-                .prompt()
+        return chatClient.prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24)
@@ -93,8 +91,7 @@ public class ChatManager {
      */
     public String doChatWithRag(ChatClient chatClient, VectorStore appVectorStore,
                                 String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
+        ChatResponse chatResponse = chatClient.prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
@@ -123,8 +120,7 @@ public class ChatManager {
     public String doChatWithRag(ChatClient chatClient, VectorStore pgVectorStore,
                                 Advisor ragCloudAdvisor, VectorStore appVectorStore,
                                 String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
+        ChatResponse chatResponse = chatClient.prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
@@ -154,8 +150,7 @@ public class ChatManager {
      * @return
      */
     public String doChatWithTools(ChatClient chatClient, String message, String chatId) {
-        ChatResponse response = chatClient
-                .prompt()
+        ChatResponse response = chatClient.prompt()
                 .user(message)
                 // 历史上下文
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
@@ -179,8 +174,7 @@ public class ChatManager {
      * @return
      */
     public String doChatWithMcp(ChatClient chatClient, String message, String chatId) {
-        ChatResponse response = chatClient
-                .prompt()
+        ChatResponse response = chatClient.prompt()
                 .user(message)
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))

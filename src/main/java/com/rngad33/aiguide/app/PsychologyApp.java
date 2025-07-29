@@ -103,8 +103,7 @@ public class PsychologyApp {
      * @return
      */
     public PsychologyReport doChatWithReport(String message, String chatId) {
-        PsychologyReport psychologyReport = chatClient
-                .prompt()
+        PsychologyReport psychologyReport = chatClient.prompt()
                 .system(SystemPromptsConstant.PSYCHOLOGY +
                         "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
                 .user(message)

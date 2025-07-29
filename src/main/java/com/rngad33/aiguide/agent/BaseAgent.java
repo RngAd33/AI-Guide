@@ -31,7 +31,7 @@ public abstract class BaseAgent {
     // 代理状态
     private AgentStatus status = AgentStatus.IDLE;
 
-    // 执行控制
+    // 执行步数控制
     private final int maxSteps = 10;
     private int currentStep = 0;
 
@@ -93,6 +93,13 @@ public abstract class BaseAgent {
      * 清理资源
      */
     protected void cleanUp() {
+        // 清空消息上下文
+        if (messages != null) {
+            messages.clear();
+            messages = null;   // 显式置空引用
+        }
+        // 重置步数和状态
+        this.currentStep = 0;
         this.status = AgentStatus.IDLE;
     }
 
