@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * Manus代理
  */
 @Component
-@Slf4j
 public class ManusAgent extends ToolCallAgent {
 
     public ManusAgent(ToolCallback[] allTools, MyChatModel chatModel) {
@@ -26,6 +25,5 @@ public class ManusAgent extends ToolCallAgent {
                 .build();
         this.setChatClient(chatClient);
     }
-
 
 }
