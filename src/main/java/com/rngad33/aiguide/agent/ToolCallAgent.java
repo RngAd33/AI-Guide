@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 工具调用基础代理类
+ * 工具调用模式代理
+ * 在ReAct模式的基础上增加了工具调用支持
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
