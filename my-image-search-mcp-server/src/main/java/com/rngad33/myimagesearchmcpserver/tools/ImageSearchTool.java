@@ -26,6 +26,12 @@ public class ImageSearchTool {
     // Pexels 常规搜索接口（请以文档为准）
     private static final String API_URL = "https://api.pexels.com/v1/search";
 
+    /**
+     * 定义图片搜索工具
+     *
+     * @param query
+     * @return
+     */
     @Tool(description = "search image from web")
     public String doSearch(@ToolParam(description = "Search query keyword") String query) {
         try {

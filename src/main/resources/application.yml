@@ -22,7 +22,9 @@ spring:
     password: ${sky.datasource.password}
   # 超时时间
   session:
+    secret-key: ${sky.jwt.secret-key}
     timeout: ${sky.jwt.admin-ttl}
+    token-name: ${sky.jwt.admin-token-name}
   # SpringAI
   ai:
     # 阿里灵积
@@ -46,9 +48,10 @@ spring:
     # MCP
     mcp:
       client:
-        timeout:
-          read: 120s
-          write: 120s
+        timeout: 600s
+          # read: 600s
+          # write: 600s
+        connection-timeout: 600s
         sse:
           connections:
             server1:

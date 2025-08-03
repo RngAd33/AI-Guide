@@ -6,8 +6,9 @@
         "-Dspring.ai.mcp.server.stdio=true",
         "-Dspring.main.web-application-type=none",
         "-Dlogging.pattern.console=",
+        "-Dspring.profiles.active=stdio",
         "-jar",
-        "/my-image-search-mcp-server/target/my-image-search-mcp-server-0.0.1-SNAPSHOT.jar"
+        "my-image-search-mcp-server/target/my-image-search-mcp-server-0.0.1-SNAPSHOT.jar"
       ],
       "env": {
         "author": "Created by RngAd33"

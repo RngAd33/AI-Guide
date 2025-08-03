@@ -57,6 +57,18 @@
             </exclusions>
         </dependency>
         <!-- Spring AI -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-client-chat -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-client-chat</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-autoconfigure -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-client-spring-boot-autoconfigure</artifactId>
+            <version>1.0.0-M6</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-client-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
