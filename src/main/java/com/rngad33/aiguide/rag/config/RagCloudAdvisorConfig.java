@@ -28,7 +28,7 @@ public class RagCloudAdvisorConfig {
     @Bean("loveAppRagCloudAdvisor")
     public Advisor loveAppRagCloudAdvisor() {
         DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
-        final String KNOWLEDGE_INDEX = SystemPromptsEnum.LOVE.getName();
+        final String KNOWLEDGE_INDEX = "恋爱大师";
         DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
                 DashScopeDocumentRetrieverOptions.builder()
                         .withIndexName(KNOWLEDGE_INDEX)
@@ -46,7 +46,7 @@ public class RagCloudAdvisorConfig {
     @Bean("psychologyAppRagCloudAdvisor")
     public Advisor psychologyAppRagCloudAdvisor() {
         DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
-        final String KNOWLEDGE_INDEX = SystemPromptsEnum.PSYCHOLOGY.getName();
+        final String KNOWLEDGE_INDEX = "小姐姐心理疏导";
         DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
                 DashScopeDocumentRetrieverOptions.builder()
                 .withIndexName(KNOWLEDGE_INDEX)

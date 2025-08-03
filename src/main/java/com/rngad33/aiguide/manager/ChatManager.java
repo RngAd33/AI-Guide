@@ -83,9 +83,9 @@ public class ChatManager {
     /**
      * RAG知识库对话（不开启增强）
      *
-     * @param chatClient
-     * @param appVectorStore
-     * @param message
+     * @param chatClient AI客户端
+     * @param appVectorStore 本地知识库
+     * @param message 传入消息
      * @param chatId
      * @return
      */
@@ -112,7 +112,7 @@ public class ChatManager {
      * @param chatClient AI客户端
      * @param pgVectorStore PostgreSQL向量数据库
      * @param ragCloudAdvisor RAG云知识库
-     * @param appVectorStore 应用向量存储
+     * @param appVectorStore 本地知识库
      * @param message 传入消息
      * @param chatId
      * @return
@@ -132,9 +132,8 @@ public class ChatManager {
                 .advisors(ragCloudAdvisor)
                 // RAG检索增强（基于PgVector向量存储）
                 .advisors(new QuestionAnswerAdvisor(pgVectorStore))
-                // 自定义检索增强模式（文档查询器 + 上下文增强器）
-                .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习")
-                )
+                // 自定义检索增强（文档查询器 + 上下文增强器）
+                .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习"))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

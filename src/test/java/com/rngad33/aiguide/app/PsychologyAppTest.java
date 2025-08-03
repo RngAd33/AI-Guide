@@ -75,7 +75,7 @@ class PsychologyAppTest {
         Assertions.assertNotNull(answer);
         // 测试MCP2
         message = "查找相关图片";
-        answer = psychologyApp.doChatWithRag(message, chatId);
+        answer = psychologyApp.doChatWithMcp(message, chatId);
         Assertions.assertNotNull(answer);
     }
 
