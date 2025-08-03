@@ -47,8 +47,8 @@ spring:
     mcp:
       client:
         timeout:
-          read: 40s
-          write: 40s
+          read: 120s
+          write: 120s
         sse:
           connections:
             server1:

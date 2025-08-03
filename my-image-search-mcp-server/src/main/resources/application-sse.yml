@@ -3,7 +3,7 @@ spring:
     mcp:
       server:
         name: my-image-search-mcp-server
-        version: 0.0.1
-        type: ASYNC
+        version: 1.0.0
+        type: SYNC
         # sse
         stdio: false

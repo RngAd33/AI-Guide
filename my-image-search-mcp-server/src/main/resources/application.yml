@@ -4,5 +4,6 @@ spring:
   profiles:
     # active: stdio
     active: sse
+
 server:
   port: 8082

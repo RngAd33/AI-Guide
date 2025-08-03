@@ -70,15 +70,13 @@ class PsychologyAppTest {
     void doChatWithMcp() {
         String chatId = UUID.randomUUID().toString();
         // 测试MCP1
-        String message = "查找咖啡相关图片";
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         String answer = psychologyApp.doChatWithMcp(message, chatId);
         Assertions.assertNotNull(answer);
         // 测试MCP2
-        /*
-        message = "";
+        message = "查找相关图片";
         answer = psychologyApp.doChatWithRag(message, chatId);
         Assertions.assertNotNull(answer);
-         */
     }
 
 }
