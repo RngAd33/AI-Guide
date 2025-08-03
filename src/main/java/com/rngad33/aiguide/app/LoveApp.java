@@ -59,7 +59,7 @@ public class LoveApp {
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
-                .defaultSystem(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT)
+                .defaultSystem(SystemPromptsConstant.LOVE_SYSTEM_PROMPT)
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
