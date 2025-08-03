@@ -15,6 +15,7 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -23,7 +24,7 @@ import java.util.List;
 import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.*;
 
 /**
- * 心理咨询应用
+ * 小姐姐心理疏导
  */
 @Component
 @Slf4j
@@ -33,15 +34,18 @@ public class PsychologyApp {
     private ChatManager chatManager;
 
     @Resource
-    private VectorStore pgVectorStore;
-
-    @Resource
     private MyQueryRewriter queryRewriter;
 
     @Resource
+    @Qualifier("psychologyAppVectorStore")
     private VectorStore psychologyAppVectorStore;
 
     @Resource
+    @Qualifier("psychologyPgVectorStore")
+    private VectorStore psychologyPgVectorStore;
+
+    @Resource
+    @Qualifier("psychologyAppRagCloudAdvisor")
     private Advisor psychologyAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
@@ -129,7 +133,7 @@ public class PsychologyApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, pgVectorStore,
+        return chatManager.doChatWithRag(chatClient, psychologyPgVectorStore,
                 psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
                 rewritedMessage, chatId);
     }

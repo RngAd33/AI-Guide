@@ -5,7 +5,7 @@ package com.rngad33.aiguide.constant;
  */
 public interface FilePathConstant {
 
-    String FILE_MEMORY_PATH = System.getProperty("user.dir") + "/tmp/chatHistory1";
+    String FILE_MEMORY_PATH = System.getProperty("user.dir") + "/tmp/chatHistory";
 
     String FILE_SAVE_PATH = System.getProperty("user.dir") + "/tmp";
 

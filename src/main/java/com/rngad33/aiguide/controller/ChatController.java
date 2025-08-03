@@ -31,7 +31,7 @@ public class ChatController {
      */
     @PostMapping("/psy")
     public BaseResponse<String> psyChat(@RequestBody String prompt) {
-        ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCodeEnum.PARAMS_ERROR);
+        ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCodeEnum.PARAMS_ERROR, "不可传入空提示词！");
         String chatId = UUID.randomUUID().toString();
         String result = psychologyApp.doChat(prompt, chatId);
         return ResultUtils.success(result);
