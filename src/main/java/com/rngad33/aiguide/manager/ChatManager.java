@@ -133,7 +133,7 @@ public class ChatManager {
                 // RAG检索增强（基于PgVector向量存储）
                 .advisors(new QuestionAnswerAdvisor(pgVectorStore))
                 // 自定义检索增强（文档查询器 + 上下文增强器）
-                .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习"))
+                // .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习"))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
