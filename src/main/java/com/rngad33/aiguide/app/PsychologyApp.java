@@ -20,10 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
-import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.*;
-
 /**
  * 小姐姐心理疏导
  */
@@ -50,8 +46,6 @@ public class PsychologyApp {
     private Advisor psychologyAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
-
-    // record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
      * 初始化AI客户端

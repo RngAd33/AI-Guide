@@ -18,10 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
-import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.*;
-
 /**
  * 恋爱大师
  */
@@ -48,8 +44,6 @@ public class LoveApp {
     private Advisor loveAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
-
-    // record CommonReport(String title, List<String> suggestions) {}
 
     /**
      * 初始化AI客户端
