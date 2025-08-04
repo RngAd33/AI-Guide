@@ -66,7 +66,7 @@ public class ChatManager {
      * @param chatId
      * @return
      */
-    public Flux<String> doChatWithStream(ChatClient chatClient, String message, String chatId) {
+    public Flux<String> doChatByStream(ChatClient chatClient, String message, String chatId) {
         return chatClient.prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
