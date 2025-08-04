@@ -35,6 +35,14 @@ class PsychologyAppTest {
     }
 
     @Test
+    void doChatWithStream() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
+        Flux<String> answer = psychologyApp.doChatByStream(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
+    @Test
     void doChatWithReport() {
         String chatId = UUID.randomUUID().toString();
         String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
@@ -47,14 +55,6 @@ class PsychologyAppTest {
         String chatId = UUID.randomUUID().toString();
         String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         String answer = psychologyApp.doChatWithRag(message, chatId);
-        Assertions.assertNotNull(answer);
-    }
-
-    @Test
-    void doChatWithStream() {
-        String chatId = UUID.randomUUID().toString();
-        String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
-        Flux<String> answer = psychologyApp.doChatWithStream(message, chatId);
         Assertions.assertNotNull(answer);
     }
 

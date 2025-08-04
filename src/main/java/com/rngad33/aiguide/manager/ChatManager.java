@@ -64,7 +64,7 @@ public class ChatManager {
      * @param chatClient
      * @param message
      * @param chatId
-     * @return
+     * @return 响应式对象
      */
     public Flux<String> doChatByStream(ChatClient chatClient, String message, String chatId) {
         return chatClient.prompt()
@@ -75,8 +75,7 @@ public class ChatManager {
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())
                 .stream()
-                .chatResponse()
-                .map(chatResponse -> chatResponse.getResult().getOutput().getText());
+                .content();
     }
 
     /**

@@ -91,7 +91,7 @@ public class LoveApp {
      * @param chatId
      * @return
      */
-    public Flux<String> doChatWithStream(String message, String chatId) {
+    public Flux<String> doChatByStream(String message, String chatId) {
         return chatManager.doChatByStream(chatClient, message, chatId);
     }
 

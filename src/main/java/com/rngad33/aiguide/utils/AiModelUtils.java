@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * 对话模型工具类
- * 通过配置application.yml调整对应的模型
+ * 通过配置application.yml调整要调用的大模型引擎（云端 / 本地ollama）
  */
 @Component
 public class AiModelUtils {

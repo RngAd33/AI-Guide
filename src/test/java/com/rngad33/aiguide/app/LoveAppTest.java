@@ -25,10 +25,10 @@ class LoveAppTest {
     }
 
     @Test
-    void doChatWithStream() {
+    void doChatByStream() {
         String chatId = UUID.randomUUID().toString();
         String message = "社恐怎么找对象？";
-        Flux<String> answer = loveApp.doChatWithStream(message, chatId);
+        Flux<String> answer = loveApp.doChatByStream(message, chatId);
         Assertions.assertNotNull(answer);
     }
 
