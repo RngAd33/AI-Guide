@@ -50,7 +50,7 @@ public class UserController {
         String checkPassword = userRegisterRequest.getCheckPassword();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
         }
         Long result = userService.userRegister(userName, userPassword, checkPassword);
         return ResultUtils.success(result);
@@ -71,7 +71,7 @@ public class UserController {
         String userPassword = userLoginRequest.getUserPassword();
         // 校验参数
         if (StringUtils.isAnyBlank(userName, userPassword)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
         }
         User user = userService.userLogin(userName, userPassword, request);
         return ResultUtils.success(user);
@@ -221,7 +221,7 @@ public class UserController {
     @PostMapping("/admin/update")
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
-            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
         }
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest, user);

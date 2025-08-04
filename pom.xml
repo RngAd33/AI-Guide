@@ -168,12 +168,6 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.39</version>
         </dependency>
-        <!-- Reactor Test 工具类 -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

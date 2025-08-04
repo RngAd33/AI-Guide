@@ -1,7 +1,9 @@
 package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
+import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
 import com.rngad33.aiguide.common.CommonReport;
+import com.rngad33.aiguide.constant.FilePathConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import com.rngad33.aiguide.rag.custom.MyQueryRewriter;
@@ -51,6 +53,8 @@ public class LoveApp {
      * @param chatModel
      */
     public LoveApp(AiModelUtils.MyChatModel chatModel) {
+        // 初始化基于文件的对话记忆
+        ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
@@ -58,8 +62,8 @@ public class LoveApp {
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
-                        // new MessageChatMemoryAdvisor(chatMemoryByFile)
-                        new MessageChatMemoryAdvisor(chatMemoryByCache)
+                        new MessageChatMemoryAdvisor(chatMemoryByFile)
+                        // new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
                         // , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
@@ -80,7 +84,7 @@ public class LoveApp {
     }
 
     /**
-     * 流式输出对话（暂不可用）
+     * 流式输出对话
      *
      * @param message
      * @param chatId
@@ -104,8 +108,9 @@ public class LoveApp {
     /**
      * RAG知识库对话
      *
-     * @param message 查询语句
+     * @param message
      * @param chatId
+     * @return
      */
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
