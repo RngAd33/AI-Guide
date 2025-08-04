@@ -24,6 +24,7 @@ public class LoveAppDocumentLoader {
 
     /**
      * 加载本地 Markdown 文档
+     *
      * @return
      */
     public List<Document> loadMarkdowns() {

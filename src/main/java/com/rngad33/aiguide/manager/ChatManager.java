@@ -77,7 +77,6 @@ public class ChatManager {
                 .stream()
                 .chatResponse()
                 .map(chatResponse -> chatResponse.getResult().getOutput().getText());
-
     }
 
     /**

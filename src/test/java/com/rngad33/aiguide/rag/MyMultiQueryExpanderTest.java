@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+/**
+ * 多查询扩展测试类
+ */
 @SpringBootTest
 class MyMultiQueryExpanderTest {
 
