@@ -12,6 +12,8 @@ import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +57,7 @@ public class ChatController {
      * @param request
      * @return
      */
-    @PostMapping("/love/sse")
+    @PostMapping(value = "/love/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public BaseResponse<Flux<String>> loveChatSSE(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
         String chatId = request.getChatId();
@@ -92,14 +94,17 @@ public class ChatController {
      * @return
      */
     @PostMapping("/psy/sse")
-    public BaseResponse<Flux<String>> psyChatSSE(@RequestBody ChatStartRequest request) {
+    public BaseResponse<Flux<ServerSentEvent<String>>> psyChatSSE(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
         String chatId = UUID.randomUUID().toString();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
         }
-        Flux<String> result = psychologyApp.doChatByStream(message, chatId);
+        Flux<ServerSentEvent<String>> result = psychologyApp.doChatByStream(message, chatId)
+                .map(chunk -> ServerSentEvent.<String>builder()
+                        .data(chunk)
+                        .build());
         return ResultUtils.success(result);
     }
 
