@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * AI会话接口
@@ -31,13 +32,13 @@ public class ChatController {
     private PsychologyApp psychologyApp;
 
     /**
-     * 恋爱大师
+     * 恋爱大师（同步模式）
      *
      * @param request
      * @return
      */
-    @PostMapping("/love")
-    public BaseResponse<String> loveChat(@RequestBody ChatStartRequest request) {
+    @PostMapping("/love/sync")
+    public BaseResponse<String> loveChatSync(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
         String chatId = request.getChatId();
         String message = request.getMessage();
@@ -49,13 +50,31 @@ public class ChatController {
     }
 
     /**
-     * 小姐姐心理疏导
+     * 恋爱大师（SSE模式）
      *
      * @param request
      * @return
      */
-    @PostMapping("/psy")
-    public BaseResponse<String> psyChat(@RequestBody ChatStartRequest request) {
+    @PostMapping("/love/sse")
+    public BaseResponse<Flux<String>> loveChatSSE(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
+        String chatId = request.getChatId();
+        String message = request.getMessage();
+        if (StringUtils.isAnyBlank(chatId, message)) {
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+        }
+        Flux<String> result = loveApp.doChatByStream(message, chatId);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 小姐姐心理疏导（同步模式）
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/psy/sync")
+    public BaseResponse<String> psyChatSync(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
         String chatId = UUID.randomUUID().toString();
         String message = request.getMessage();
@@ -63,6 +82,24 @@ public class ChatController {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
         }
         String result = psychologyApp.doChat(message, chatId);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 小姐姐心理疏导（SSE模式）
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/psy/sse")
+    public BaseResponse<Flux<String>> psyChatSSE(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
+        String chatId = UUID.randomUUID().toString();
+        String message = request.getMessage();
+        if (StringUtils.isAnyBlank(chatId, message)) {
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+        }
+        Flux<String> result = psychologyApp.doChatByStream(message, chatId);
         return ResultUtils.success(result);
     }
 
