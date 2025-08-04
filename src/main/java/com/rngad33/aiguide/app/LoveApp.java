@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
+import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import com.rngad33.aiguide.rag.custom.MyQueryRewriter;
@@ -48,7 +49,7 @@ public class LoveApp {
 
     private final ChatClient chatClient;
 
-    record LoveReport(String title, List<String> suggestions) {}
+    // record CommonReport(String title, List<String> suggestions) {}
 
     /**
      * 初始化AI客户端
@@ -102,21 +103,8 @@ public class LoveApp {
      * @param chatId
      * @return
      */
-    public LoveReport doChatWithReport(String message, String chatId) {
-        LoveReport loveReport = chatClient
-                .prompt()
-                .system(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT +
-                        "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
-                )
-                // 开启日志
-                .advisors(new MyLoggerAdvisor())
-                .call()
-                .entity(LoveApp.LoveReport.class);
-        log.info("report: {}", loveReport);
-        return loveReport;
+    public CommonReport doChatWithReport(String message, String chatId) {
+        return chatManager.doChatWithReport(chatClient, message, chatId);
     }
 
     /**

@@ -1,10 +1,10 @@
 package com.rngad33.aiguide.app;
 
 import cn.hutool.core.lang.UUID;
+import com.rngad33.aiguide.common.CommonReport;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 
@@ -35,7 +35,7 @@ class PsychologyAppTest {
     }
 
     @Test
-    void doChatWithStream() {
+    void doChaByStream() {
         String chatId = UUID.randomUUID().toString();
         String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
         Flux<String> answer = psychologyApp.doChatByStream(message, chatId);
@@ -46,7 +46,7 @@ class PsychologyAppTest {
     void doChatWithReport() {
         String chatId = UUID.randomUUID().toString();
         String message = "最近学业繁忙，考试将即，如何缓解焦虑？";
-        PsychologyApp.PsychologyReport answer = psychologyApp.doChatWithReport(message, chatId);
+        CommonReport answer = psychologyApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(answer);
     }
 

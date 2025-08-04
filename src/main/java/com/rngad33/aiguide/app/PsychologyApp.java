@@ -2,6 +2,7 @@ package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
+import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.FilePathConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
@@ -50,7 +51,7 @@ public class PsychologyApp {
 
     private final ChatClient chatClient;
 
-    record PsychologyReport(String title, List<String> suggestions) {}
+    // record PsychologyReport(String title, List<String> suggestions) {}
 
     /**
      * 初始化AI客户端
@@ -106,21 +107,8 @@ public class PsychologyApp {
      * @param chatId
      * @return
      */
-    public PsychologyReport doChatWithReport(String message, String chatId) {
-        PsychologyReport psychologyReport = chatClient
-                .prompt()
-                .system(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT +
-                        "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
-                )
-                // 开启日志
-                .advisors(new MyLoggerAdvisor())
-                .call()
-                .entity(PsychologyReport.class);
-        log.info("report: {}", psychologyReport);
-        return psychologyReport;
+    public CommonReport doChatWithReport(String message, String chatId) {
+        return chatManager.doChatWithReport(chatClient, message, chatId);
     }
 
     /**

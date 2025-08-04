@@ -3,7 +3,7 @@ package com.rngad33.aiguide.tools;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.rngad33.aiguide.model.entity.SearchResult;
+import com.rngad33.aiguide.common.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.ai.tool.annotation.Tool;
@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**

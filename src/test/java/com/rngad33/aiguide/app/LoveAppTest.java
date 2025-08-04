@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.app;
 
 import cn.hutool.core.lang.UUID;
+import com.rngad33.aiguide.common.CommonReport;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class LoveAppTest {
     void doChatWithReport() {
         String chatId = UUID.randomUUID().toString();
         String message = "社恐怎么找对象？";
-        LoveApp.LoveReport answer = loveApp.doChatWithReport(message, chatId);
+        CommonReport answer = loveApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(answer);
     }
 

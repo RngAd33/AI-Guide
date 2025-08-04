@@ -1,6 +1,6 @@
 package com.rngad33.aiguide.tools;
 
-import com.rngad33.aiguide.model.entity.SearchResult;
+import com.rngad33.aiguide.common.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;

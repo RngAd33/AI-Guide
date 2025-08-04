@@ -1,7 +1,10 @@
 package com.rngad33.aiguide.manager;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
+import com.rngad33.aiguide.app.LoveApp;
+import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant;
+import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.rag.factory.RagCustomAdvisorFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +18,9 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
+import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.DEFAULT_CHAT_MEMORY_RESPONSE_SIZE;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
 
@@ -30,6 +36,8 @@ public class ChatManager {
 
     @Resource
     private ToolCallbackProvider toolCallbackProvider;
+
+    // record CommonReport(String title, List<String> suggestions) {}
 
     /**
      * 开启基础对话（支持多轮对话）
@@ -76,6 +84,30 @@ public class ChatManager {
                 .advisors(new MyLoggerAdvisor())
                 .stream()
                 .content();
+    }
+
+    /**
+     * 结构化输出对话（不适用于深度思考大模型）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public CommonReport doChatWithReport(ChatClient chatClient, String message, String chatId) {
+        CommonReport loveReport = chatClient
+                .prompt()
+                .system(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT +
+                        "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
+                .user(message)
+                .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
+                )
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
+                .call()
+                .entity(CommonReport.class);
+        log.info("report: {}", loveReport);
+        return loveReport;
     }
 
     /**

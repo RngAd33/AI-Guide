@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.model.entity;
+package com.rngad33.aiguide.common;
 
 import lombok.Builder;
 import lombok.Data;
