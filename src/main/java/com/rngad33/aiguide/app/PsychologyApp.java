@@ -67,8 +67,8 @@ public class PsychologyApp {
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
-                        // new MessageChatMemoryAdvisor(chatMemoryByFile)
-                        new MessageChatMemoryAdvisor(chatMemoryByCache)
+                        new MessageChatMemoryAdvisor(chatMemoryByFile)
+                        // new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
                         // , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）

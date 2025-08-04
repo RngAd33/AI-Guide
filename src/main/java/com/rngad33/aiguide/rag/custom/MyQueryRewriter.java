@@ -27,12 +27,10 @@ public class MyQueryRewriter {
      * 执行查询重写
      *
      * @param prompt
-     * @return
+     * @return 重写后的查询文本
      */
     public String doRewrite(String prompt) {
-        // 执行查询重写
         Query rewritedQuery = queryTransformer.transform(new Query(prompt));
-        // 返回重写后的查询文本
         return rewritedQuery.text();
     }
 

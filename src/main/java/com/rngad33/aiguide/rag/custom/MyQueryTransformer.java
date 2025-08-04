@@ -29,12 +29,10 @@ public class MyQueryTransformer {
      * 执行查询翻译
      *
      * @param prompt
-     * @return
+     * @return 翻译后的查询文本
      */
     public String doTransform(String prompt) {
-        // 执行查询翻译
         Query transformedQuery = queryTransformer.transform(new Query(prompt));
-        // 返回翻译后的查询文本
         return transformedQuery.text();
     }
 
