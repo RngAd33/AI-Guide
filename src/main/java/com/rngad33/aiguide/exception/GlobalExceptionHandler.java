@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 捕获Runtime异常（重要！防止系统异常信息泄漏到前端）
+     * 捕获 Runtime 异常（重要！防止系统异常信息泄漏到前端）
      *
      * @param e
      * @return

@@ -38,7 +38,6 @@ public class ChatAddRequest implements Serializable {
      */
     private Date createTime;
 
-
     private static final long serialVersionUID = 3191241716373120793L;
 
 }
