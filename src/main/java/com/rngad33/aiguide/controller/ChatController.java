@@ -7,6 +7,7 @@ import com.rngad33.aiguide.agent.MyManus;
 import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.app.PsychologyApp;
 import com.rngad33.aiguide.common.BaseResponse;
+import com.rngad33.aiguide.model.dto.chat.ChatStartRequest;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import com.rngad33.aiguide.utils.ResultUtils;
@@ -46,30 +47,29 @@ public class ChatController {
     /**
      * 恋爱大师（同步模式）
      *
-     * @param message
+     * @param request
      * @return
      */
     @PostMapping("/love/sync")
-    public BaseResponse<String> loveChatSync(@RequestBody String message) {
-        ThrowUtils.throwIf(StrUtil.isBlank(message), ErrorCodeEnum.PARAMS_ERROR, "消息不能为空！");
-        String chatId = UUID.randomUUID().toString();
-        String result = loveApp.doChat(message, chatId);
+    public BaseResponse<String> loveChatSync(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        String result = loveApp.doChat(request.getMessage(), request.getChatId());
         return ResultUtils.success(result);
     }
 
     /**
      * 恋爱大师（SSE模式）
      *
-     * @param message
+     * @param request
      * @return
      */
     @PostMapping("/love/sse")
-    public BaseResponse<SseEmitter> loveChatSSE(@RequestBody String message) {
-        ThrowUtils.throwIf(StrUtil.isBlank(message), ErrorCodeEnum.PARAMS_ERROR, "消息不能为空！");
+    public BaseResponse<SseEmitter> loveChatSSE(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         String chatId = UUID.randomUUID().toString();
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
-        psychologyApp.doChatByStream(message, chatId)
+        psychologyApp.doChatByStream(request.getMessage(), request.getChatId())
                 .subscribe(chunk -> {
                     try {
                         sseEmitter.send(chunk);
@@ -83,28 +83,26 @@ public class ChatController {
     /**
      * 小姐姐心理疏导（同步模式）
      *
-     * @param message
+     * @param request
      * @return
      */
     @PostMapping("/psy/sync")
-    public BaseResponse<String> psyChatSync(@RequestBody String message) {
-        ThrowUtils.throwIf(StrUtil.isBlank(message), ErrorCodeEnum.PARAMS_ERROR, "消息不能为空！");
-        String chatId = UUID.randomUUID().toString();
-        String result = psychologyApp.doChat(message, chatId);
+    public BaseResponse<String> psyChatSync(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        String result = psychologyApp.doChat(request.getMessage(), request.getChatId());
         return ResultUtils.success(result);
     }
 
     /**
      * 小姐姐心理疏导（SSE模式）
      *
-     * @param message
+     * @param request
      * @return
      */
     @PostMapping("/psy/sse")
-    public BaseResponse<Flux<ServerSentEvent<String>>> psyChatSSE(@RequestBody String message) {
-        ThrowUtils.throwIf(StrUtil.isBlank(message), ErrorCodeEnum.PARAMS_ERROR, "消息不能为空！");
-        String chatId = UUID.randomUUID().toString();
-        Flux<ServerSentEvent<String>> result = psychologyApp.doChatByStream(message, chatId)
+    public BaseResponse<Flux<ServerSentEvent<String>>> psyChatSSE(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        Flux<ServerSentEvent<String>> result = psychologyApp.doChatByStream(request.getMessage(), request.getChatId())
                 .map(chunk -> ServerSentEvent.<String>builder()
                         .data(chunk)
                         .build());
@@ -114,14 +112,14 @@ public class ChatController {
     /**
      * AI智能体对话（SSE模式）
      *
-     * @param message
+     * @param request
      * @return
      */
-    @PostMapping("/manus")
-    public BaseResponse<SseEmitter> doChatWithManus(@RequestBody String message) {
-        ThrowUtils.throwIf(StrUtil.isBlank(message), ErrorCodeEnum.PARAMS_ERROR, "消息不能为空！");
+    @PostMapping("/manus/sse")
+    public BaseResponse<SseEmitter> doChatWithManus(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
-        SseEmitter sseEmitter = myManus.run(message);
+        SseEmitter sseEmitter = myManus.run(request.getMessage());
         return ResultUtils.success(sseEmitter);
     }
 
