@@ -45,7 +45,7 @@ public class ChatController {
         String chatId = request.getChatId();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
         }
         String result = loveApp.doChat(message, chatId);
         return ResultUtils.success(result);
@@ -63,7 +63,7 @@ public class ChatController {
         String chatId = request.getChatId();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
         }
         Flux<String> result = loveApp.doChatByStream(message, chatId);
         return ResultUtils.success(result);
@@ -81,7 +81,7 @@ public class ChatController {
         String chatId = UUID.randomUUID().toString();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
         }
         String result = psychologyApp.doChat(message, chatId);
         return ResultUtils.success(result);
@@ -99,7 +99,7 @@ public class ChatController {
         String chatId = UUID.randomUUID().toString();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "缺少参数！");
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
         }
         Flux<ServerSentEvent<String>> result = psychologyApp.doChatByStream(message, chatId)
                 .map(chunk -> ServerSentEvent.<String>builder()
