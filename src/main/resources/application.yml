@@ -62,10 +62,10 @@ spring:
 # 接口文档
 knife4j:
   enable: true
-  setting:
-    language: zh-CN
+  #setting:
+    #language: zh-CN
   openapi:
-    title: AiGuide接口文档
+    title: AI智能体接口文档
     group:
       default:
         group-name: 默认分组

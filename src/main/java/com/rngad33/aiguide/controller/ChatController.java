@@ -67,7 +67,7 @@ public class ChatController {
         if (StringUtils.isAnyBlank(chatId, message)) {
             throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
         }
-        SseEmitter sseEmitter = new SseEmitter(180000L);
+        SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
         psychologyApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
