@@ -3,9 +3,8 @@ package com.rngad33.aiguide.tools;
 import cn.hutool.core.lang.UUID;
 import com.rngad33.aiguide.app.PsychologyApp;
 import jakarta.annotation.Resource;
-import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

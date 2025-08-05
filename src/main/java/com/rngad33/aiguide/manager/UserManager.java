@@ -3,9 +3,9 @@ package com.rngad33.aiguide.manager;
 import com.rngad33.aiguide.constant.AESConstant;
 import com.rngad33.aiguide.constant.ErrorConstant;
 import com.rngad33.aiguide.constant.UserConstant;
-import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
 import com.rngad33.aiguide.model.dto.user.UserManageRequest;
 import com.rngad33.aiguide.model.entity.User;
+import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,5 @@
 package com.rngad33.aiguide.app;
 
-import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.FilePathConstant;

@@ -2,7 +2,6 @@ package com.rngad33.aiguide.rag.factory;
 
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
-import org.springframework.ai.vectorstore.VectorStore;
 
 /**
  * 工厂模式

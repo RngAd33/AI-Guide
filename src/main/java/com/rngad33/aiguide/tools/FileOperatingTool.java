@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import com.rngad33.aiguide.constant.FilePathConstant;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
-import org.springframework.stereotype.Component;
 
 /**
  * 文件操作工具（提供文件读写功能）

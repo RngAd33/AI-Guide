@@ -1,11 +1,8 @@
 package com.rngad33.aiguide.manager;
 
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
-import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant;
-import com.rngad33.aiguide.constant.SystemPromptsConstant;
-import com.rngad33.aiguide.rag.factory.RagCustomAdvisorFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -17,8 +14,6 @@ import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.DEFAULT_CHAT_MEMORY_RESPONSE_SIZE;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;

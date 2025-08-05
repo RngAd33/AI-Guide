@@ -2,7 +2,6 @@ package com.rngad33.aiguide.rag.documentloader;
 
 import com.rngad33.aiguide.manager.MarkdownManager;
 import com.rngad33.aiguide.model.enums.app.SystemPromptsEnum;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.core.io.support.ResourcePatternResolver;
