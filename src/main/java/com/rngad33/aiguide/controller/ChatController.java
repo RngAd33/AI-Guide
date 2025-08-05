@@ -61,27 +61,9 @@ public class ChatController {
      * @return
      */
     @PostMapping("/love/sse")
-    public BaseResponse<Flux<String>> loveChatSSE(@RequestBody ChatStartRequest request) {
+    public BaseResponse<SseEmitter> loveChatSSE(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
         String chatId = request.getChatId();
-        String message = request.getMessage();
-        if (StringUtils.isAnyBlank(chatId, message)) {
-            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
-        }
-        Flux<String> result = loveApp.doChatByStream(message, chatId);
-        return ResultUtils.success(result);
-    }
-
-    /**
-     * 小姐姐心理疏导（同步模式）
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/psy/sync")
-    public BaseResponse<SseEmitter> psyChatSync(@RequestBody ChatStartRequest request) {
-        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
-        String chatId = UUID.randomUUID().toString();
         String message = request.getMessage();
         if (StringUtils.isAnyBlank(chatId, message)) {
             throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
@@ -96,7 +78,26 @@ public class ChatController {
                         sseEmitter.completeWithError(e);
                     }
                 }, sseEmitter::completeWithError, sseEmitter::complete);
+
         return ResultUtils.success(sseEmitter);
+    }
+
+    /**
+     * 小姐姐心理疏导（同步模式）
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/psy/sync")
+    public BaseResponse<String> psyChatSync(@RequestBody ChatStartRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的对话请求！");
+        String chatId = UUID.randomUUID().toString();
+        String message = request.getMessage();
+        if (StringUtils.isAnyBlank(chatId, message)) {
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR, "缺少参数！");
+        }
+        String result = psychologyApp.doChat(message, chatId);
+        return ResultUtils.success(result);
     }
 
     /**
