@@ -93,14 +93,14 @@ public class ChatManager {
      * @param chatId
      * @return
      */
-    public CommonReport doChatWithReport(ChatClient chatClient, String message, String chatId) {
+    public CommonReport doChatWithReport(ChatClient chatClient, String SYSTEM_PROMPT, String message, String chatId) {
         CommonReport loveReport = chatClient
                 .prompt()
-                .system(SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT +
-                        "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的心理报告，内容为建议列表")
+                .system(SYSTEM_PROMPT + "每次对话后都要严格按照JSON格式生成测试结果，标题为{用户名}的测试报告，内容为建议列表")
                 .user(message)
                 .advisors(spec -> spec.param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(AbstractChatMemoryAdvisorConstant.CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
+                        .param(AbstractChatMemoryAdvisorConstant.
+                                CHAT_MEMORY_RETRIEVE_SIZE_KEY, DEFAULT_CHAT_MEMORY_RESPONSE_SIZE)   // 最大记忆条数
                 )
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())

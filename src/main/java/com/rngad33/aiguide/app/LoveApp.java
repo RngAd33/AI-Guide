@@ -47,6 +47,8 @@ public class LoveApp {
 
     private final ChatClient chatClient;
 
+    private final String SYSTEM_PROMPT = SystemPromptsConstant.LOVE_SYSTEM_PROMPT;
+
     /**
      * 初始化AI客户端
      *
@@ -58,11 +60,13 @@ public class LoveApp {
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
         chatClient = ChatClient.builder(chatModel)
-                .defaultSystem(SystemPromptsConstant.LOVE_SYSTEM_PROMPT)
+                .defaultSystem(SYSTEM_PROMPT)
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
+                        // 文件对话记忆
                         new MessageChatMemoryAdvisor(chatMemoryByFile)
+                        // 内存对话记忆
                         // new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
                         // , new MyLoggerAdvisor()
@@ -102,7 +106,7 @@ public class LoveApp {
      * @return
      */
     public CommonReport doChatWithReport(String message, String chatId) {
-        return chatManager.doChatWithReport(chatClient, message, chatId);
+        return chatManager.doChatWithReport(chatClient, SYSTEM_PROMPT, message, chatId);
     }
 
     /**
