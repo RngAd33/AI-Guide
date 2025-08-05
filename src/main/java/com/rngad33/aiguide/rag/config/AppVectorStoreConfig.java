@@ -98,7 +98,7 @@ public class AppVectorStoreConfig {
      * @return
      */
     @Bean("tetosoupAppVectorStore")
-    public VectorStore tetoSoupAppVectorStore(MyEmbeddingModel embeddingModel) {
+    public VectorStore tetosoupAppVectorStore(MyEmbeddingModel embeddingModel) {
         try {
             SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
             // 加载文档

@@ -33,15 +33,15 @@ public class TetosoupApp {
 
     @Resource
     @Qualifier("tetosoupAppVectorStore")
-    private VectorStore tetoSoupAppVectorStore;
+    private VectorStore tetosoupAppVectorStore;
 
     @Resource
     @Qualifier("tetosoupPgVectorStore")
-    private VectorStore tetoSoupPgVectorStore;
+    private VectorStore tetosoupPgVectorStore;
 
     @Resource
     @Qualifier("tetosoupAppRagCloudAdvisor")
-    private Advisor tetoSoupAppRagCloudAdvisor;
+    private Advisor tetosoupAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
 
@@ -117,8 +117,8 @@ public class TetosoupApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, tetoSoupPgVectorStore,
-                tetoSoupAppRagCloudAdvisor, tetoSoupAppVectorStore,
+        return chatManager.doChatWithRag(chatClient, tetosoupPgVectorStore,
+                tetosoupAppRagCloudAdvisor, tetosoupAppVectorStore,
                 rewritedMessage, chatId);
     }
 
