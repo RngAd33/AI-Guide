@@ -2,6 +2,7 @@ package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
+import com.rngad33.aiguide.rag.documentloader.TetosoupAppDocumentLoader;
 import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;
 import org.springframework.ai.document.Document;
@@ -28,8 +29,11 @@ public class PGVectorStoreConfig {
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
 
+    @Resource
+    private TetosoupAppDocumentLoader tetosoupAppDocumentLoader;
+
     /**
-     * 初始化基于PostgreSQL的向量数据库 Bean
+     * 初始化基于PostgreSQL的向量数据库 Bean1
      *
      * @param jdbcTemplate
      * @param embeddingModel
@@ -53,7 +57,7 @@ public class PGVectorStoreConfig {
     }
 
     /**
-     * 初始化基于PostgreSQL的向量数据库 Bean
+     * 初始化基于PostgreSQL的向量数据库 Bean2
      *
      * @param jdbcTemplate
      * @param embeddingModel
@@ -72,6 +76,30 @@ public class PGVectorStoreConfig {
                 .build();
         // 加载文档
         List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
+        vectorStore.add(documents);
+        return vectorStore;
+    }
+
+    /**
+     * 初始化基于PostgreSQL的向量数据库 Bean3
+     *
+     * @param jdbcTemplate
+     * @param embeddingModel
+     * @return
+     */
+    @Bean("tetosoupPgVectorStore")
+    public VectorStore tetosoupPgVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
+        VectorStore vectorStore = PgVectorStore.builder(jdbcTemplate, embeddingModel)
+                .distanceType(COSINE_DISTANCE)
+                .indexType(HNSW)
+                .initializeSchema(true)
+                .schemaName("public")
+                .vectorTableName("teto_pg_vector_store")
+                .dimensions(1536)
+                .maxDocumentBatchSize(10000)
+                .build();
+        // 加载文档
+        List<Document> documents = tetosoupAppDocumentLoader.loadMarkdowns();
         vectorStore.add(documents);
         return vectorStore;
     }

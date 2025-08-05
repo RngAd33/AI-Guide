@@ -54,4 +54,21 @@ public class RagCloudAdvisorConfig {
                 .build();
     }
 
+    /**
+     * 初始化RAG云知识库 3
+     *
+     * @return
+     */
+    @Bean("tetosoupAppRagCloudAdvisor")
+    public Advisor tetosoupAppRagCloudAdvisor() {
+        DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
+        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
+                DashScopeDocumentRetrieverOptions.builder()
+                        .withIndexName(KnowledgeIndexConstant.TETO_INDEX)
+                        .build());
+        return RetrievalAugmentationAdvisor.builder()
+                .documentRetriever(retriever)
+                .build();
+    }
+
 }

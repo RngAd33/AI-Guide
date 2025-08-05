@@ -9,4 +9,6 @@ public interface KnowledgeIndexConstant {
 
     String PSYCHOLOGY_INDEX = "小姐姐心理疏导";
 
+    String TETO_INDEX = "AI海龟汤";
+
 }
