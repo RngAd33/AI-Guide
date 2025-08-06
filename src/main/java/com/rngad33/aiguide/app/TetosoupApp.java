@@ -28,24 +28,7 @@ public class TetosoupApp {
     @Resource
     private ChatManager chatManager;
 
-    @Resource
-    private MyQueryRewriter queryRewriter;
-
-    @Resource
-    @Qualifier("tetosoupAppVectorStore")
-    private VectorStore tetosoupAppVectorStore;
-
-    @Resource
-    @Qualifier("tetosoupPgVectorStore")
-    private VectorStore tetosoupPgVectorStore;
-
-    @Resource
-    @Qualifier("tetosoupAppRagCloudAdvisor")
-    private Advisor tetosoupAppRagCloudAdvisor;
-
     private final ChatClient chatClient;
-
-    private final String SYSTEM_PROMPT = SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT;
 
     /**
      * 初始化AI客户端
@@ -54,18 +37,19 @@ public class TetosoupApp {
      */
     public TetosoupApp(AiModelUtils.MyChatModel chatModel) {
         // 初始化基于文件的对话记忆
-        ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
+        // ChatMemory chatMemoryByFile = new FileBaseChatMemory(FilePathConstant.FILE_MEMORY_PATH);
         // 初始化基于内存的对话记忆
         ChatMemory chatMemoryByCache = new InMemoryChatMemory();
+        String SYSTEM_PROMPT = SystemPromptsConstant.TETO_SYSTEM_PROMPT;
         chatClient = ChatClient.builder(chatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 // 全局工具调用
                 // .defaultTools(allTools)
                 .defaultAdvisors(
                         // 文件对话记忆
-                        new MessageChatMemoryAdvisor(chatMemoryByFile)
+                        // new MessageChatMemoryAdvisor(chatMemoryByFile)
                         // 内存对话记忆
-                        // new MessageChatMemoryAdvisor(chatMemoryByCache)
+                        new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
                         // , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
@@ -86,7 +70,7 @@ public class TetosoupApp {
     }
 
     /**
-     * 流式输出对话（暂不可用）
+     * 流式输出对话
      *
      * @param message
      * @param chatId
@@ -94,32 +78,6 @@ public class TetosoupApp {
      */
     public Flux<String> doChatByStream(String message, String chatId) {
         return chatManager.doChatByStream(chatClient, message, chatId);
-    }
-
-    /**
-     * 结构化输出对话（不适用于深度思考大模型）
-     *
-     * @param message
-     * @param chatId
-     * @return
-     */
-    public CommonReport doChatWithReport(String message, String chatId) {
-        return chatManager.doChatWithReport(chatClient, SYSTEM_PROMPT, message, chatId);
-    }
-
-    /**
-     * RAG知识库对话
-     *
-     * @param message 查询语句
-     * @param chatId
-     */
-    public String doChatWithRag(String message, String chatId) {
-        // 查询重写
-        String rewritedMessage = queryRewriter.doRewrite(message);
-        // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, tetosoupPgVectorStore,
-                tetosoupAppRagCloudAdvisor, tetosoupAppVectorStore,
-                rewritedMessage, chatId);
     }
 
     /**

@@ -87,7 +87,7 @@ public class PsychologyApp {
     }
 
     /**
-     * 流式输出对话（暂不可用）
+     * 流式输出对话
      *
      * @param message
      * @param chatId

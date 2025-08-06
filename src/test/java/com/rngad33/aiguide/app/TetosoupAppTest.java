@@ -32,14 +32,15 @@ class TetosoupAppTest {
 
     @Test
     void doChatByStream() {
-    }
-
-    @Test
-    void doChatWithReport() {
-    }
-
-    @Test
-    void doChatWithRag() {
+        // start
+        String chatId = UUID.randomUUID().toString();
+        String message = "开始";
+        String answer = tetosoupApp.doChat(message, chatId);
+        Assertions.assertNotNull(answer);
+        // stop
+        message = "我不想玩了";
+        answer = tetosoupApp.doChat(message, chatId);
+        Assertions.assertNotNull(answer);
     }
 
     @Test
