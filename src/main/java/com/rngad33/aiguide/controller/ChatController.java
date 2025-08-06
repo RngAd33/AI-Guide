@@ -51,6 +51,7 @@ public class ChatController {
      * @param request
      * @return
      */
+    @Deprecated
     @PostMapping("/love/sync")
     public BaseResponse<String> loveChatSync(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
@@ -86,6 +87,7 @@ public class ChatController {
      * @param request
      * @return
      */
+    @Deprecated
     @PostMapping("/psy/sync")
     public BaseResponse<String> psyChatSync(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
@@ -115,6 +117,7 @@ public class ChatController {
      * @param request
      * @return
      */
+    @Deprecated
     @PostMapping("/teto/sync")
     public BaseResponse<String> tetoSoupChatSync(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
@@ -150,7 +153,7 @@ public class ChatController {
      * @param request
      * @return
      */
-    @PostMapping("/manus/sse")
+    @PostMapping("/manus/")
     public BaseResponse<SseEmitter> doChatWithManus(@RequestBody ChatStartRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
