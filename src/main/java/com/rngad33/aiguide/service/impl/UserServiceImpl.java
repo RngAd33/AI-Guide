@@ -19,6 +19,7 @@ import com.rngad33.aiguide.model.enums.user.UserStatusEnum;
 import com.rngad33.aiguide.model.vo.UserVO;
 import com.rngad33.aiguide.service.UserService;
 import com.rngad33.aiguide.utils.AESUtils;
+import com.rngad33.aiguide.utils.LockUtils;
 import com.rngad33.aiguide.utils.SpecialCharValidator;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
@@ -77,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 单机锁
-        synchronized (userName.intern()) {
+        synchronized (LockUtils.getKeyLock(userName)) {
             // 2. 账户信息查重
             log.info("正在执行信息查重……");
             // - 名称查重
@@ -135,27 +136,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
 
         // 3. 连接数据库，核对用户信息
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("userName", userName);
-        queryWrapper.eq("userPassword", encryptedPassword);
-        User user = userMapper.selectOneByQuery(queryWrapper);
-        // - 判断用户是否存在
-        if (user == null) {
-            log.error(ErrorConstant.USER_NOT_EXIST_OR_PASSWORD_ERROR_RETRY_MESSAGE);
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
-        // - 判断账户是否被封禁
-        if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN_STATUS.getValue())) {
-            log.error(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
+        synchronized (LockUtils.getKeyLock(userName)) {
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("userName", userName);
+            queryWrapper.eq("userPassword", encryptedPassword);
+            User user = userMapper.selectOneByQuery(queryWrapper);
+            // - 判断用户是否存在
+            if (user == null) {
+                log.error(ErrorConstant.USER_NOT_EXIST_OR_PASSWORD_ERROR_RETRY_MESSAGE);
+                throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+            }
+            // - 判断账户是否被封禁
+            if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN_STATUS.getValue())) {
+                log.error(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
+                throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+            }
+            // 4. 信息脱敏
+            User safeUser = userManager.getSafeUser(user);
 
-        // 4. 信息脱敏
-        User safeUser = userManager.getSafeUser(user);
-
-        // 5. 记录用户登录态（已脱敏）
-        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, safeUser);
-        return safeUser;
+            // 5. 记录用户登录态（已脱敏）
+            request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, safeUser);
+            return safeUser;
+        }
     }
 
     /**
