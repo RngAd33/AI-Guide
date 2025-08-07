@@ -20,7 +20,7 @@ public class ToolRegistration {
      *
      * @return
      */
-    @Bean
+    @Bean("allTools")
     public ToolCallback[] allTools() {
         FileOperatingTool fileOperationTool = new FileOperatingTool();
         WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);

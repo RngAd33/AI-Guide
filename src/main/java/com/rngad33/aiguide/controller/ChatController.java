@@ -1,6 +1,5 @@
 package com.rngad33.aiguide.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.rngad33.aiguide.agent.MyManus;
 import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.app.PsychologyApp;
@@ -13,10 +12,9 @@ import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ai.tool.ToolCallback;
-import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 
@@ -45,33 +43,33 @@ public class ChatController {
     /**
      * 恋爱大师（同步模式）
      * 
-     * @param chatId
      * @param message
+     * @param chatId
      * @return
      */
     @Deprecated
-    @GetMapping("/love/sync")
-    public BaseResponse<String> loveChatSync(@RequestParam("chatId") String chatId,
-                                             @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
-        String result = loveApp.doChat(chatId, message);
+    @GetMapping(value = "/love/sync", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public BaseResponse<String> loveChatSync(@RequestParam("message") String message,
+                                             @RequestParam("chatId") String chatId) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        String result = loveApp.doChat(message, chatId);
         return ResultUtils.success(result);
     }
 
     /**
      * 恋爱大师（SSE模式）
      *
-     * @param chatId
      * @param message
+     * @param chatId
      * @return
      */
-    @GetMapping("/love/sse")
-    public BaseResponse<SseEmitter> loveChatSSE(@RequestParam("chatId") String chatId,
-                                                @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+    @GetMapping(value = "/love/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter loveChatSSE(@RequestParam("message") String message,
+                                  @RequestParam("chatId") String chatId) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
-        psychologyApp.doChatByStream(chatId, message)
+        loveApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
                     try {
                         sseEmitter.send(chunk);
@@ -79,73 +77,38 @@ public class ChatController {
                         sseEmitter.completeWithError(e);
                     }
                 }, sseEmitter::completeWithError, sseEmitter::complete);
-        return ResultUtils.success(sseEmitter);
+        return sseEmitter;
     }
 
     /**
      * 小姐姐心理疏导（同步模式）
      *
-     * @param chatId
      * @param message
+     * @param chatId
      * @return
      */
     @Deprecated
-    @GetMapping("/psy/sync")
-    public BaseResponse<String> psyChatSync(@RequestParam("chatId") String chatId,
-                                            @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
-        String result = psychologyApp.doChat(chatId, message);
+    @GetMapping(value = "/psy/sync", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public BaseResponse<String> psyChatSync(@RequestParam("message") String message,
+                                            @RequestParam("chatId") String chatId) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        String result = psychologyApp.doChat(message, chatId);
         return ResultUtils.success(result);
     }
 
     /**
      * 小姐姐心理疏导（SSE模式）
      *
-     * @param chatId
      * @param message
+     * @param chatId
      * @return
      */
-    @GetMapping("/psy/sse")
-    public BaseResponse<Flux<ServerSentEvent<String>>> psyChatSSE(@RequestParam("chatId") String chatId,
-                                                                  @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
-        Flux<ServerSentEvent<String>> result = psychologyApp.doChatByStream(chatId, message)
-                .map(chunk -> ServerSentEvent.<String>builder()
-                        .data(chunk)
-                        .build());
-        return ResultUtils.success(result);
-    }
-
-    /**
-     * AI海龟汤（同步模式）
-     *
-     * @param chatId
-     * @param message
-     * @return
-     */
-    @Deprecated
-    @GetMapping("/teto/sync")
-    public BaseResponse<String> tetoSoupChatSync(@RequestParam("chatId") String chatId,
-                                                 @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
-        String result = tetosoupApp.doChat(chatId, message);
-        return ResultUtils.success(result);
-    }
-
-    /**
-     * AI海龟汤（SSE模式）
-     *
-     * @param chatId
-     * @param message
-     * @return
-     */
-    @GetMapping("/teto/sse")
-    public BaseResponse<SseEmitter> tetoSoupChatSSE(@RequestParam("chatId") String chatId,
-                                                    @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+    @GetMapping(value = "/psy/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter psyChatSSE(String message, String chatId) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
-        tetosoupApp.doChatByStream(chatId, message)
+        psychologyApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
                     try {
                         sseEmitter.send(chunk);
@@ -153,23 +116,63 @@ public class ChatController {
                         sseEmitter.completeWithError(e);
                     }
                 }, sseEmitter::completeWithError, sseEmitter::complete);
-        return ResultUtils.success(sseEmitter);
+        return sseEmitter;
+    }
+
+    /**
+     * AI海龟汤（同步模式）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    @Deprecated
+    @GetMapping(value = "/teto/sync", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public BaseResponse<String> tetoSoupChatSync(@RequestParam("chatId") String chatId,
+                                                 @RequestParam("message") String message) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        String result = tetosoupApp.doChat(message, chatId);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * AI海龟汤（SSE模式）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    @GetMapping(value = "/teto/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter tetoSoupChatSSE(@RequestParam("chatId") String chatId,
+                                      @RequestParam("message") String message) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        // 获取Flux响应式数据流
+        tetosoupApp.doChatByStream(message, chatId)
+                .subscribe(chunk -> {
+                    try {
+                        sseEmitter.send(chunk);
+                    } catch (IOException e) {
+                        sseEmitter.completeWithError(e);
+                    }
+                }, sseEmitter::completeWithError, sseEmitter::complete);
+        return sseEmitter;
     }
 
     /**
      * AI智能体对话（SSE模式）
      *
-     * @param chatId
      * @param message
+     * @param chatId
      * @return
      */
-    @GetMapping("/manus/")
-    public BaseResponse<SseEmitter> doChatWithManus(@RequestParam("chatId") String chatId,
-                                                    @RequestParam("message") String message) {
-        ThrowUtils.throwIf(StringUtils.isAnyBlank(chatId, message), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+    @GetMapping(value = "/manus", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter doChatWithManus(@RequestParam("chatId") String chatId,
+                                      @RequestParam("message") String message) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
         SseEmitter sseEmitter = myManus.run(message);
-        return ResultUtils.success(sseEmitter);
+        return sseEmitter;
     }
 
 }
