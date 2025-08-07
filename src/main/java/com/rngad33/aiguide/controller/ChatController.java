@@ -104,7 +104,8 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/psy/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter psyChatSSE(String message, String chatId) {
+    public SseEmitter psyChatSSE(@RequestParam("message") String message,
+                                 @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
@@ -128,8 +129,8 @@ public class ChatController {
      */
     @Deprecated
     @GetMapping(value = "/teto/sync", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public BaseResponse<String> tetoSoupChatSync(@RequestParam("chatId") String chatId,
-                                                 @RequestParam("message") String message) {
+    public BaseResponse<String> tetoSoupChatSync(@RequestParam("message") String message,
+                                                 @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         String result = tetosoupApp.doChat(message, chatId);
         return ResultUtils.success(result);
@@ -143,8 +144,8 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/teto/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter tetoSoupChatSSE(@RequestParam("chatId") String chatId,
-                                      @RequestParam("message") String message) {
+    public SseEmitter tetoSoupChatSSE(@RequestParam("message") String message,
+                                      @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
@@ -167,8 +168,8 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/manus", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter doChatWithManus(@RequestParam("chatId") String chatId,
-                                      @RequestParam("message") String message) {
+    public SseEmitter doChatWithManus(@RequestParam("message") String message,
+                                      @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
         SseEmitter sseEmitter = myManus.run(message);
