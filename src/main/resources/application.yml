@@ -46,16 +46,16 @@ spring:
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000
     # MCP
-    mcp:
-      client:
-        timeout: 600s
-          # read: 600s
-          # write: 600s
-        connection-timeout: 600s
-        sse:
-          connections:
-            server1:
-              url: http://localhost:8083
+#    mcp:
+#      client:
+#        timeout: 600s
+#          # read: 600s
+#          # write: 600s
+#        connection-timeout: 600s
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:8083
         # stdio:
           # server-configuration: classpath:mcp-servers.json
 
