@@ -5,7 +5,8 @@
     <groupId>com.rngad33</groupId>
     <artifactId>ai-guide-backend</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <description>ai-guide-spring-ai-normal</description>
+    <name>ai-guide-spring-ai-normal</name>
+    <description>ai-guide-backend</description>
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,13 +43,6 @@
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter</artifactId>
             <version>1.0.0-M6.1</version>
-        </dependency>
-        <!-- LangChain4J DashScope -->
-        <!-- https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-community-dashscope -->
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-community-dashscope</artifactId>
-            <version>1.1.0-beta7</version>
         </dependency>
         <!-- 阿里云百练、灵积大模型服务 -->
         <!-- https://mvnrepository.com/artifact/com.alibaba/dashscope-sdk-java -->
@@ -105,24 +99,24 @@
             <version>1.0.0</version>
         </dependency>
         <!-- 自动整合 PGVector 向量存储 -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
-            <version>1.0.0</version>
-        </dependency> -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
         <!-- MyBatis-Flex -->
-        <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
-            <version>1.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-processor</artifactId>
-            <version>1.11.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.mybatis-flex</groupId>-->
+<!--            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>-->
+<!--            <version>1.11.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.mybatis-flex</groupId>-->
+<!--            <artifactId>mybatis-flex-processor</artifactId>-->
+<!--            <version>1.11.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <!-- PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
