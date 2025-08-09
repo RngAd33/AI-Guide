@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.model.enums.agent;
+package com.rngad33.aiguide.enums.agent;
 
 /**
  * 代理执行状态枚举

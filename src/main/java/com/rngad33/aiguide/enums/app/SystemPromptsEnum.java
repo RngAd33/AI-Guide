@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.model.enums.app;
+package com.rngad33.aiguide.enums.app;
 
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import lombok.Getter;

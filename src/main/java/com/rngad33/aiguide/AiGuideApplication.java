@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 项目启动入口
  */
 @SpringBootApplication(exclude = PgVectorStoreAutoConfiguration.class)
-@MapperScan("com.rngad33.aiguide.mapper")
 public class AiGuideApplication {
 
     public static void main(String[] args) {

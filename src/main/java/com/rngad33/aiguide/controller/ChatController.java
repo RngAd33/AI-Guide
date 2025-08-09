@@ -5,7 +5,7 @@ import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.app.PsychologyApp;
 import com.rngad33.aiguide.app.TetosoupApp;
 import com.rngad33.aiguide.common.BaseResponse;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;

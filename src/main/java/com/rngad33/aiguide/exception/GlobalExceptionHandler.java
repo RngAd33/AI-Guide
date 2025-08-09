@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.exception;
 
 import com.rngad33.aiguide.common.BaseResponse;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.rngad33.aiguide.agent;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
-import com.rngad33.aiguide.model.enums.agent.AgentStatus;
+import com.rngad33.aiguide.enums.agent.AgentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;

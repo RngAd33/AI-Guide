@@ -1,8 +1,8 @@
 package com.rngad33.aiguide.agent;
 
 import cn.hutool.core.util.StrUtil;
-import com.rngad33.aiguide.model.enums.agent.AgentStatus;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.agent.AgentStatus;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

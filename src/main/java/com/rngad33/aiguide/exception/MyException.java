@@ -1,6 +1,6 @@
 package com.rngad33.aiguide.exception;
 
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import lombok.Getter;
 
 /**

@@ -1,6 +1,6 @@
 package com.rngad33.aiguide.utils;
 
-import com.rngad33.aiguide.model.enums.misc.SpecialCharEnum;
+import com.rngad33.aiguide.enums.misc.SpecialCharEnum;
 
 /**
  * 特殊字符校验

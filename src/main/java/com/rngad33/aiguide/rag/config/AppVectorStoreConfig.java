@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.exception.MyException;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
 import com.rngad33.aiguide.rag.custom.MyTokenTextSplitter;
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;

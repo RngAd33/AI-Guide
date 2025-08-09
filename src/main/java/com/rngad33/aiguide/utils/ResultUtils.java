@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.utils;
 
 import com.rngad33.aiguide.common.BaseResponse;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 
 /**
  * 返回工具类
