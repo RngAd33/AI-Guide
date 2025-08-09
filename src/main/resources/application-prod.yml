@@ -1,1 +1,35 @@
-# 生产环境配置，会覆盖application.yml
+# 生产环境配置
+ai:
+  model-type: dashscope
+
+# 联网搜索（jina）
+search:
+  api-key: jina_96a08171d54d4c27973c00c0faba75439x3HO0-SG4aBuJBtm-rGYIC5bXf0
+
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:postgresql://pgm-uf65m9jdj4ge64akfo.rwlb.rds.aliyuncs.com:5432/ai_guide_db
+    username: RngAd33
+    password: yxbsyxGood
+  # SpringAI
+  ai:
+    # 阿里灵积
+    dashscope:
+      api-key: sk-5ef48fe5fb5e4b32a0d3aa63d2fe53f7
+      chat:
+        options:
+          model: qwen-plus
+          # MCP
+          #    mcp:
+          #      client:
+          #        timeout: 600s
+          #          # read: 600s
+          #          # write: 600s
+          #        connection-timeout: 600s
+          #        sse:
+          #          connections:
+          #            server1:
+          #              url: http://localhost:8083
+          # stdio:
+        # server-configuration: classpath:mcp-servers.json

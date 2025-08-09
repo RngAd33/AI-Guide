@@ -5,7 +5,7 @@
     <groupId>com.rngad33</groupId>
     <artifactId>ai-guide-backend</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <description>ai-guide-backend</description>
+    <description>ai-guide-spring-ai-normal</description>
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
