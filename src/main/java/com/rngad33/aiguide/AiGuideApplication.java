@@ -1,6 +1,5 @@
 package com.rngad33.aiguide;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.ai.autoconfigure.vectorstore.pgvector.PgVectorStoreAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

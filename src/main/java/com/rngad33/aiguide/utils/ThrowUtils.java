@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.utils;
 
-import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.exception.MyException;
 
 /**
  * 异常抛出工具类
