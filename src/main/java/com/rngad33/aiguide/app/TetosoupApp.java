@@ -1,22 +1,13 @@
 package com.rngad33.aiguide.app;
 
-import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
-import com.rngad33.aiguide.common.CommonReport;
-import com.rngad33.aiguide.constant.FilePathConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
-import com.rngad33.aiguide.rag.custom.MyQueryRewriter;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.tool.ToolCallback;
-import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
