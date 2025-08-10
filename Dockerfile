@@ -1,5 +1,5 @@
 # 使用预装 Maven 和 JDK21 的镜像
-FROM maven:3.9-amazoncorretto-21
+FROM maven:3.9.9-amazoncorretto-21
 WORKDIR /app
 
 # 只复制必要的源代码和配置文件
