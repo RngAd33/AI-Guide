@@ -182,8 +182,8 @@
     </dependencies>
 
     <dependencyManagement>
-        <!-- 统一 Spring Boot 版本 -->
         <dependencies>
+            <!-- 统一 Spring Boot 版本 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
