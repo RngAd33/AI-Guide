@@ -175,8 +175,7 @@ public class ChatController {
                                       @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
-        SseEmitter sseEmitter = myManus.run(message);
-        return sseEmitter;
+        return myManus.run(message);
     }
 
 }
