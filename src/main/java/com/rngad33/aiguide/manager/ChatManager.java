@@ -32,7 +32,7 @@ public class ChatManager {
     @Resource
     private ToolCallbackProvider toolCallbackProvider;
 
-    // record CommonReport(String title, List<String> suggestions) {}
+//     record CommonReport(String title, List<String> suggestions) {}
 
     /**
      * 开启基础对话（支持多轮对话）
@@ -62,7 +62,7 @@ public class ChatManager {
     }
 
     /**
-     * 流式输出对话（暂不可用）
+     * 流式输出对话
      *
      * @param chatClient
      * @param message

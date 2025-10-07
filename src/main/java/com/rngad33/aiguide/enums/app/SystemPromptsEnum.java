@@ -11,7 +11,7 @@ public enum SystemPromptsEnum {
 
     LOVE("love", SystemPromptsConstant.LOVE_SYSTEM_PROMPT),
     PSYCHOLOGY("psychology", SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT),
-    TETO("", SystemPromptsConstant.TETO_SYSTEM_PROMPT);
+    TETO("teto", SystemPromptsConstant.TETO_SYSTEM_PROMPT);
 
     private final String name;
 

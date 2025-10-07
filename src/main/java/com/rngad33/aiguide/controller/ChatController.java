@@ -171,8 +171,7 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/manus", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter doChatWithManus(@RequestParam("message") String message,
-                                      @RequestParam("chatId") String chatId) {
+    public SseEmitter doChatWithManus(@RequestParam("message") String message, @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);
         SseEmitter sseEmitter = myManus.run(message);
