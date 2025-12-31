@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
  * ——！使用此模块会提高成本，建议使入翻译平台API！——
  */
 @Component
+@Deprecated
 public class MyQueryTransformer {
 
     private final QueryTransformer queryTransformer;

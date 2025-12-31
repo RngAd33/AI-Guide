@@ -17,13 +17,13 @@ import java.util.List;
 
 /**
  * 对话模型工具类
- * 通过配置application.yml调整要调用的大模型引擎（阿里灵积 / ollama）
+ * 通过配置 application.yml 调整要调用的大模型引擎（阿里灵积 / ollama）
  */
 @Component
 public class AiModelUtils {
 
     /**
-     * 对话模型
+     * 自定义对话模型
      */
     @Component
     public static class MyChatModel implements ChatModel {
@@ -54,7 +54,7 @@ public class AiModelUtils {
     }
 
     /**
-     * 嵌入式模型
+     * 自定义嵌入式模型
      */
     @Component
     public static class MyEmbeddingModel implements EmbeddingModel {
