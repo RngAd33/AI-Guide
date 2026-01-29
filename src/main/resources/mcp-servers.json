@@ -3,7 +3,7 @@
     "my-image-search-mcp-server": {
       "command": "java",
       "args": [
-        "-Dspring.ai.mcp.server.stdio=false",
+        "-Dspring.ai.mcp.server.stdio=true",
         "-Dspring.main.web-application-type=none",
         "-Dlogging.pattern.console=",
         "-Dspring.profiles.active=stdio",
