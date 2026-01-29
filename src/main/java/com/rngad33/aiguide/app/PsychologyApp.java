@@ -1,5 +1,7 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
+import com.rngad33.aiguide.advisor.MyRe2Advisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.FilePathConstant;
@@ -68,9 +70,9 @@ public class PsychologyApp {
                         // 内存对话记忆
                         // new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
-                        // , new MyLoggerAdvisor()
+                         , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
-                        // , new MyRe2Advisor()
+                         , new MyRe2Advisor()
                 )
                 .build();
     }
@@ -135,7 +137,7 @@ public class PsychologyApp {
     }
 
     /**
-     * 调用MCP服务
+     * 调用 MCP 服务
      *
      * @param message
      * @param chatId
