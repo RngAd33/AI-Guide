@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.advisor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.ai.chat.client.advisor.api.*;
 import org.springframework.ai.chat.model.MessageAggregator;
 import reactor.core.publisher.Flux;
@@ -45,6 +46,7 @@ public class MyLoggerAdvisor implements CallAroundAdvisor, StreamAroundAdvisor {
      * @param chain
      * @return
      */
+    @NotNull
     @Override
     public AdvisedResponse aroundCall(AdvisedRequest advisedRequest, CallAroundAdvisorChain chain) {
         advisedRequest = this.before(advisedRequest);
@@ -60,6 +62,7 @@ public class MyLoggerAdvisor implements CallAroundAdvisor, StreamAroundAdvisor {
      * @param chain
      * @return
      */
+    @NotNull
     @Override
     public Flux<AdvisedResponse> aroundStream(AdvisedRequest advisedRequest, StreamAroundAdvisorChain chain) {
         advisedRequest = this.before(advisedRequest);

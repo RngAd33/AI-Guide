@@ -12,9 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * RAG云知识库配置
+ * RAG云知识库配置（用不起了555）
  */
-@Configuration
+@Deprecated
+//@Configuration
 public class RagCloudAdvisorConfig {
 
     @Value("${spring.ai.dashscope.api-key}")

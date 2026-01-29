@@ -116,11 +116,11 @@ public class PsychologyApp {
      */
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
-        String rewritedMessage = queryRewriter.doRewrite(message);
+        String rewroteMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
         return chatManager.doChatWithRag(chatClient, psychologyPgVectorStore,
                 psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
-                rewritedMessage, chatId);
+                rewroteMessage, chatId);
     }
 
     /**
