@@ -1,6 +1,8 @@
 package com.rngad33.aiguide.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -8,17 +10,12 @@ import java.util.List;
  * 结构化输出模型
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommonReport {
 
     private String title;
 
     private List<String> suggestions;
-
-    public CommonReport() {}
-
-    public CommonReport(String title, List<String> suggestions) {
-        this.title = title;
-        this.suggestions = suggestions;
-    }
 
 }
