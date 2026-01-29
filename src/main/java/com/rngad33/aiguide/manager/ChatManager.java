@@ -106,7 +106,7 @@ public class ChatManager {
     }
 
     /**
-     * RAG知识库对话（不开启增强）
+     * RAG知识库对话（不开增强）
      *
      * @param chatClient AI客户端
      * @param appVectorStore 本地知识库
@@ -121,7 +121,7 @@ public class ChatManager {
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
                 // 开启日志
-                // .advisors(new MyLoggerAdvisor())
+                .advisors(new MyLoggerAdvisor())
                 // RAG知识库问答
                 .advisors(new QuestionAnswerAdvisor(appVectorStore))
                 .call()
@@ -169,6 +169,7 @@ public class ChatManager {
     /**
      * 工具调用
      *
+     * @param chatClient
      * @param message
      * @param chatId
      * @return

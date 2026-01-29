@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.rag.documentloader;
 
 import com.rngad33.aiguide.enums.app.SystemPromptsEnum;
-import com.rngad33.aiguide.manager.MarkdownManager;
+import com.rngad33.aiguide.utils.MarkdownUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -28,7 +28,7 @@ public class LoveAppDocumentLoader {
      * @return
      */
     public List<Document> loadMarkdowns() {
-        return MarkdownManager.doLoad(resourcePatternResolver, SystemPromptsEnum.LOVE.getName());
+        return MarkdownUtils.doLoad(resourcePatternResolver, SystemPromptsEnum.LOVE.getName());
     }
 
 }

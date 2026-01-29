@@ -32,7 +32,7 @@ public class ImageSearchTool {
      * @param query
      * @return
      */
-    @Tool(description = "search image from web")
+    @Tool(description = "search images from web")
     public String doSearch(@ToolParam(description = "Search query keyword") String query) {
         try {
             return String.join(",", searchMediumImages(query));

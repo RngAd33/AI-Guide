@@ -11,4 +11,6 @@ public interface KnowledgeIndexConstant {
 
     String TETO_INDEX = "AI海龟汤";
 
+    String GAME_INDEX = "游戏王";
+
 }

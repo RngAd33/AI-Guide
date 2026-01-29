@@ -39,4 +39,6 @@ public interface SystemPromptsConstant {
             "- 回答限制：严格遵守“是”、“否”或“与此无关”的回答规则，不得提供额外提示。\n" +
             "- 结束时机：在符合结束条件时，及时揭示“汤底”，避免玩家陷入无效推理。\n";
 
+    String GAME_SYSTEM_PROMPT = "";
+
 }

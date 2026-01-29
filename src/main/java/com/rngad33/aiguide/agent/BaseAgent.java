@@ -56,7 +56,7 @@ public abstract class BaseAgent {
         CompletableFuture.runAsync(() -> {
             // 基础校验
             try {
-                ThrowUtils.throwIf(this.status != AgentStatus.IDLE, ErrorCodeEnum.PARAMS_ERROR, "代理已经开启！");
+                ThrowUtils.throwIf(this.status != AgentStatus.IDLE, ErrorCodeEnum.PARAMS_ERROR, "已经开启代理！");
                 ThrowUtils.throwIf(StrUtil.isBlank(userPrompt), ErrorCodeEnum.PARAMS_ERROR ,"空提示词不可执行！");
             } catch (Exception e) {
                 sseEmitter.completeWithError(e);

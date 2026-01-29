@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 心理咨询应用文档加载器
+ * 游戏王应用文档加载器
  */
 @Component
 @Slf4j
-public class PsychologyAppDocumentLoader {
+public class GameAppDocumentLoader {
 
     private final ResourcePatternResolver resourcePatternResolver;
 
-    public PsychologyAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
+    public GameAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
         this.resourcePatternResolver = resourcePatternResolver;
     }
 
@@ -28,7 +28,7 @@ public class PsychologyAppDocumentLoader {
      * @return
      */
     public List<Document> loadMarkdowns() {
-        return MarkdownUtils.doLoad(resourcePatternResolver, SystemPromptsEnum.PSYCHOLOGY.getName());
+        return MarkdownUtils.doLoad(resourcePatternResolver, SystemPromptsEnum.GAME.getName());
     }
 
 }

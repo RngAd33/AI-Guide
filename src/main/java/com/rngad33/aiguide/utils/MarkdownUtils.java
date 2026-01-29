@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.manager;
+package com.rngad33.aiguide.utils;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.List;
  * 通用文档加载器
  */
 @Slf4j
-public class MarkdownManager {
+public class MarkdownUtils {
 
     /**
      * 加载本地 Markdown 文档

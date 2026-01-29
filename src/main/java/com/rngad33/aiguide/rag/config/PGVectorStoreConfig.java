@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.rag.config;
 
+import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
 import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
@@ -27,6 +28,9 @@ public class PGVectorStoreConfig {
 
     @Resource
     private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
+
+    @Resource
+    private GameAppDocumentLoader gameAppDocumentLoader;
 
     /**
      * 初始化基于PostgreSQL的向量数据库 Bean1
@@ -72,6 +76,30 @@ public class PGVectorStoreConfig {
                 .build();
         // 加载文档
         List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
+        vectorStore.add(documents);
+        return vectorStore;
+    }
+
+    /**
+     * 创建基于PostgreSQL的向量数据库 Bean3
+     *
+     * @param jdbcTemplate
+     * @param embeddingModel
+     * @return
+     */
+    @Bean("gamePgVectorStore")
+    public VectorStore gamePgVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
+        VectorStore vectorStore = PgVectorStore.builder(jdbcTemplate, embeddingModel)
+                .distanceType(COSINE_DISTANCE)
+                .indexType(HNSW)
+                .initializeSchema(true)
+                .schemaName("public")
+                .vectorTableName("game_pg_vector_store")
+                .dimensions(1536)
+                .maxDocumentBatchSize(10000)
+                .build();
+        // 加载文档
+        List<Document> documents = gameAppDocumentLoader.loadMarkdowns();
         vectorStore.add(documents);
         return vectorStore;
     }
