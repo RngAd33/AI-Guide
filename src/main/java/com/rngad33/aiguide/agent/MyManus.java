@@ -12,12 +12,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyManus extends ToolCallAgent {
 
+    /**
+     * 构造方法
+     *
+     * @param allTools
+     * @param chatModel
+     */
     public MyManus(ToolCallback[] allTools, MyChatModel chatModel) {
         super(allTools);
         this.setName("ManusAgent");
         this.setSystemPrompt(SystemPromptsConstant.MANUS_SYSTEM_PROMPT);
         this.setNextStepPrompt(SystemPromptsConstant.MANUS_NEXT_STEP_PROMPT);
-        this.setMaxSteps(20);
+        this.setMaxSteps(23);
         // 初始化客户端
         ChatClient chatClient = ChatClient.builder(chatModel)
                 .defaultTools(allTools)
