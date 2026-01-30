@@ -35,11 +35,11 @@ public abstract class ReActAgent extends BaseAgent {
     @Override
     public String step() {
         try {
-            boolean shouldAct = think();
+            boolean shouldAct = this.think();
             if (!shouldAct) {
                 return "思考完成：无需行动";
             }
-            return act();
+            return this.act();
         } catch (Exception e) {
             log.error("——！步骤执行失败!——");
             return e.getMessage();

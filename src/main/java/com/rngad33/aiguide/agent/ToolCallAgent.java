@@ -47,60 +47,58 @@ public class ToolCallAgent extends ReActAgent {
         this.availableTools = availableTools;
         this.toolCallingManager = ToolCallingManager.builder().build();
         this.chatOptions = DashScopeChatOptions.builder()   // 此处导致只能使用阿里大模型
-                .withProxyToolCalls(true)
+                .withProxyToolCalls(true)   // 是否拒绝 Spring 代理
                 .build();
     }
 
     /**
      * 处理当前状态并决定下一步行动
      *
-     * @return 是否需要执行行动，true表示需要执行，false表示不需要执行
+     * @return 是否需要执行行动？true：需要执行，false：不需要执行
      */
     @Override
     public boolean think() {
         // 校验、拼接提示词
-        if (StrUtil.isNotBlank(getNextStepPrompt())) {
-            UserMessage userMessage = new UserMessage(getNextStepPrompt());
-            getMessages().add(userMessage);
+        if (StrUtil.isNotBlank(this.getNextStepPrompt())) {
+            UserMessage userMessage = new UserMessage(this.getNextStepPrompt());
+            this.getMessages().add(userMessage);
         }
-        // 获取工具调用结果
-        List<Message> messageList = getMessages();
-        Prompt prompt = new Prompt(messageList, chatOptions);
-        // 解析工具调用结果，获取要调用的工具
+        List<Message> messageList = this.getMessages();
+        Prompt prompt = new Prompt(messageList, this.chatOptions);
         try {
-            ChatResponse chatResponse = getChatClient().prompt(prompt)
-                    .system(getSystemPrompt())
+            // 调用AI大模型，获取工具调用结果
+            ChatResponse chatResponse = getChatClient()
+                    .prompt(prompt)
+                    .system(this.getSystemPrompt())
                     .tools(availableTools)
                     .call()
                     .chatResponse();
             this.toolCallChatResponse = chatResponse;
-            // 助手信息
-            AssistantMessage assistantMessage = chatResponse.getResult().getOutput();
-            // 工具列表
-            List<AssistantMessage.ToolCall> toolCallList = assistantMessage.getToolCalls();
+            // 解析工具调用结果，获取要调用的工具
+            AssistantMessage assistantMessage = chatResponse.getResult().getOutput();   // 助手信息
+            List<AssistantMessage.ToolCall> toolCallList = assistantMessage.getToolCalls();   // 工具列表
             // 输出提示信息
             String result = assistantMessage.getText();
-            log.info(getName() + "的调用结果：" + result);
-            log.info(getName() + " 选择了 " + toolCallList.size() + " 个工具来使用");
+            log.info("{}的调用结果：{}", getName(), result);
+            log.info("{} 选择了 {} 个工具来使用", getName(), toolCallList.size());
             String toolCallInfo = toolCallList.stream()
                     .map(toolCall -> String.format("工具名称：%s，参数：%s",
                                 toolCall.name(),
                                 toolCall.arguments())
-                    )
-                    .collect(Collectors.joining("\n"));
+                    ).collect(Collectors.joining("\n"));
             log.info(toolCallInfo);
             // 如果无需调用工具，返回false
             if (toolCallList.isEmpty()) {
-                // 只有不调用工具时，才需要手动记录助手消息
+                // - 只有不调用工具时，才需要手动记录助手消息
                 getMessages().add(assistantMessage);
                 return false;
             } else {
-                // 调用工具时无需记录助手消息，因为工具调用时会自动记录
+                // - 调用工具时无需记录助手消息，因为工具调用时会自动记录
                 return true;
             }
         } catch (Exception e) {
             // 异常处理
-            log.error(getName() + "的思考过程遇到了问题: " + e.getMessage());
+            log.error("{}的思考过程遇到了问题: {}", getName(), e.getMessage());
             getMessages().add(new AssistantMessage("处理失败：" + e.getMessage()));
             return false;
         }
