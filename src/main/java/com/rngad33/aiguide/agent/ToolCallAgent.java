@@ -75,37 +75,35 @@ public class ToolCallAgent extends ReActAgent {
                     .chatResponse();
             this.toolCallChatResponse = chatResponse;
             // 解析工具调用结果，获取要调用的工具
-            AssistantMessage assistantMessage = chatResponse.getResult().getOutput();   // 助手信息
+            AssistantMessage assistantMessage = chatResponse.getResult().getOutput();   // 助手消息
             List<AssistantMessage.ToolCall> toolCallList = assistantMessage.getToolCalls();   // 工具列表
             // 输出提示信息
             String result = assistantMessage.getText();
-            log.info("{}的调用结果：{}", getName(), result);
-            log.info("{} 选择了 {} 个工具来使用", getName(), toolCallList.size());
+            log.info("{}的调用结果：{}", this.getName(), result);
+            log.info("{}选择了 {} 个工具来使用", this.getName(), toolCallList.size());
             String toolCallInfo = toolCallList.stream()
-                    .map(toolCall -> String.format("工具名称：%s，参数：%s",
-                                toolCall.name(),
-                                toolCall.arguments())
-                    ).collect(Collectors.joining("\n"));
+                    .map(toolCall -> String.format("工具名称：%s，参数：%s", toolCall.name(), toolCall.arguments()))
+                    .collect(Collectors.joining("\n"));
             log.info(toolCallInfo);
-            // 如果无需调用工具，返回false
+            // 如果无需调用工具，返回 false
             if (toolCallList.isEmpty()) {
                 // - 只有不调用工具时，才需要手动记录助手消息
-                getMessages().add(assistantMessage);
+                this.getMessages().add(assistantMessage);
                 return false;
             } else {
-                // - 调用工具时无需记录助手消息，因为工具调用时会自动记录
+                // - 需要调用工具,无需记录助手消息，因为工具调用时会自动记录
                 return true;
             }
         } catch (Exception e) {
             // 异常处理
-            log.error("{}的思考过程遇到了问题: {}", getName(), e.getMessage());
-            getMessages().add(new AssistantMessage("处理失败：" + e.getMessage()));
+            log.error("{}的思考过程遇到了问题: {}", this.getName(), e.getMessage());
+            this.getMessages().add(new AssistantMessage("错误发生，处理失败：" + e.getMessage()));
             return false;
         }
     }
 
     /**
-     * 执行决定的行动
+     * 执行决定的工具调用行为并处理结果
      *
      * @return 行动执行结果
      */
@@ -113,13 +111,13 @@ public class ToolCallAgent extends ReActAgent {
     public String act() {
         // 验证是否需要行动
         if (!toolCallChatResponse.hasToolCalls()) {
-            return "无需调用工具ㄟ( ▔, ▔ )ㄏ-";
+            return "无需调用工具 ㄟ( ▔, ▔ )ㄏ";
         }
         Prompt prompt = new Prompt(getMessages(), this.chatOptions);
-        // 调用工具
+        // 工具调用
         ToolExecutionResult toolExecutionResult = toolCallingManager.executeToolCalls(prompt, toolCallChatResponse);
         // 记录消息上下文
-        setMessages(toolExecutionResult.conversationHistory());
+        this.setMessages(toolExecutionResult.conversationHistory());
         ToolResponseMessage toolResponseMessage = (ToolResponseMessage)CollUtil.getLast(toolExecutionResult.conversationHistory());
         String results = toolResponseMessage.getResponses().stream()
                 .map(response -> "工具" +  response.name() + "返回的结果：" + response.responseData())
@@ -128,7 +126,7 @@ public class ToolCallAgent extends ReActAgent {
         if (toolResponseMessage.getResponses().stream()
                 .anyMatch(response -> response.name().equals("doTerminate"))) {
             // 任务结束，更改代理状态
-            setStatus(AgentStatus.FINISHED);
+            this.setStatus(AgentStatus.FINISHED);
         }
         log.info(results);
         return results;
