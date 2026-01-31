@@ -24,6 +24,7 @@ public class ChatRoom {
     @Id(keyType = KeyType.Generator)
     private Long id;
 
+
     /**
      * 标题
      */
@@ -33,6 +34,11 @@ public class ChatRoom {
      * 对话内容（JSON）
      */
     private String content;
+
+    /**
+     * 归属应用名称
+     */
+    private String appName;
 
     /**
      * 创建用户id

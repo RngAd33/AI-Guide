@@ -30,10 +30,10 @@ import java.io.IOException;
 public class ChatController {
 
     @Resource
-    private ToolCallback[] allTools;
+    private AiModelUtils.MyChatModel chatModel;
 
     @Resource
-    private AiModelUtils.MyChatModel chatModel;
+    private ToolCallback[] allTools;
 
     @Resource
     private LoveApp loveApp;

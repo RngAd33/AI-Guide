@@ -31,6 +31,16 @@ public class Chat {
     private Long userId;
 
     /**
+     * 用户提问
+     */
+    private String question;
+
+    /**
+     * AI 回复
+     */
+    private String answer;
+
+    /**
      * 创建时间
      */
     private Date createTime;
