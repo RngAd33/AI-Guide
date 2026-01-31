@@ -23,7 +23,7 @@ public class MyManus extends ToolCallAgent {
         this.setName("ManusAgent");
         this.setSystemPrompt(SystemPromptsConstant.MANUS_SYSTEM_PROMPT);
         this.setNextStepPrompt(SystemPromptsConstant.MANUS_NEXT_STEP_PROMPT);
-        this.setMaxSteps(23);
+        this.setMaxSteps(20);
         // 初始化客户端
         ChatClient chatClient = ChatClient.builder(chatModel)
                 .defaultTools(allTools)

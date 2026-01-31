@@ -9,7 +9,6 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * RAG云知识库配置（用不起了555）

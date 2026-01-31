@@ -1,11 +1,12 @@
 package com.rngad33.aiguide.controller;
 
 import com.rngad33.aiguide.agent.MyManus;
+import com.rngad33.aiguide.app.GameApp;
 import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.app.PsychologyApp;
 import com.rngad33.aiguide.app.TetosoupApp;
 import com.rngad33.aiguide.common.BaseResponse;
-import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;
@@ -42,6 +43,9 @@ public class ChatController {
 
     @Resource
     private TetosoupApp tetosoupApp;
+
+    @Resource
+    private GameApp gameApp;
 
     /**
      * 恋爱大师（同步模式）
@@ -164,13 +168,31 @@ public class ChatController {
     }
 
     /**
+     * 游戏王（SSE模式）
+     */
+    @GetMapping(value = "/game/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter doChatWithGame(@RequestParam("message") String message, @RequestParam("chatId") String chatId) {
+        ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        gameApp.doChatByStream(message, chatId)
+                .subscribe(chunk -> {
+                    try {
+                        sseEmitter.send(chunk);
+                    } catch (IOException e) {
+                        sseEmitter.completeWithError(e);
+                    }
+                }, sseEmitter::completeWithError, sseEmitter::complete);
+        return sseEmitter;
+    }
+
+    /**
      * AI智能体对话（SSE模式）
      *
      * @param message
      * @param chatId
      * @return
      */
-    @GetMapping(value = "/manus", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/manus/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter doChatWithManus(@RequestParam("message") String message, @RequestParam("chatId") String chatId) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         MyManus myManus = new MyManus(allTools, chatModel);

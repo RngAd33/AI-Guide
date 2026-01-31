@@ -194,6 +194,7 @@ public class ChatManager {
     /**
      * 调用 MCP 服务
      *
+     * @param chatClient
      * @param message
      * @param chatId
      * @return

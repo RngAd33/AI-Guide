@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+/**
+ * AI Agent测试
+ */
 @SpringBootTest
 class ManusAgentTest {
 

@@ -1,6 +1,6 @@
 package com.rngad33.aiguide.rag.documentloader;
 
-import com.rngad33.aiguide.enums.app.SystemPromptsEnum;
+import com.rngad33.aiguide.model.enums.app.SystemPromptsEnum;
 import com.rngad33.aiguide.utils.MarkdownUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;

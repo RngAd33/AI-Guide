@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.enums.misc;
+package com.rngad33.aiguide.model.enums.misc;
 
 import lombok.Getter;
 

@@ -1,7 +1,7 @@
 package com.rngad33.aiguide.rag.config;
 
-import com.rngad33.aiguide.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.exception.MyException;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
 import com.rngad33.aiguide.rag.custom.MyTokenTextSplitter;
 import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
@@ -20,7 +20,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 /**
- * 本地向量数据库配置
+ * 本地知识库配置
  */
 @Slf4j
 @Configuration

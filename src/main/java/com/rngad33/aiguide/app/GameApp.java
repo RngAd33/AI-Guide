@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.chatmemory.FileBaseChatMemory;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.FilePathConstant;
@@ -46,7 +47,7 @@ public class GameApp {
 
     private final ChatClient chatClient;
 
-    private final String SYSTEM_PROMPT = SystemPromptsConstant.PSYCHOLOGY_SYSTEM_PROMPT;
+    private final String SYSTEM_PROMPT = SystemPromptsConstant.GAME_SYSTEM_PROMPT;
 
     /**
      * 初始化AI客户端
@@ -68,7 +69,7 @@ public class GameApp {
                         // 内存对话记忆
                         // new MessageChatMemoryAdvisor(chatMemoryByCache)
                         // 自定义日志拦截器（按需开启）
-                        // , new MyLoggerAdvisor()
+                        , new MyLoggerAdvisor()
                         // 自定义推理增强拦截器（按需开启）
                         // , new MyRe2Advisor()
                 )
@@ -114,6 +115,7 @@ public class GameApp {
      * @param message 查询语句
      * @param chatId
      */
+    @Deprecated
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);

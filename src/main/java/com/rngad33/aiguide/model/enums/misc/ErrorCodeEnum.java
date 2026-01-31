@@ -1,4 +1,4 @@
-package com.rngad33.aiguide.enums.misc;
+package com.rngad33.aiguide.model.enums.misc;
 
 import lombok.Getter;
 
@@ -16,6 +16,7 @@ public enum ErrorCodeEnum {
     USER_NOT_AUTH( "——！用户未授权！——", 4012),
     NOT_PARAMS("——！参数不存在！——", 4020),
     PARAMS_ERROR("——！参数不合法！——", 4024),
+    TOO_MANY_REQUESTS("——！请求过于频繁！——", 4043),
     TOO_MANY_TIMES_MESSAGE("——！请求超时！——", 5002),
     SYSTEM_ERROR("————！系统内部异常！————", 5000);
 

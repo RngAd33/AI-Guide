@@ -92,6 +92,6 @@ public class AiModelUtils {
         public EmbeddingResponse call(EmbeddingRequest request) {
             return delegate().call(request);
         }
-    }
 
+    }
 }
