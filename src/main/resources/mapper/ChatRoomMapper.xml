@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rngad33.aiguide.mapper.ChatMapper">
+<mapper namespace="com.rngad33.aiguide.mapper.ChatRoomMapper">
 
-    <resultMap id="BaseResultMap" type="com.rngad33.aiguide.model.entity.Chat">
+    <resultMap id="BaseResultMap" type="com.rngad33.aiguide.model.entity.ChatRoom">
         <id property="id" column="id" />
         <result property="title" column="title" />
         <result property="content" column="content" />

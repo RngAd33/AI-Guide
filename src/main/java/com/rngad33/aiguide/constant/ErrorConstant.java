@@ -3,6 +3,7 @@ package com.rngad33.aiguide.constant;
 /**
  * 错误信息常量类
  */
+@Deprecated
 public interface ErrorConstant {
 
     String USER_NOT_EXIST_MESSAGE = "——！用户不存在！——";
