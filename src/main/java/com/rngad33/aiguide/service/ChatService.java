@@ -1,7 +1,10 @@
 package com.rngad33.aiguide.service;
 
+import com.mybatisflex.core.service.IService;
+import com.rngad33.aiguide.model.entity.Chat;
+
 /**
  * 对话记录服务接口
  */
-public interface ChatService {
+public interface ChatService extends IService<Chat> {
 }

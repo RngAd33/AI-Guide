@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 对话记录模型
+ * 对话记录模型（单次）
  */
 @Data
 @Table("chat")
