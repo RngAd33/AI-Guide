@@ -24,7 +24,6 @@ public class ChatRoom {
     @Id(keyType = KeyType.Generator)
     private Long id;
 
-
     /**
      * 标题
      */
