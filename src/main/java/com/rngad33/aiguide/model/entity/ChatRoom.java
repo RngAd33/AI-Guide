@@ -35,9 +35,9 @@ public class ChatRoom {
     private String content;
 
     /**
-     * 归属应用名称
+     * 归属应用号码
      */
-    private String appName;
+    private Integer appCode;
 
     /**
      * 创建用户id

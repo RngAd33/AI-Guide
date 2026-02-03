@@ -1,9 +1,16 @@
 package com.rngad33.aiguide.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.rngad33.aiguide.mapper.ChatRoomMapper;
+import com.rngad33.aiguide.model.dto.ChatRoomCreateRequest;
 import com.rngad33.aiguide.model.entity.ChatRoom;
+import com.rngad33.aiguide.model.enums.app.AppNameEnum;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.service.ChatRoomService;
+import com.rngad33.aiguide.utils.ThrowUtils;
+import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,6 +18,38 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> implements ChatRoomService {
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * 创建聊天室
+     *
+     * @param chatRoomCreateRequest
+     * @return
+     */
+    @Override
+    public long createChatRoom(ChatRoomCreateRequest chatRoomCreateRequest) {
+        String chatRoomId = chatRoomCreateRequest.getChatRoomId();
+        int appCode = chatRoomCreateRequest.getAppCode();
+        long userId = chatRoomCreateRequest.getUserId();
+        AppNameEnum appNameEnum = AppNameEnum.getByValue(appCode);
+        ThrowUtils.throwIf(appNameEnum == null, ErrorCodeEnum.NOT_PARAMS, "找不到对应的AI应用！");
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setId(Convert.bytesToLong(chatRoomId.getBytes()));
+        chatRoom.setAppCode(appNameEnum.getValue());
+        // 判断是否为注册用户
+        if (userId > 0) {
+            // - 是注册用户，创建聊天室并持久化
+            chatRoom.setUserId(userId);
+            boolean result = this.save(chatRoom);
+            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "创建聊天室失败！");
+        } else {
+            // - 临时用户，创建临时聊天室写入缓存
+            redisTemplate.opsForValue().set(String.format("chat_room_temp:%s", chatRoom.getId()), chatRoom);
+        }
+        return chatRoom.getId();
+    }
 
 
 }

@@ -23,7 +23,7 @@ public class Chat {
     /**
      * 聊天室 id
      */
-    private Long roomId;
+    private Long chatRoomId;
 
     /**
      * 创建用户 id

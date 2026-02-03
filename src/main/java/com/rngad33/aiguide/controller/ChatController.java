@@ -6,14 +6,22 @@ import com.rngad33.aiguide.app.LoveApp;
 import com.rngad33.aiguide.app.PsychologyApp;
 import com.rngad33.aiguide.app.TetosoupApp;
 import com.rngad33.aiguide.common.BaseResponse;
+import com.rngad33.aiguide.model.entity.Chat;
+import com.rngad33.aiguide.model.entity.User;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.model.vo.UserVO;
+import com.rngad33.aiguide.service.ChatRoomService;
+import com.rngad33.aiguide.service.ChatService;
+import com.rngad33.aiguide.service.UserService;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,10 +38,19 @@ import java.io.IOException;
 public class ChatController {
 
     @Resource
-    private AiModelUtils.MyChatModel chatModel;
+    private ChatRoomService chatRoomService;
+
+    @Resource
+    private ChatService chatService;
+
+    @Resource
+    private UserService userService;
 
     @Resource
     private ToolCallback[] allTools;
+
+    @Resource
+    private AiModelUtils.MyChatModel chatModel;
 
     @Resource
     private LoveApp loveApp;
@@ -71,9 +88,11 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/love/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter loveChatSSE(@RequestParam("message") String message,
-                                  @RequestParam("chatId") String chatId) {
+    public SseEmitter loveChatSSE(@RequestParam("message") String message, @RequestParam("chatId") String chatId,
+                                  HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        UserVO loginUser = userService.getCurrentUser(request);
+        long userId = loginUser.getId();
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         // 获取Flux响应式数据流
         loveApp.doChatByStream(message, chatId)
@@ -112,18 +131,29 @@ public class ChatController {
      */
     @GetMapping(value = "/psy/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter psyChatSSE(@RequestParam("message") String message,
-                                 @RequestParam("chatId") String chatId) {
+                                 @RequestParam("chatId") String chatId, HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        UserVO loginUser = userService.getCurrentUser(request);
+        long userId = loginUser.getId();
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        StringBuilder fullResponse = new StringBuilder();
         // 获取Flux响应式数据流
         psychologyApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
                     try {
+                        fullResponse.append(chunk);
                         sseEmitter.send(chunk);
+                        // - 实时异步保存消息块
                     } catch (IOException e) {
                         sseEmitter.completeWithError(e);
                     }
-                }, sseEmitter::completeWithError, sseEmitter::complete);
+                        }, sseEmitter::completeWithError,
+                        () -> {
+                            // - 保存记录后关闭SSE连接
+                            sseEmitter.complete();
+                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), userId);   // 异步保存
+                            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "对话记录保存失败！");
+                        });
         return sseEmitter;
     }
 
