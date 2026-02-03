@@ -117,16 +117,16 @@ public class ChatRoomController {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         UserVO loginUser = userService.getCurrentUser(request);
         long id = Convert.bytesToLong(chatRoomId.getBytes());
+        ChatRoom chatRoom;
         if (ObjUtil.equals(loginUser.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
-            ChatRoom chatRoom = chatRoomService.getById(id);
+            chatRoom = chatRoomService.getById(id);
             ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
-            return ResultUtils.success(chatRoomService.removeById(chatRoom));
         } else {
             QueryWrapper queryWrapper = QueryWrapper.create().eq("id", id).eq("user_id", loginUser.getId());
-            ChatRoom chatRoom = chatRoomService.getOne(queryWrapper);
+            chatRoom = chatRoomService.getOne(queryWrapper);
             ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
-            return ResultUtils.success(chatRoomService.removeById(chatRoom));
         }
+        return ResultUtils.success(chatRoomService.removeById(chatRoom));
     }
 
 }
