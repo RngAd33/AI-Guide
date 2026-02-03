@@ -8,6 +8,7 @@ import com.rngad33.aiguide.common.BaseResponse;
 import com.rngad33.aiguide.model.dto.ChatRoomCreateRequest;
 import com.rngad33.aiguide.model.entity.ChatRoom;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
 import com.rngad33.aiguide.model.vo.ChatRoomVO;
 import com.rngad33.aiguide.model.vo.UserVO;
 import com.rngad33.aiguide.service.ChatRoomService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -83,7 +85,27 @@ public class ChatRoomController {
     }
 
     /**
-     * 获取聊天室信息
+     * 删除单个聊天室
+     *
+     * @param chatRoomId
+     * @param request
+     * @return
      */
+    @NoWriteService
+    @PostMapping("/del")
+    public BaseResponse<Boolean> deleteChatRoom(@RequestParam("chatRoomId") long chatRoomId, HttpServletRequest request) {
+        ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        UserVO loginUser = userService.getCurrentUser(request);
+        if (ObjUtil.equals(loginUser.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
+            ChatRoom chatRoom = chatRoomService.getById(chatRoomId);
+            ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
+            return ResultUtils.success(chatRoomService.removeById(chatRoom));
+        } else {
+            QueryWrapper queryWrapper = QueryWrapper.create().eq("id", chatRoomId).eq("user_id", loginUser.getId());
+            ChatRoom chatRoom = chatRoomService.getOne(queryWrapper);
+            ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
+            return ResultUtils.success(chatRoomService.removeById(chatRoom));
+        }
+    }
 
 }

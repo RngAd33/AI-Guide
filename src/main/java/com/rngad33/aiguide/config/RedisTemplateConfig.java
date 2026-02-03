@@ -18,7 +18,7 @@ public class RedisTemplateConfig {
      *
      * @return
      */
-    @Bean(name = "redisTemplate")
+    @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         // 序列化
@@ -33,8 +33,8 @@ public class RedisTemplateConfig {
      * @param connectionFactory
      * @return
      */
-    @Bean(name = "stringRedisTemplate")
-    public StringRedisTemplate redisTemplate(RedisConnectionFactory connectionFactory) {
+    @Bean
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
         StringRedisTemplate redisTemplate = new StringRedisTemplate(connectionFactory);
         // 序列化
         redisTemplate.setKeySerializer(RedisSerializer.string());
