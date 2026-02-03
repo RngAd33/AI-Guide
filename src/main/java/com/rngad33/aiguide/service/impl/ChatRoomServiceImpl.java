@@ -1,9 +1,11 @@
 package com.rngad33.aiguide.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.rngad33.aiguide.mapper.ChatRoomMapper;
 import com.rngad33.aiguide.model.dto.ChatRoomCreateRequest;
+import com.rngad33.aiguide.model.dto.ChatRoomEditRequest;
 import com.rngad33.aiguide.model.entity.ChatRoom;
 import com.rngad33.aiguide.model.enums.app.AppNameEnum;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
@@ -35,6 +37,7 @@ public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> i
         long userId = chatRoomCreateRequest.getUserId();
         AppNameEnum appNameEnum = AppNameEnum.getByValue(appCode);
         ThrowUtils.throwIf(appNameEnum == null, ErrorCodeEnum.NOT_PARAMS, "找不到对应的AI应用！");
+
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setId(Convert.bytesToLong(chatRoomId.getBytes()));
         chatRoom.setAppCode(appNameEnum.getValue());
@@ -49,6 +52,25 @@ public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> i
             redisTemplate.opsForValue().set(String.format("chat_room_temp:%s", chatRoom.getId()), chatRoom);
         }
         return chatRoom.getId();
+    }
+
+    /**
+     * 编辑聊天室信息
+     *
+     * @param chatRoomEditRequest
+     * @return
+     */
+    @Override
+    public boolean editChatRoom(ChatRoomEditRequest chatRoomEditRequest) {
+        String title = chatRoomEditRequest.getTitle();
+        String chatRoomId = chatRoomEditRequest.getChatRoomId();
+        long id = Convert.bytesToLong(chatRoomId.getBytes());
+        ChatRoom chatRoom = this.getById(id);
+        ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到聊天室！");
+        chatRoom.setTitle(title);
+        boolean result = this.updateById(chatRoom);
+        ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "聊天室信息编辑失败！");
+        return true;
     }
 
 }

@@ -30,11 +30,6 @@ public class ChatRoom {
     private String title;
 
     /**
-     * 对话内容（JSON）
-     */
-    private String content;
-
-    /**
      * 归属应用号码
      */
     private Integer appCode;

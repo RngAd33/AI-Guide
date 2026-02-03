@@ -14,11 +14,6 @@ import java.util.List;
 public class ChatRoomEditRequest {
 
     /**
-     * id
-     */
-    private Long id;
-
-    /**
      * 聊天室 id
      */
     private String chatRoomId;
@@ -29,9 +24,8 @@ public class ChatRoomEditRequest {
     private String title;
 
     /**
-     * 对话内容
+     * 创建用户 id
      */
-    private List<Chat> content;
-
+    private Long userId;
 
 }

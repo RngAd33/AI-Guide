@@ -7,8 +7,7 @@
     <resultMap id="BaseResultMap" type="com.rngad33.aiguide.model.entity.ChatRoom">
         <id property="id" column="id" />
         <result property="title" column="title" />
-        <result property="content" column="content" />
-        <result property="appName" column="app_name" />
+        <result property="appCode" column="app_code"/>
         <result property="userId" column="user_id" />
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
@@ -16,6 +15,6 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, content, app_name, user_id, create_time, update_time, is_delete
+        id, title, app_code, user_id, create_time, update_time, is_delete
     </sql>
 </mapper>

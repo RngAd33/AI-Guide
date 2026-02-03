@@ -5,6 +5,8 @@ package com.rngad33.aiguide.constant;
  */
 public interface SystemPromptsConstant {
 
+    String SET_TITLE_PROMPT = "使用一句话总结刚才的对话内容并返回，总结不超过20字，除此之外不可以输出任何信息！";
+
     String MANUS_SYSTEM_PROMPT = """
             You are ManusAgent, an all-capable AI assistant, aimed at solving any task presented by the user.\s
             You have various tools at your disposal that you can call upon to efficiently complete complex requests.

@@ -23,14 +23,14 @@ public class ChatRoomVO {
     private String title;
 
     /**
-     * 对话内容
-     */
-    private List<Chat> content;
-
-    /**
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 对话内容
+     */
+    private List<Chat> chatList;
 
     /**
      * 对象转封装类
@@ -43,8 +43,7 @@ public class ChatRoomVO {
             return null;
         }
         ChatRoomVO chatRoomVO = new ChatRoomVO();
-        BeanUtil.copyProperties(chatRoom, chatRoomVO, "content");
-        chatRoomVO.setContent(JSONUtil.toList(chatRoom.getContent(), Chat.class));
+        BeanUtil.copyProperties(chatRoom, chatRoomVO, "chatList");
         return chatRoomVO;
     }
 
@@ -59,8 +58,7 @@ public class ChatRoomVO {
             return null;
         }
         ChatRoom chatRoom = new ChatRoom();
-        BeanUtil.copyProperties(chatRoomVO, chatRoom, "content");
-        chatRoom.setContent(JSONUtil.toJsonStr(chatRoomVO.getContent()));
+        BeanUtil.copyProperties(chatRoomVO, chatRoom, "chatList");
         return chatRoom;
     }
 

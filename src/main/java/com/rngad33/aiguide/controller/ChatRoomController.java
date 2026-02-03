@@ -3,10 +3,12 @@ package com.rngad33.aiguide.controller;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.rngad33.aiguide.annotation.NoWriteService;
 import com.rngad33.aiguide.common.BaseResponse;
 import com.rngad33.aiguide.model.dto.ChatRoomCreateRequest;
+import com.rngad33.aiguide.model.dto.ChatRoomEditRequest;
 import com.rngad33.aiguide.model.entity.ChatRoom;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
@@ -84,6 +86,22 @@ public class ChatRoomController {
             redisTemplate.opsForValue().get(String.format("room_temp:%s", request.getHeader("User-Agent")));
             return ResultUtils.success(new ArrayList<>());
         }
+    }
+
+    /**
+     * 编辑聊天室信息
+     *
+     * @param chatRoomEditRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/edit")
+    public BaseResponse<Boolean> editChatRoom(@RequestBody ChatRoomEditRequest chatRoomEditRequest, HttpServletRequest request) {
+        ThrowUtils.throwIf(ObjUtil.hasNull(chatRoomEditRequest, request), ErrorCodeEnum.NOT_PARAMS, "无效的请求！");
+        String title = chatRoomEditRequest.getTitle();
+        String chatRoomId = chatRoomEditRequest.getChatRoomId();
+        ThrowUtils.throwIf(StrUtil.hasBlank(title, chatRoomId), ErrorCodeEnum.NOT_PARAMS, "缺少关键参数！");
+        return ResultUtils.success(chatRoomService.editChatRoom(chatRoomEditRequest));
     }
 
     /**
