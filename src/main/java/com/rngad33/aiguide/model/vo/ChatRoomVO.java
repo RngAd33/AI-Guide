@@ -3,6 +3,7 @@ package com.rngad33.aiguide.model.vo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rngad33.aiguide.model.entity.Chat;
 import com.rngad33.aiguide.model.entity.ChatRoom;
 import lombok.Data;
 
@@ -22,9 +23,9 @@ public class ChatRoomVO {
     private String title;
 
     /**
-     * 对话内容（JSON）
+     * 对话内容
      */
-    private List<String> content;
+    private List<Chat> content;
 
     /**
      * 创建时间
@@ -43,7 +44,7 @@ public class ChatRoomVO {
         }
         ChatRoomVO chatRoomVO = new ChatRoomVO();
         BeanUtil.copyProperties(chatRoom, chatRoomVO, "content");
-        chatRoomVO.setContent(JSONUtil.toList(chatRoom.getContent(), String.class));
+        chatRoomVO.setContent(JSONUtil.toList(chatRoom.getContent(), Chat.class));
         return chatRoomVO;
     }
 

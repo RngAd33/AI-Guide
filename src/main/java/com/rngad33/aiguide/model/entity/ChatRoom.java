@@ -40,7 +40,7 @@ public class ChatRoom {
     private Integer appCode;
 
     /**
-     * 创建用户id
+     * 创建用户 id
      */
     private Long userId;
 

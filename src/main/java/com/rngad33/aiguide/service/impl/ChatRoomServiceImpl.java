@@ -51,5 +51,4 @@ public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> i
         return chatRoom.getId();
     }
 
-
 }
