@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.controller;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -94,15 +95,16 @@ public class ChatRoomController {
      */
     @NoWriteService
     @PostMapping("/del")
-    public BaseResponse<Boolean> deleteChatRoom(@RequestParam("chatRoomId") long chatRoomId, HttpServletRequest request) {
+    public BaseResponse<Boolean> deleteChatRoom(@RequestParam("chatRoomId") String chatRoomId, HttpServletRequest request) {
         ThrowUtils.throwIf(ObjUtil.isNull(request), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         UserVO loginUser = userService.getCurrentUser(request);
+        long id = Convert.bytesToLong(chatRoomId.getBytes());
         if (ObjUtil.equals(loginUser.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
-            ChatRoom chatRoom = chatRoomService.getById(chatRoomId);
+            ChatRoom chatRoom = chatRoomService.getById(id);
             ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
             return ResultUtils.success(chatRoomService.removeById(chatRoom));
         } else {
-            QueryWrapper queryWrapper = QueryWrapper.create().eq("id", chatRoomId).eq("user_id", loginUser.getId());
+            QueryWrapper queryWrapper = QueryWrapper.create().eq("id", id).eq("user_id", loginUser.getId());
             ChatRoom chatRoom = chatRoomService.getOne(queryWrapper);
             ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到该聊天室！");
             return ResultUtils.success(chatRoomService.removeById(chatRoom));
