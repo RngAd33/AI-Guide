@@ -44,6 +44,7 @@ public class ChatRoomController {
     /**
      * 创建聊天室
      *
+     * @param chatRoomCreateRequest
      * @param request
      * @return
      */
