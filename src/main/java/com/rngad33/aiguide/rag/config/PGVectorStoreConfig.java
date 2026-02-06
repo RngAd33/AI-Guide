@@ -17,7 +17,7 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgDistan
 import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexType.HNSW;
 
 /**
- * PG向量数据库配置
+ * 向量数据库配置
  */
 //@Configuration
 public class PGVectorStoreConfig {

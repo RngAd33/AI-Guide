@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.app;
 
+import com.rngad33.aiguide.annotation.NotUseRag;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import com.rngad33.aiguide.utils.AiModelUtils;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Flux;
 /**
  * 海龟汤应用
  */
+@NotUseRag
 @Component
 public class TetosoupApp {
 

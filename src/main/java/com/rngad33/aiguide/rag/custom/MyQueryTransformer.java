@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
  * 查询翻译器（语言转换）
  * ——！使用此模块会提高成本，建议使入翻译平台API！——
  */
-@Component
 @Deprecated
+@Component
 public class MyQueryTransformer {
 
     private final QueryTransformer queryTransformer;

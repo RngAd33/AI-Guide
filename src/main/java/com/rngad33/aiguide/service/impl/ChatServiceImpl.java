@@ -48,7 +48,7 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements Ch
     public boolean saveAsync(String message, String chatRoomId, String answer, long userId) {
         ThrowUtils.throwIf(StrUtil.hasBlank(message, chatRoomId, answer) || userId <= 0, ErrorCodeEnum.PARAMS_ERROR, "无效的参数！");
         Chat chat = new Chat();
-        chat.setChatRoomId(Convert.bytesToLong(chatRoomId.getBytes()));
+        chat.setRoomId(Convert.bytesToLong(chatRoomId.getBytes()));
         chat.setUserId(userId);
         chat.setQuestion(message);
         chat.setAnswer(answer);
