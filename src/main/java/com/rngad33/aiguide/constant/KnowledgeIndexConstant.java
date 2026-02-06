@@ -3,6 +3,7 @@ package com.rngad33.aiguide.constant;
 /**
  * 云知识库索引常量
  */
+@Deprecated
 public interface KnowledgeIndexConstant {
 
     String LOVE_INDEX = "恋爱大师";

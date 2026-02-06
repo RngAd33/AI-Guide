@@ -1,8 +1,16 @@
 package com.rngad33.aiguide.manager;
 
+import com.alibaba.dashscope.aigc.generation.Generation;
+import com.alibaba.dashscope.aigc.generation.GenerationParam;
+import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.common.Message;
+import com.alibaba.dashscope.common.Role;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant;
+import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -12,8 +20,12 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.DEFAULT_CHAT_MEMORY_RESPONSE_SIZE;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
@@ -32,7 +44,41 @@ public class ChatManager {
     @Resource
     private ToolCallbackProvider toolCallbackProvider;
 
-//     record CommonReport(String title, List<String> suggestions) {}
+    @Value("${spring.ai.dashscope.chat.options.model}")
+    private String CHAT_MODEL;
+
+    @Value("${spring.ai.dashscope.api-key}")
+    private String DASHSCOPE_API_KEY;
+
+    /**
+     * 开启灵积对话（不使用 AI 框架）
+     *
+     * @param message 用户输入
+     * @return
+     * @throws NoApiKeyException
+     * @throws InputRequiredException
+     */
+    public String doChatWithoutFramework(String message) throws NoApiKeyException, InputRequiredException {
+        Generation gen = new Generation();
+        Message systemMsg = Message.builder()
+                .role(Role.SYSTEM.getValue())
+                .content(SystemPromptsConstant.SET_TITLE_PROMPT)
+                .build();
+        Message userMsg = Message.builder()
+                .role(Role.USER.getValue())
+                .content(message)
+                .build();
+        // 创建生成参数
+        GenerationParam param = GenerationParam.builder()
+                .apiKey(DASHSCOPE_API_KEY)
+                .model(CHAT_MODEL)
+                .messages(Arrays.asList(systemMsg, userMsg))
+                .resultFormat(GenerationParam.ResultFormat.MESSAGE)
+                .build();
+        // 发起对话
+        GenerationResult result = gen.call(param);
+        return result.getOutput().getChoices().getFirst().getMessage().getContent();
+    }
 
     /**
      * 开启基础对话（支持多轮对话）
