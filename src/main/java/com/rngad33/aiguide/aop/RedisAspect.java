@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 public class RedisAspect {
 
     /**
-     * 拦截 ValueOperations 的 set/get 方法
+     * 拦截 ValueOperations 的 get/set 方法
      */
-    @Pointcut("execution(* org.springframework.data.redis.core.ValueOperations.set(..)) " +
-            "|| execution(* org.springframework.data.redis.core.ValueOperations.get(..))")
+    @Pointcut("execution(* org.springframework.data.redis.core.ValueOperations.get(..)) " +
+            "|| execution(* org.springframework.data.redis.core.ValueOperations.set(..))")
     public void valueOps() {}
 
     /**

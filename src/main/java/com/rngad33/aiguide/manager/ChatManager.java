@@ -213,7 +213,7 @@ public class ChatManager {
     }
 
     /**
-     * 工具调用
+     * 工具调用对话
      *
      * @param chatClient
      * @param message
@@ -238,7 +238,7 @@ public class ChatManager {
     }
 
     /**
-     * 调用 MCP 服务
+     * 调用 MCP 服务对话
      *
      * @param chatClient
      * @param message
