@@ -1,46 +1,14 @@
--- 安装 pgvector 扩展
-CREATE EXTENSION IF NOT EXISTS vector;
+-- 为每个AI应用创建向量表（需要 MySQL 9.x 版本）
+USE `ai_guide_db`;
 
--- 创建向量存储表 1
-CREATE TABLE IF NOT EXISTS love_pg_vector_store (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    content TEXT NOT NULL,
-    embedding vector(1536) NOT NULL,
-    metadata JSONB,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
--- 为向量列创建 HNSW 索引（使用余弦距离）
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_embedding_hnsw
-    ON love_pg_vector_store
-    USING hnsw (embedding vector_cosine_ops);
--- 为 metadata 创建 GIN 索引以便快速查询
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_metadata
-    ON love_pg_vector_store
-    USING gin (metadata);
--- 为创建时间创建索引
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_created_at
-    ON love_pg_vector_store
-    USING btree (created_at);
-
--- 创建向量存储表 2
-CREATE TABLE IF NOT EXISTS psychology_pg_vector_store (
-     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-     content TEXT NOT NULL,
-     embedding vector(1536) NOT NULL,
-     metadata JSONB,
-     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
--- 为向量列创建 HNSW 索引（使用余弦距离）
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_embedding_hnsw
-    ON psychology_pg_vector_store
-        USING hnsw (embedding vector_cosine_ops);
--- 为 metadata 创建 GIN 索引以便快速查询
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_metadata
-    ON psychology_pg_vector_store
-        USING gin (metadata);
--- 为创建时间创建索引
-CREATE INDEX IF NOT EXISTS idx_love_pg_vector_created_at
-    ON psychology_pg_vector_store
-        USING btree (created_at);
+CREATE TABLE app_vectors (
+    `id`            BIGINT                              NOT NULL COMMENT 'id',
+    `name`          VARCHAR(256)                        NOT NULL UNIQUE COMMENT '向量名称',
+    `embedding`     VECTOR(1536)                        NOT NULL UNIQUE COMMENT '向量数据',
+    `app_code`      tinyint                             NOT NULL COMMENT '归属应用',
+    `create_time`   datetime DEFAULT CURRENT_TIMESTAMP  NULL COMMENT '创建时间',
+    `update_time`   datetime DEFAULT CURRENT_TIMESTAMP  NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_delete`     tinyint DEFAULT '0'                 NOT NULL COMMENT '是否删除？',
+    PRIMARY KEY (`id`),
+    index `idx_app_code` (`app_code`) USING BTREE
+) COMMENT='向量数据表' collate=utf8mb4_unicode_ci;
