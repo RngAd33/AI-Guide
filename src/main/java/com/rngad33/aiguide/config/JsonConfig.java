@@ -15,6 +15,9 @@ public class JsonConfig {
 
     /**
      * 添加 Long 转 json 精度丢失的配置
+     *
+     * @param builder
+     * @return
      */
     @Bean
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
