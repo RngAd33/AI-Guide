@@ -20,7 +20,7 @@ import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;import static com.rngad33.aiguide.model.entity.table.ChatTableDef.CHAT;
 
 /**
  * 对话记录服务实现
@@ -57,12 +57,12 @@ public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> i
         chatRoom.setAppCode(appNameEnum.getValue());
         // 判断是否为注册用户
         if (userId > 0) {
-            // - 是注册用户，创建聊天室并持久化
+            // - 注册用户，创建聊天室并持久化
             chatRoom.setUserId(userId);
             boolean result = this.save(chatRoom);
             ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "创建聊天室失败！");
         } else {
-            // - 临时用户，创建临时聊天室写入缓存
+            // - 临时用户，创建临时聊天室并写入缓存
             redisTemplate.opsForValue().set(String.format("chat_room_temp:%s", chatRoom.getId()), chatRoom);
         }
         return chatRoom.getId();
@@ -83,7 +83,7 @@ public class ChatRoomServiceImpl extends ServiceImpl<ChatRoomMapper, ChatRoom> i
         ThrowUtils.throwIf(chatRoom == null, ErrorCodeEnum.NOT_PARAMS, "找不到聊天室！");
         if (StrUtil.isBlank(chatRoom.getTitle())) {
             // 房间内第一次对话，由 AI 自动为房间取名
-            Chat chat = chatService.getOne(QueryWrapper.create().eq("room_id", chatRoomId));
+            Chat chat = chatService.getOne(QueryWrapper.create().eq(CHAT.ROOM_ID.getName(), chatRoomId));
             try {
                 title = chatManager.doChatWithoutFramework(chat.getAnswer());
             } catch (NoApiKeyException | InputRequiredException e) {

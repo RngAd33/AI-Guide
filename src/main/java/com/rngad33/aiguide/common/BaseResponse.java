@@ -1,6 +1,8 @@
 package com.rngad33.aiguide.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,7 +11,9 @@ import java.io.Serializable;
  * 通用返回类
  */
 @Data
-public class BaseResponse<T> implements Serializable {
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BaseResponse<T> {
 
     /**
      * 状态码
@@ -26,18 +30,18 @@ public class BaseResponse<T> implements Serializable {
      */
     private String msg;
 
-    /**
-     * 有消息的返回
-     *
-     * @param code
-     * @param data
-     * @param msg
-     */
-    public BaseResponse(int code, T data, String msg) {
-        this.code = code;
-        this.data = data;
-        this.msg = msg;
-    }
+//    /**
+//     * 有消息的返回
+//     *
+//     * @param code
+//     * @param data
+//     * @param msg
+//     */
+//    public BaseResponse(int code, T data, String msg) {
+//        this.code = code;
+//        this.data = data;
+//        this.msg = msg;
+//    }
 
     /**
      * 无消息的返回
