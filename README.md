@@ -7,17 +7,18 @@
 ### Agent智能体应用具备一定的自主规划能力，适合做事务规划；
 ### 此外，项目完工后，我们还将尝试使用 Langchan4j 进行改造开发。
 
-### Q：为什么抛弃了PostgreSQL，改用MySQL呢？
-### A：由于第三方技术原因，想在本地部署PostgreSQL实现向量数据库仍有不小困难；此外 MySQL 9.x 以后新增了 vector() 数据类型，适应了当下AI应用开发的需要。
+### Q：为什么抛弃PostgreSQL，改用MariaDB呢？
+### A：由于技术原因，想在本地部署PostgreSQL实现向量数据库仍有不小困难；
+### 而MariaDB自带原生vector()数据类型，适应了当下Java + AI应用开发的需要。
 
 ### Q：这个项目用到了哪些技术选型？
 ### A：我们的后端采用了以下技术选型：
--- Spring Boot
--- Spring AI
--- Manus AI 代理
--- MySQL
--- MyBatis-Flex
--- 阿里云百练、灵积大模型服务
--- Ollama本地大模型接入
--- 本地、向量数据库存储
--- 工具开发 + 调用
+- Spring Boot
+- Spring AI
+- Manus AI 代理
+- MySQL
+- MyBatis-Flex
+- 阿里云百练、灵积大模型服务
+- Ollama本地大模型接入
+- 本地、远程向量数据库存储
+- 工具开发 + 工具调用
