@@ -1,3 +1,6 @@
+-- 需要使用 MariaDB 数据库，否则不支持 VECTOR 类型
+CREATE DATABASE IF NOT EXISTS `ai_guide_db`;
+
 USE `ai_guide_db`;
 
 CREATE TABLE if not exists `user` (
@@ -41,7 +44,7 @@ CREATE TABLE if not exists `chat` (
     INDEX `idx_user_id` (`user_id`)
 ) COMMENT='聊天记录表' collate=utf8mb4_unicode_ci;
 
-CREATE TABLE if not exists `app_vectors` (
+CREATE TABLE if not exists `app_vector` (
     `id`            BIGINT                              NOT NULL COMMENT 'id',
     `name`          VARCHAR(256)                        NOT NULL UNIQUE COMMENT '向量名称',
     `embedding`     VECTOR(1536)                        NOT NULL UNIQUE COMMENT '向量数据',
@@ -50,5 +53,5 @@ CREATE TABLE if not exists `app_vectors` (
     `update_time`   datetime DEFAULT CURRENT_TIMESTAMP  NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_delete`     tinyint  DEFAULT '0'                NOT NULL COMMENT '是否删除？',
     PRIMARY KEY (`id`),
-    index `idx_app_code`(`app_code`)
+    INDEX `idx_app_code`(`app_code`)
 ) COMMENT='向量数据表' collate=utf8mb4_unicode_ci;
