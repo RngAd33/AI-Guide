@@ -9,6 +9,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexT
 /**
  * 向量数据库配置
  */
-//@Configuration
+@Configuration
 public class PGVectorStoreConfig {
 
     @Resource
@@ -32,7 +33,7 @@ public class PGVectorStoreConfig {
     private GameAppDocumentLoader gameAppDocumentLoader;
 
     /**
-     * 初始化基于PostgreSQL的向量数据库 Bean1
+     * 初始化向量数据库 Bean1
      *
      * @param jdbcTemplate
      * @param embeddingModel
@@ -56,7 +57,7 @@ public class PGVectorStoreConfig {
     }
 
     /**
-     * 初始化基于PostgreSQL的向量数据库 Bean2
+     * 初始化向量数据库 Bean2
      *
      * @param jdbcTemplate
      * @param embeddingModel
@@ -80,7 +81,7 @@ public class PGVectorStoreConfig {
     }
 
     /**
-     * 创建基于PostgreSQL的向量数据库 Bean3
+     * 初始化向量数据库 Bean3
      *
      * @param jdbcTemplate
      * @param embeddingModel
