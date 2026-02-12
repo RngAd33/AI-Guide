@@ -41,7 +41,8 @@ public class VectorStoreFactory {
         try {
             SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
             // 切割文档
-            List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
+//            List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
+            List<Document> splitDocuments = myTokenTextSplitter.splitCustomized(documents);
             // 元信息增强
             List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
             simpleVectorStore.add(enrichedDocuments);

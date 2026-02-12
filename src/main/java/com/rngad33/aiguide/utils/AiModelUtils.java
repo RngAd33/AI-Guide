@@ -1,6 +1,9 @@
 package com.rngad33.aiguide.utils;
 
+import com.rngad33.aiguide.exception.MyException;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -21,6 +24,7 @@ import java.util.List;
  * 通过配置 application.yml 调整要调用的大模型引擎（阿里灵积 / ollama）
  */
 @Component
+@Slf4j
 public class AiModelUtils {
 
     /**
@@ -86,7 +90,15 @@ public class AiModelUtils {
             List<float[]> result = new ArrayList<>();
             for (int i = 0; i < texts.size(); i += batchSize) {
                 List<String> batch = texts.subList(i, Math.min(i + batchSize, texts.size()));
-                result.addAll(delegate().embed(batch));
+                log.debug("Processing batch with size: {}", batch.size());
+                try {
+                    // 调用委托模型处理当前批次
+                    result.addAll(delegate().embed(batch));
+                } catch (IllegalArgumentException e) {
+                    // 记录异常日志
+                    log.error("嵌入模型调用失败，输入文本数量超出限制: {}", e.getMessage());
+                    throw new RuntimeException("Failed to process embedding batch", e); // 抛出异常以便上层处理
+                }
             }
             return result;
         }
@@ -100,6 +112,5 @@ public class AiModelUtils {
         public EmbeddingResponse call(EmbeddingRequest request) {
             return delegate().call(request);
         }
-
     }
 }

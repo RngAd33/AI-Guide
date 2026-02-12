@@ -43,16 +43,3 @@ CREATE TABLE if not exists `chat` (
     INDEX `idx_room_id` (`room_id`),
     INDEX `idx_user_id` (`user_id`)
 ) COMMENT='聊天记录表' collate=utf8mb4_unicode_ci;
-
--- 向量表创建交给框架处理
-# CREATE TABLE if not exists `app_vector` (
-#     `id`            BIGINT                              NOT NULL COMMENT 'id',
-#     `name`          VARCHAR(256)                        NOT NULL UNIQUE COMMENT '向量名称',
-#     `embedding`     VECTOR(1536)                        NOT NULL UNIQUE COMMENT '向量数据',
-#     `app_code`      tinyint                             NOT NULL COMMENT '归属应用',
-#     `create_time`   datetime DEFAULT CURRENT_TIMESTAMP  NULL COMMENT '创建时间',
-#     `update_time`   datetime DEFAULT CURRENT_TIMESTAMP  NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-#     `is_delete`     tinyint  DEFAULT '0'                NOT NULL COMMENT '是否删除？',
-#     PRIMARY KEY (`id`),
-#     INDEX `idx_app_code`(`app_code`)
-# ) COMMENT='向量数据表' collate=utf8mb4_unicode_ci;
