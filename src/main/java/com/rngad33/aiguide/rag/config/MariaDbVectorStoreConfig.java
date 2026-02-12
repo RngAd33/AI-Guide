@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.model.enums.app.AppNameEnum;
+import com.rngad33.aiguide.rag.documentloader.DocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
@@ -24,13 +25,13 @@ public class MariaDbVectorStoreConfig {
     private VectorStoreFactory vectorStoreFactory;
 
     @Resource
-    private LoveAppDocumentLoader loveAppDocumentLoader;
+    private DocumentLoader loveAppDocumentLoader;
 
     @Resource
-    private PsychologyAppDocumentLoader psychologyAppDocumentLoader;
+    private DocumentLoader psychologyAppDocumentLoader;
 
     @Resource
-    private GameAppDocumentLoader gameAppDocumentLoader;
+    private DocumentLoader gameAppDocumentLoader;
 
     @Bean("loveMariaDbVectorStore")
     public VectorStore loveMariaDbVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {

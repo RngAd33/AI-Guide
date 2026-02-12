@@ -26,6 +26,13 @@ spring:
     url: ${sky.datasource.url}
     username: ${sky.datasource.username}
     password: ${sky.datasource.password}
+  # Redis配置
+  data:
+    redis:
+      database: ${sky.redis.database}
+      host: ${sky.redis.host}
+      port: ${sky.redis.port}
+      timeout: ${sky.redis.timeout}
   # 超时时间
   session:
     secret-key: ${sky.jwt.secret-key}

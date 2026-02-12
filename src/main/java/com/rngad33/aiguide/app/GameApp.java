@@ -38,8 +38,8 @@ public class GameApp {
     private VectorStore gameAppVectorStore;
 
     @Resource
-    @Qualifier("gamePgVectorStore")
-    private VectorStore gamePgVectorStore;
+    @Qualifier("gameMariaDbVectorStore")
+    private VectorStore gameMariaDbVectorStore;
 
     @Resource
     @Qualifier("gameAppRagCloudAdvisor")
@@ -120,7 +120,7 @@ public class GameApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, gamePgVectorStore,
+        return chatManager.doChatWithRag(chatClient, gameMariaDbVectorStore,
                 gameAppRagCloudAdvisor, gameAppVectorStore,
                 rewritedMessage, chatId);
     }

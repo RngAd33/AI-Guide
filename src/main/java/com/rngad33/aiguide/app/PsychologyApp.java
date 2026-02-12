@@ -39,8 +39,8 @@ public class PsychologyApp {
     private VectorStore psychologyAppVectorStore;
 
     @Resource
-    @Qualifier("psychologyPgVectorStore")
-    private VectorStore psychologyPgVectorStore;
+    @Qualifier("psychologyMariaDbVectorStore")
+    private VectorStore psychologyMariaDbVectorStore;
 
     @Resource
     @Qualifier("psychologyAppRagCloudAdvisor")
@@ -120,7 +120,7 @@ public class PsychologyApp {
         // 查询重写
         String rewroteMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, psychologyPgVectorStore,
+        return chatManager.doChatWithRag(chatClient, psychologyMariaDbVectorStore,
                 psychologyAppRagCloudAdvisor, psychologyAppVectorStore,
                 rewroteMessage, chatId);
     }

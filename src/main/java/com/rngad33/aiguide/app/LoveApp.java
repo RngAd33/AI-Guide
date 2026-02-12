@@ -37,8 +37,8 @@ public class LoveApp {
     private VectorStore loveAppVectorStore;
 
     @Resource
-    @Qualifier("lovePgVectorStore")
-    private VectorStore lovePgVectorStore;
+    @Qualifier("loveMariaDbVectorStore")
+    private VectorStore loveMariaDbVectorStore;
 
     @Resource
     @Qualifier("loveAppRagCloudAdvisor")
@@ -119,7 +119,7 @@ public class LoveApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, lovePgVectorStore,
+        return chatManager.doChatWithRag(chatClient, loveMariaDbVectorStore,
                 loveAppRagCloudAdvisor, loveAppVectorStore,
                 rewritedMessage, chatId);
     }
