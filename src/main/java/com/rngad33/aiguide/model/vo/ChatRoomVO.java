@@ -1,7 +1,6 @@
 package com.rngad33.aiguide.model.vo;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rngad33.aiguide.model.entity.Chat;
 import com.rngad33.aiguide.model.entity.ChatRoom;

@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant.DEFAULT_CHAT_MEMORY_RESPONSE_SIZE;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;

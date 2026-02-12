@@ -20,7 +20,9 @@ import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;import static com.rngad33.aiguide.model.entity.table.ChatTableDef.CHAT;
+import org.springframework.stereotype.Service;
+
+import static com.rngad33.aiguide.model.entity.table.ChatTableDef.CHAT;
 
 /**
  * 对话记录服务实现

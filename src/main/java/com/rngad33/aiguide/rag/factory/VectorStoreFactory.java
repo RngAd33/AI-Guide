@@ -1,16 +1,75 @@
 package com.rngad33.aiguide.rag.factory;
 
+import com.rngad33.aiguide.exception.MyException;
+import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
+import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
+import com.rngad33.aiguide.rag.custom.MyTokenTextSplitter;
 import com.rngad33.aiguide.utils.AiModelUtils;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.mariadb.MariaDBVectorStore;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
 /**
- * 向量数据库工厂接口
+ * 向量数据库工厂
  */
-public interface VectorStoreFactory {
+@Component
+@Slf4j
+public class VectorStoreFactory {
 
-    VectorStore getVectorStore(AiModelUtils.MyEmbeddingModel embeddingModel, List<Document> documents);
+    @Resource
+    private MyKeywordEnricher myKeywordEnricher;
+
+    @Resource
+    private MyTokenTextSplitter myTokenTextSplitter;
+
+    /**
+     * 创建向量数据库（本地文档）
+     *
+     * @param embeddingModel
+     * @param documents
+     * @return
+     */
+    public VectorStore getVectorStore(AiModelUtils.MyEmbeddingModel embeddingModel, List<Document> documents) {
+        try {
+            SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
+            // 切割文档
+            List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
+            // 元信息增强
+            List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
+            simpleVectorStore.add(enrichedDocuments);
+            return simpleVectorStore;
+        } catch (RestClientException e) {
+            log.error("嵌入式模型服务连接失败: {}", e.getMessage());
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+        }
+    }
+
+    /**
+     * 创建向量数据库（MariaDB）
+     *
+     * @param jdbcTemplate
+     * @param embeddingModel
+     * @param tableName
+     * @param distanceType
+     * @return
+     */
+    public VectorStore getVectorStore(JdbcTemplate jdbcTemplate, AiModelUtils.MyEmbeddingModel embeddingModel,
+                                      String tableName, MariaDBVectorStore.MariaDBDistanceType distanceType) {
+        return MariaDBVectorStore.builder(jdbcTemplate, embeddingModel)
+                .distanceType(distanceType)
+                .initializeSchema(true)
+                .vectorTableName(tableName)
+                .dimensions(1536)
+                .maxDocumentBatchSize(10000)
+                .build();
+    }
 
 }

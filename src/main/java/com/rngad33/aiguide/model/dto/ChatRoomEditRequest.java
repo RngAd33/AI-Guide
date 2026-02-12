@@ -1,10 +1,7 @@
 package com.rngad33.aiguide.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rngad33.aiguide.model.entity.Chat;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * 聊天室编辑请求

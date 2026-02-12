@@ -1,16 +1,11 @@
 package com.rngad33.aiguide.controller;
 
 import cn.hutool.core.util.ObjUtil;
-import com.mybatisflex.core.query.QueryWrapper;
 import com.rngad33.aiguide.annotation.NoWriteService;
 import com.rngad33.aiguide.common.BaseResponse;
 import com.rngad33.aiguide.common.DeleteRequest;
-import com.rngad33.aiguide.model.entity.Chat;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
-import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
-import com.rngad33.aiguide.model.vo.UserVO;
 import com.rngad33.aiguide.service.ChatService;
-import com.rngad33.aiguide.service.UserService;
 import com.rngad33.aiguide.utils.ResultUtils;
 import com.rngad33.aiguide.utils.ThrowUtils;
 import jakarta.annotation.Resource;
@@ -19,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 /**
  * 对话记录接口

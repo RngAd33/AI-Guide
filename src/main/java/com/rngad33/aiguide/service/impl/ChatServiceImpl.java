@@ -8,7 +8,6 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.rngad33.aiguide.constant.RedisKeyConstant;
 import com.rngad33.aiguide.mapper.ChatMapper;
 import com.rngad33.aiguide.model.entity.Chat;
-import com.rngad33.aiguide.model.entity.User;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.model.enums.user.UserRoleEnum;
 import com.rngad33.aiguide.model.vo.UserVO;
@@ -20,7 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 对话记录服务实现

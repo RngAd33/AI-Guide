@@ -5,8 +5,6 @@ import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * 通用返回类
  */

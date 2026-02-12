@@ -4,7 +4,7 @@ import com.rngad33.aiguide.model.enums.app.AppNameEnum;
 import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
-import com.rngad33.aiguide.rag.factory.AppVectorStoreFactory;
+import com.rngad33.aiguide.rag.factory.VectorStoreFactory;
 import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -21,6 +21,9 @@ import static org.springframework.ai.vectorstore.mariadb.MariaDBVectorStore.Mari
 public class MariaDbVectorStoreConfig {
 
     @Resource
+    private VectorStoreFactory vectorStoreFactory;
+
+    @Resource
     private LoveAppDocumentLoader loveAppDocumentLoader;
 
     @Resource
@@ -31,7 +34,7 @@ public class MariaDbVectorStoreConfig {
 
     @Bean("loveMariaDbVectorStore")
     public VectorStore loveMariaDbVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
-        VectorStore vectorStore = AppVectorStoreFactory.getVectorStore(
+        VectorStore vectorStore = vectorStoreFactory.getVectorStore(
                 jdbcTemplate, embeddingModel, String.format("%s_app_vector_store", AppNameEnum.LOVE.getName()), COSINE);
         vectorStore.add(loveAppDocumentLoader.loadMarkdowns());
         return vectorStore;
@@ -39,7 +42,7 @@ public class MariaDbVectorStoreConfig {
 
     @Bean("psychologyMariaDbVectorStore")
     public VectorStore psychologyMariaDbVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
-        VectorStore vectorStore = AppVectorStoreFactory.getVectorStore(
+        VectorStore vectorStore = vectorStoreFactory.getVectorStore(
                 jdbcTemplate, embeddingModel, String.format("%s_app_vector_store", AppNameEnum.PSYCHOLOGY.getName()), COSINE);
         vectorStore.add(psychologyAppDocumentLoader.loadMarkdowns());
         return vectorStore;
@@ -47,7 +50,7 @@ public class MariaDbVectorStoreConfig {
 
     @Bean("gameMariaDbVectorStore")
     public VectorStore gameMariaDbVectorStore(JdbcTemplate jdbcTemplate, MyEmbeddingModel embeddingModel) {
-        VectorStore vectorStore = AppVectorStoreFactory.getVectorStore(
+        VectorStore vectorStore = vectorStoreFactory.getVectorStore(
                 jdbcTemplate, embeddingModel, String.format("%s_app_vector_store", AppNameEnum.GAME.getName()), COSINE);
         vectorStore.add(gameAppDocumentLoader.loadMarkdowns());
         return vectorStore;

@@ -6,7 +6,6 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
-import org.aspectj.weaver.ast.Call;
 
 import java.util.Date;
 
