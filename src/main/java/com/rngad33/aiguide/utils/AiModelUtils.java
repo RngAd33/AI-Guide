@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,7 +81,14 @@ public class AiModelUtils {
 
         @Override
         public List<float[]> embed(List<String> texts) {
-            return delegate().embed(texts);
+            // 分批处理，每批最多25个文本
+            int batchSize = 25;
+            List<float[]> result = new ArrayList<>();
+            for (int i = 0; i < texts.size(); i += batchSize) {
+                List<String> batch = texts.subList(i, Math.min(i + batchSize, texts.size()));
+                result.addAll(delegate().embed(batch));
+            }
+            return result;
         }
 
         @Override

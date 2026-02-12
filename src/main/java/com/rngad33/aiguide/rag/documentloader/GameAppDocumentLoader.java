@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class GameAppDocumentLoader {
+public class GameAppDocumentLoader implements DocumentLoader {
 
     private final ResourcePatternResolver resourcePatternResolver;
 

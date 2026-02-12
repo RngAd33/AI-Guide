@@ -51,13 +51,14 @@ spring:
       base-url: ${sky.ai.ollama.base-url}
       chat:
         model: ${sky.ai.ollama.chat.model}
-    # 向量数据库
-    vectorstore:
-      pgvector:
-        index-type: HNSW
-        dimensions: 1536
-        distance-type: COSINE_DISTANCE
-        max-document-batch-size: 10000
+#    # 向量数据库
+#    vectorstore:
+#      mariadb:
+#        index-type: HNSW
+#        initialize-schema: true
+#        dimensions: 1536
+#        max-document-batch-size: 10000
+
     # MCP
 #    mcp:
 #      client:
@@ -71,6 +72,19 @@ spring:
 #              url: http://localhost:8083
         # stdio:
           # server-configuration: classpath:mcp-servers.json
+
+
+mybatis-flex:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 显示数据库日志
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰命名自动映射
+    map-underscore-to-camel-case: true
+  global-config:
+    logic-delete-column: isDelete
+    logic-delete-value: 1
+    logic-not-delete-value: 0
 
 # 接口文档
 knife4j:

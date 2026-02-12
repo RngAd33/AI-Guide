@@ -47,7 +47,7 @@ public class VectorStoreFactory {
             simpleVectorStore.add(enrichedDocuments);
             return simpleVectorStore;
         } catch (RestClientException e) {
-            log.error("嵌入式模型服务连接失败: {}", e.getMessage());
+            log.error("！嵌入式模型服务连接失败: {}", e.getMessage());
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
     }

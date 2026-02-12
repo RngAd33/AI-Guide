@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class PsychologyAppDocumentLoader {
+public class PsychologyAppDocumentLoader implements DocumentLoader {
 
     private final ResourcePatternResolver resourcePatternResolver;
 
