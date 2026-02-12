@@ -9,7 +9,7 @@ import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 
 /**
- * 工厂模式
+ * 自定义 RAG 检索增强拦截器工厂
  */
 public class RagCustomAdvisorFactory {
 

@@ -20,7 +20,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 /**
- * 本地知识库配置
+ * 本地文档式知识库配置
  */
 @Slf4j
 @Configuration
