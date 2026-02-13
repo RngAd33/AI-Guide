@@ -1,5 +1,6 @@
 package com.rngad33.aiguide.rag.config;
 
+import com.rngad33.aiguide.constant.KnowledgeIndexConstant;
 import com.rngad33.aiguide.rag.documentloader.DocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
 import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
@@ -37,19 +38,19 @@ public class AppVectorStoreConfig {
     @Bean("loveAppVectorStore")
     public VectorStore loveAppVectorStore(MyEmbeddingModel embeddingModel) {
         List<Document> documents = loveAppDocumentLoader.loadMarkdowns();
-        return vectorStoreFactory.getVectorStore(embeddingModel, documents);
+        return vectorStoreFactory.getVectorStore(embeddingModel, documents, KnowledgeIndexConstant.LOVE_INDEX);
     }
 
     @Bean("psychologyAppVectorStore")
     public VectorStore psychologyAppVectorStore(MyEmbeddingModel embeddingModel) {
         List<Document> documents = psychologyAppDocumentLoader.loadMarkdowns();
-        return vectorStoreFactory.getVectorStore(embeddingModel, documents);
+        return vectorStoreFactory.getVectorStore(embeddingModel, documents, KnowledgeIndexConstant.PSYCHOLOGY_INDEX);
     }
 
     @Bean("gameAppVectorStore")
     public VectorStore gameAppVectorStore(MyEmbeddingModel embeddingModel) {
         List<Document> documents = gameAppDocumentLoader.loadMarkdowns();
-        return vectorStoreFactory.getVectorStore(embeddingModel, documents);
+        return vectorStoreFactory.getVectorStore(embeddingModel, documents, KnowledgeIndexConstant.GAME_INDEX);
     }
 
 }

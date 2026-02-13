@@ -12,13 +12,25 @@ import java.util.List;
 @Component
 public class MyTokenTextSplitter {
 
+    /**
+     * 默认配置切割参数
+     *
+     * @param documents
+     * @return
+     */
     public List<Document> splitDocuments(List<Document> documents) {
         TokenTextSplitter splitter = new TokenTextSplitter();
         return splitter.apply(documents);
     }
 
+    /**
+     * 自定义切配置割参数
+     *
+     * @param documents
+     * @return
+     */
     public List<Document> splitCustomized(List<Document> documents) {
-        TokenTextSplitter splitter = new TokenTextSplitter(300, 60, 20, 5000, true);
+        TokenTextSplitter splitter = new TokenTextSplitter(200, 50, 5, 10000, true);
         return splitter.apply(documents);
     }
 

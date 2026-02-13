@@ -48,20 +48,31 @@ public class VectorStoreFactory {
      * @param documents
      * @return
      */
-    public VectorStore getVectorStore(AiModelUtils.MyEmbeddingModel embeddingModel, List<Document> documents) {
-        try {
-            SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
-            // 切割文档
+    public VectorStore getVectorStore(AiModelUtils.MyEmbeddingModel embeddingModel, List<Document> documents, String index) {
+        int i = 0;
+        log.info("正在为{}应用载入文档知识库……", index);
+        while (i < 5){
+            try {
+                SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
+                // 切割文档
 //            List<Document> splitDocuments = myTokenTextSplitter.splitDocuments(documents);
-            List<Document> splitDocuments = myTokenTextSplitter.splitCustomized(documents);
-            // 元信息增强
-            List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
-            simpleVectorStore.add(enrichedDocuments);
-            return simpleVectorStore;
-        } catch (RestClientException e) {
-            log.error("！嵌入式模型服务连接失败: {}", e.getMessage());
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
+                List<Document> splitDocuments = myTokenTextSplitter.splitCustomized(documents);
+                // 元信息增强
+                List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(splitDocuments);
+                // 检查数据合法性
+                if (enrichedDocuments == null || enrichedDocuments.isEmpty()) {
+                    log.warn("增强文档为空，跳过向量存储添加操作");
+                    return simpleVectorStore;
+                }
+                // 添加到向量存储
+                simpleVectorStore.add(enrichedDocuments);
+                return simpleVectorStore;
+            } catch (RestClientException e) {
+                i += 1;
+                log.warn("！嵌入式模型服务连接失败，正在重试第 {} 次……", i);
+            }
         }
+        throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION, "！向量存储操作多次失败，请检查您的网络连接！");
     }
 
     /**
