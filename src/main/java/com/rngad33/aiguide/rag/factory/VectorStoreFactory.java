@@ -1,5 +1,9 @@
 package com.rngad33.aiguide.rag.factory;
 
+import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetrieverOptions;
+import com.rngad33.aiguide.constant.KnowledgeIndexConstant;
 import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
@@ -7,10 +11,14 @@ import com.rngad33.aiguide.rag.custom.MyTokenTextSplitter;
 import com.rngad33.aiguide.utils.AiModelUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.client.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.mariadb.MariaDBVectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -29,6 +37,9 @@ public class VectorStoreFactory {
 
     @Resource
     private MyTokenTextSplitter myTokenTextSplitter;
+
+    @Value("${spring.ai.dashscope.api-key}")
+    private String dashScopeApiKey;
 
     /**
      * 创建向量数据库（本地文档）
@@ -70,6 +81,23 @@ public class VectorStoreFactory {
                 .vectorTableName(tableName)
                 .dimensions(1536)
                 .maxDocumentBatchSize(10000)
+                .build();
+    }
+
+    /**
+     * 创建向量数据库（云知识库）
+     *
+     * @param index
+     * @return
+     */
+    public Advisor getVectorStore(String index) {
+        DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
+        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
+                DashScopeDocumentRetrieverOptions.builder()
+                        .withIndexName(index)
+                        .build());
+        return RetrievalAugmentationAdvisor.builder()
+                .documentRetriever(retriever)
                 .build();
     }
 

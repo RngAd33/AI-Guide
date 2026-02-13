@@ -1,13 +1,9 @@
 package com.rngad33.aiguide.rag.config;
 
-import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
-import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;
-import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetrieverOptions;
 import com.rngad33.aiguide.constant.KnowledgeIndexConstant;
-import org.springframework.ai.chat.client.advisor.RetrievalAugmentationAdvisor;
+import com.rngad33.aiguide.rag.factory.VectorStoreFactory;
+import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
-import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -17,8 +13,8 @@ import org.springframework.context.annotation.Bean;
 //@Configuration
 public class RagCloudAdvisorConfig {
 
-    @Value("${spring.ai.dashscope.api-key}")
-    private String dashScopeApiKey;
+    @Resource
+    private VectorStoreFactory vectorStoreFactory;
 
     /**
      * 初始化RAG云知识库 1
@@ -27,14 +23,7 @@ public class RagCloudAdvisorConfig {
      */
     @Bean("loveAppRagCloudAdvisor")
     public Advisor loveAppRagCloudAdvisor() {
-        DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
-        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
-                DashScopeDocumentRetrieverOptions.builder()
-                        .withIndexName(KnowledgeIndexConstant.LOVE_INDEX)
-                        .build());
-        return RetrievalAugmentationAdvisor.builder()
-                .documentRetriever(retriever)
-                .build();
+        return vectorStoreFactory.getVectorStore(KnowledgeIndexConstant.LOVE_INDEX);
     }
 
     /**
@@ -44,14 +33,7 @@ public class RagCloudAdvisorConfig {
      */
     @Bean("psychologyAppRagCloudAdvisor")
     public Advisor psychologyAppRagCloudAdvisor() {
-        DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
-        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
-                DashScopeDocumentRetrieverOptions.builder()
-                        .withIndexName(KnowledgeIndexConstant.PSYCHOLOGY_INDEX)
-                        .build());
-        return RetrievalAugmentationAdvisor.builder()
-                .documentRetriever(retriever)
-                .build();
+        return vectorStoreFactory.getVectorStore(KnowledgeIndexConstant.PSYCHOLOGY_INDEX);
     }
 
     /**
@@ -61,14 +43,7 @@ public class RagCloudAdvisorConfig {
      */
     @Bean("gameAppRagCloudAdvisor")
     public Advisor gameAppRagCloudAdvisor() {
-        DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
-        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
-                DashScopeDocumentRetrieverOptions.builder()
-                        .withIndexName(KnowledgeIndexConstant.GAME_INDEX)
-                        .build());
-        return RetrievalAugmentationAdvisor.builder()
-                .documentRetriever(retriever)
-                .build();
+        return vectorStoreFactory.getVectorStore(KnowledgeIndexConstant.GAME_INDEX);
     }
 
 }
