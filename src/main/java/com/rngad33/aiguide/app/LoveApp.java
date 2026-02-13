@@ -39,10 +39,10 @@ public class LoveApp {
     @Resource
     @Qualifier("loveMariaDbVectorStore")
     private VectorStore loveMariaDbVectorStore;
-
-    @Resource
-    @Qualifier("loveAppRagCloudAdvisor")
-    private Advisor loveAppRagCloudAdvisor;
+//
+//    @Resource
+//    @Qualifier("loveAppRagCloudAdvisor")
+//    private Advisor loveAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
 
@@ -119,9 +119,7 @@ public class LoveApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, loveMariaDbVectorStore,
-                loveAppRagCloudAdvisor, loveAppVectorStore,
-                rewritedMessage, chatId);
+        return chatManager.doChatWithRag(chatClient, loveMariaDbVectorStore, loveAppVectorStore, rewritedMessage, chatId);
     }
 
     /**

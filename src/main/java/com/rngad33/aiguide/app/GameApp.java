@@ -41,9 +41,9 @@ public class GameApp {
     @Qualifier("gameMariaDbVectorStore")
     private VectorStore gameMariaDbVectorStore;
 
-    @Resource
-    @Qualifier("gameAppRagCloudAdvisor")
-    private Advisor gameAppRagCloudAdvisor;
+//    @Resource
+//    @Qualifier("gameAppRagCloudAdvisor")
+//    private Advisor gameAppRagCloudAdvisor;
 
     private final ChatClient chatClient;
 
@@ -120,9 +120,7 @@ public class GameApp {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
-        return chatManager.doChatWithRag(chatClient, gameMariaDbVectorStore,
-                gameAppRagCloudAdvisor, gameAppVectorStore,
-                rewritedMessage, chatId);
+        return chatManager.doChatWithRag(chatClient, gameMariaDbVectorStore, gameAppVectorStore, rewritedMessage, chatId);
     }
 
     /**
