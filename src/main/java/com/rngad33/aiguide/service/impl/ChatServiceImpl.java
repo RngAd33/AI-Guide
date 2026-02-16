@@ -38,20 +38,27 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements Ch
      * @param message
      * @param chatRoomId
      * @param answer
-     * @param userId
+     * @param loginUser
      * @return
      */
     @Async
     @Override
-    public boolean saveAsync(String message, String chatRoomId, String answer, long userId) {
-        ThrowUtils.throwIf(StrUtil.hasBlank(message, chatRoomId, answer) || userId <= 0, ErrorCodeEnum.PARAMS_ERROR, "无效的参数！");
-        Chat chat = new Chat();
-        chat.setRoomId(Convert.bytesToLong(chatRoomId.getBytes()));
-        chat.setUserId(userId);
-        chat.setQuestion(message);
-        chat.setAnswer(answer);
-        boolean result = this.save(chat);
-        ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "保存对话记录失败！");
+    public boolean saveAsync(String message, String chatRoomId, String answer, UserVO loginUser) {
+        ThrowUtils.throwIf(StrUtil.hasBlank(message, chatRoomId, answer), ErrorCodeEnum.PARAMS_ERROR, "无效的参数！");
+        // 判断用户是否登录
+        if (loginUser != null) {
+            // 已登录，同步聊天记录到数据库
+            Chat chat = new Chat();
+            chat.setRoomId(Convert.bytesToLong(chatRoomId.getBytes()));
+            chat.setQuestion(message);
+            chat.setAnswer(answer);
+            chat.setUserId(loginUser.getId());
+            boolean result = this.save(chat);
+            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "保存对话记录失败！");
+        } else {
+            // 未登录，保存聊天记录到缓存
+            redisTemplate.opsForValue().set(String.format(RedisKeyConstant.CHAT_FORMAT, chatRoomId), message + "|" + answer);
+        }
         return true;
     }
 

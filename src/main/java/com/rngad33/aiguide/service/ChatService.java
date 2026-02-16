@@ -2,6 +2,7 @@ package com.rngad33.aiguide.service;
 
 import com.mybatisflex.core.service.IService;
 import com.rngad33.aiguide.model.entity.Chat;
+import com.rngad33.aiguide.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -15,10 +16,10 @@ public interface ChatService extends IService<Chat> {
      * @param message
      * @param chatRoomId
      * @param answer
-     * @param userId
+     * @param loginUser
      * @return
      */
-    boolean saveAsync(String message, String chatRoomId, String answer, long userId);
+    boolean saveAsync(String message, String chatRoomId, String answer, UserVO loginUser);
 
     /**
      * 删除对话记录

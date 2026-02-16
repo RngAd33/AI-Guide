@@ -81,21 +81,29 @@ public class AppController {
      * @return
      */
     @GetMapping(value = "/love/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter loveChatSSE(@RequestParam("message") String message, @RequestParam("chatId") String chatId,
-                                  HttpServletRequest request) {
+    public SseEmitter loveChatSSE(@RequestParam("message") String message,
+                                  @RequestParam("chatId") String chatId, HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         UserVO loginUser = userService.getCurrentUser(request);
-        long userId = loginUser.getId();
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        StringBuilder fullResponse = new StringBuilder();
         // 获取Flux响应式数据流
         loveApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
-                    try {
-                        sseEmitter.send(chunk);
-                    } catch (IOException e) {
-                        sseEmitter.completeWithError(e);
-                    }
-                }, sseEmitter::completeWithError, sseEmitter::complete);
+                            try {
+                                fullResponse.append(chunk);
+                                sseEmitter.send(chunk);
+                                // - 实时异步保存消息块
+                            } catch (IOException e) {
+                                sseEmitter.completeWithError(e);
+                            }
+                        }, sseEmitter::completeWithError,
+                        () -> {
+                            // - 保存记录后关闭SSE连接
+                            sseEmitter.complete();
+                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), loginUser);   // 异步保存
+                            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "对话记录保存失败！");
+                        });
         return sseEmitter;
     }
 
@@ -127,7 +135,6 @@ public class AppController {
                                  @RequestParam("chatId") String chatId, HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
         UserVO loginUser = userService.getCurrentUser(request);
-        long userId = loginUser.getId();
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
         StringBuilder fullResponse = new StringBuilder();
         // 获取Flux响应式数据流
@@ -144,7 +151,7 @@ public class AppController {
                         () -> {
                             // - 保存记录后关闭SSE连接
                             sseEmitter.complete();
-                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), userId);   // 异步保存
+                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), loginUser);   // 异步保存
                             ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "对话记录保存失败！");
                         });
         return sseEmitter;
@@ -175,36 +182,61 @@ public class AppController {
      */
     @GetMapping(value = "/teto/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter tetoSoupChatSSE(@RequestParam("message") String message,
-                                      @RequestParam("chatId") String chatId) {
+                                      @RequestParam("chatId") String chatId, HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        UserVO loginUser = userService.getCurrentUser(request);
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        StringBuilder fullResponse = new StringBuilder();
         // 获取Flux响应式数据流
         tetosoupApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
-                    try {
-                        sseEmitter.send(chunk);
-                    } catch (IOException e) {
-                        sseEmitter.completeWithError(e);
-                    }
-                }, sseEmitter::completeWithError, sseEmitter::complete);
+                            try {
+                                fullResponse.append(chunk);
+                                sseEmitter.send(chunk);
+                                // - 实时异步保存消息块
+                            } catch (IOException e) {
+                                sseEmitter.completeWithError(e);
+                            }
+                        }, sseEmitter::completeWithError,
+                        () -> {
+                            // - 保存记录后关闭SSE连接
+                            sseEmitter.complete();
+                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), loginUser);   // 异步保存
+                            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "对话记录保存失败！");
+                        });
         return sseEmitter;
     }
 
     /**
      * 游戏王（SSE模式）
+     *
+     * @param message
+     * @param chatId
+     * @return
      */
     @GetMapping(value = "/game/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter doChatWithGame(@RequestParam("message") String message, @RequestParam("chatId") String chatId) {
+    public SseEmitter doChatWithGame(@RequestParam("message") String message,
+                                     @RequestParam("chatId") String chatId, HttpServletRequest request) {
         ThrowUtils.throwIf(StringUtils.isAnyBlank(message, chatId), ErrorCodeEnum.PARAMS_ERROR, "无效的请求！");
+        UserVO loginUser = userService.getCurrentUser(request);
         SseEmitter sseEmitter = new SseEmitter(300000L);   // 5分钟超时
+        StringBuilder fullResponse = new StringBuilder();
         gameApp.doChatByStream(message, chatId)
                 .subscribe(chunk -> {
-                    try {
-                        sseEmitter.send(chunk);
-                    } catch (IOException e) {
-                        sseEmitter.completeWithError(e);
-                    }
-                }, sseEmitter::completeWithError, sseEmitter::complete);
+                            try {
+                                fullResponse.append(chunk);
+                                sseEmitter.send(chunk);
+                                // - 实时异步保存消息块
+                            } catch (IOException e) {
+                                sseEmitter.completeWithError(e);
+                            }
+                        }, sseEmitter::completeWithError,
+                        () -> {
+                            // - 保存记录后关闭SSE连接
+                            sseEmitter.complete();
+                            boolean result = chatService.saveAsync(message, chatId, fullResponse.toString(), loginUser);   // 异步保存
+                            ThrowUtils.throwIf(!result, ErrorCodeEnum.SYSTEM_ERROR, "对话记录保存失败！");
+                        });
         return sseEmitter;
     }
 

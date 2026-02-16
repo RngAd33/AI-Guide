@@ -80,11 +80,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserVO getCurrentUser(HttpServletRequest request) {
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User loginUser = (User) userObj;
-        ThrowUtils.throwIf(loginUser == null, ErrorCodeEnum.USER_NOT_LOGIN);
-        final long id = loginUser.getId();
-        ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR, "用户id异常！");
-        User user = this.getById(id);
-        return UserVO.objToVo(user);
+        if (loginUser != null) {
+            final long id = loginUser.getId();
+            ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR, "用户id异常！");
+            User user = this.getById(id);
+            return UserVO.objToVo(user);
+        }
+        return null;
     }
 
     /**
