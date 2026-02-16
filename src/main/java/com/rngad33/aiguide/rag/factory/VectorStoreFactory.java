@@ -3,7 +3,6 @@ package com.rngad33.aiguide.rag.factory;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;
 import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetrieverOptions;
-import com.rngad33.aiguide.constant.KnowledgeIndexConstant;
 import com.rngad33.aiguide.exception.MyException;
 import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import com.rngad33.aiguide.rag.custom.MyKeywordEnricher;
@@ -101,6 +100,7 @@ public class VectorStoreFactory {
      * @param index
      * @return
      */
+    @Deprecated
     public Advisor getVectorStore(String index) {
         DashScopeApi dashScopeApi = new DashScopeApi(dashScopeApiKey);
         DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,

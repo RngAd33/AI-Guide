@@ -19,7 +19,7 @@ public class MyTokenTextSplitter {
      * @return
      */
     public List<Document> splitDocuments(List<Document> documents) {
-        TokenTextSplitter splitter = new TokenTextSplitter();
+        TokenTextSplitter splitter = new TokenTextSplitter();   // 默认配置 800, 300, 5, 10000, true
         return splitter.apply(documents);
     }
 
@@ -30,7 +30,7 @@ public class MyTokenTextSplitter {
      * @return
      */
     public List<Document> splitCustomized(List<Document> documents) {
-        TokenTextSplitter splitter = new TokenTextSplitter(200, 50, 5, 10000, true);
+        TokenTextSplitter splitter = new TokenTextSplitter(300, 100, 5, 10000, true);
         return splitter.apply(documents);
     }
 

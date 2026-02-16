@@ -20,7 +20,7 @@ public class ChatRoom {
     /**
      * id
      */
-    @Id(keyType = KeyType.Generator)
+    @Id(keyType = KeyType.Generator, value = "snowFlakeId")
     private Long id;
 
     /**

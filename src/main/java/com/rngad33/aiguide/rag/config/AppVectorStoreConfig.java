@@ -2,9 +2,6 @@ package com.rngad33.aiguide.rag.config;
 
 import com.rngad33.aiguide.constant.KnowledgeIndexConstant;
 import com.rngad33.aiguide.rag.documentloader.DocumentLoader;
-import com.rngad33.aiguide.rag.documentloader.GameAppDocumentLoader;
-import com.rngad33.aiguide.rag.documentloader.LoveAppDocumentLoader;
-import com.rngad33.aiguide.rag.documentloader.PsychologyAppDocumentLoader;
 import com.rngad33.aiguide.rag.factory.VectorStoreFactory;
 import com.rngad33.aiguide.utils.AiModelUtils.MyEmbeddingModel;
 import jakarta.annotation.Resource;

@@ -1,7 +1,5 @@
 package com.rngad33.aiguide.utils;
 
-import com.rngad33.aiguide.exception.MyException;
-import com.rngad33.aiguide.model.enums.misc.ErrorCodeEnum;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;

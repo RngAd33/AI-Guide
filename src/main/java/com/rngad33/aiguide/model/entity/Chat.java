@@ -2,6 +2,8 @@ package com.rngad33.aiguide.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 
@@ -18,6 +20,7 @@ public class Chat {
     /**
      * id
      */
+    @Id(keyType = KeyType.Generator, value = "snowFlakeId")
     private Long id;
 
     /**
