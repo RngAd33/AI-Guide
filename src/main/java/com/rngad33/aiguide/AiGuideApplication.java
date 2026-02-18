@@ -20,6 +20,6 @@ public class AiGuideApplication {
         stopWatch.start();
         SpringApplication.run(AiGuideApplication.class, args);
         stopWatch.stop();
-        System.out.println("后端服务已启动>>> 启动时间：" + stopWatch.getTotalTimeSeconds());
+        System.out.println("后端服务已启动，启动耗时：" + stopWatch.getTotalTimeSeconds() + "秒 >>>");
     }
 }

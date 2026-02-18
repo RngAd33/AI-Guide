@@ -43,27 +43,27 @@ public class ChatRoomController {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    /**
-     * 创建聊天室
-     *
-     * @param chatRoomCreateRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/create")
-    public BaseResponse<Long> createChatRoom(ChatRoomCreateRequest chatRoomCreateRequest, HttpServletRequest request) {
-        ThrowUtils.throwIf(ObjUtil.hasNull(chatRoomCreateRequest, request), ErrorCodeEnum.NOT_PARAMS, "无效的请求！");
-        // 判断当前用户是否登录
-        UserVO loginUser = userService.getCurrentUser(request);
-        if (loginUser != null) {
-            // - 已登录，执行持久化创建
-            return ResultUtils.success(chatRoomService.createChatRoom(chatRoomCreateRequest));
-        } else {
-            // - 未登录，执行临时创建
-            redisTemplate.opsForValue().set(String.format("room_temp:%s", request.getHeader("User-Agent")), new ChatRoom(), 6000 + RandomUtil.randomInt(0, 60), TimeUnit.SECONDS);
-            return ResultUtils.success(0L);
-        }
-    }
+//    /**
+//     * 创建聊天室
+//     *
+//     * @param chatRoomCreateRequest
+//     * @param request
+//     * @return
+//     */
+//    @PostMapping("/create")
+//    public BaseResponse<Long> createChatRoom(ChatRoomCreateRequest chatRoomCreateRequest, HttpServletRequest request) {
+//        ThrowUtils.throwIf(ObjUtil.hasNull(chatRoomCreateRequest, request), ErrorCodeEnum.NOT_PARAMS, "无效的请求！");
+//        // 判断当前用户是否登录
+//        UserVO loginUser = userService.getCurrentUser(request);
+//        if (loginUser != null) {
+//            // - 已登录，执行持久化创建
+//            return ResultUtils.success(chatRoomService.createChatRoom(chatRoomCreateRequest));
+//        } else {
+//            // - 未登录，执行临时创建
+//            redisTemplate.opsForValue().set(String.format("room_temp:%s", request.getHeader("User-Agent")), new ChatRoom(), 6000 + RandomUtil.randomInt(0, 60), TimeUnit.SECONDS);
+//            return ResultUtils.success(0L);
+//        }
+//    }
 
     /**
      * 查询当前用户创建的所有聊天室

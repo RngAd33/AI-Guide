@@ -19,6 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 对话记录服务实现
@@ -42,8 +45,9 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements Ch
      * @return
      */
     @Async
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean saveAsync(String message, String chatRoomId, String answer, UserVO loginUser) {
+    public CompletableFuture<Boolean> saveAsync(String message, String chatRoomId, String answer, UserVO loginUser) {
         ThrowUtils.throwIf(StrUtil.hasBlank(message, chatRoomId, answer), ErrorCodeEnum.PARAMS_ERROR, "无效的参数！");
         // 判断用户是否登录
         if (loginUser != null) {
@@ -59,7 +63,7 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements Ch
             // 未登录，保存聊天记录到缓存
             redisTemplate.opsForValue().set(String.format(RedisKeyConstant.CHAT_FORMAT, chatRoomId), message + "|" + answer);
         }
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     /**

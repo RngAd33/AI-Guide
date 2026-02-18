@@ -1,6 +1,7 @@
 package com.rngad33.aiguide.app;
 
 import com.rngad33.aiguide.annotation.NotUseRag;
+import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
 import com.rngad33.aiguide.manager.ChatManager;
 import com.rngad33.aiguide.utils.AiModelUtils;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Flux;
  */
 @NotUseRag
 @Component
-public class TetosoupApp {
+public class TetosoupApp implements App {
 
     @Resource
     private ChatManager chatManager;
@@ -72,6 +73,23 @@ public class TetosoupApp {
      */
     public Flux<String> doChatByStream(String message, String chatId) {
         return chatManager.doChatByStream(chatClient, message, chatId);
+    }
+
+    @Deprecated
+    @Override
+    public CommonReport doChatWithReport(String message, String chatId) {
+        return null;
+    }
+
+    @Deprecated
+    @Override
+    public String doChatWithRag(String message, String chatId) {
+        return "";
+    }
+
+    @Override
+    public Flux<String> doChatWithRagStream(String message, String chatId) {
+        return null;
     }
 
     /**

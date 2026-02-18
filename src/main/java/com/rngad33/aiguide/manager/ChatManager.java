@@ -11,8 +11,11 @@ import com.rngad33.aiguide.advisor.MyLoggerAdvisor;
 import com.rngad33.aiguide.common.CommonReport;
 import com.rngad33.aiguide.constant.AbstractChatMemoryAdvisorConstant;
 import com.rngad33.aiguide.constant.SystemPromptsConstant;
+import io.reactivex.Flowable;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -77,6 +80,76 @@ public class ChatManager {
         // 发起对话
         GenerationResult result = gen.call(param);
         return result.getOutput().getChoices().getFirst().getMessage().getContent();
+    }
+
+    /**
+     * 开启灵积对话（不使用 AI 框架）- 流式版本
+     *
+     * @param message 用户输入
+     * @return 响应式流数据
+     */
+    public Flux<String> doChatWithoutFrameworkByStream(String message) {
+        return Flux.create(sink -> {
+            try {
+                Message systemMsg = Message.builder()
+                        .role(Role.SYSTEM.getValue())
+                        .content(SystemPromptsConstant.SET_TITLE_PROMPT)
+                        .build();
+                Message userMsg = Message.builder()
+                        .role(Role.USER.getValue())
+                        .content(message)
+                        .build();
+
+                // 创建流式生成参数
+                GenerationParam param = GenerationParam.builder()
+                        .apiKey(DASHSCOPE_API_KEY)
+                        .model(CHAT_MODEL)
+                        .messages(java.util.Arrays.asList(systemMsg, userMsg))
+                        .resultFormat(GenerationParam.ResultFormat.MESSAGE)
+                        .incrementalOutput(true)  // 启用增量输出
+                        .build();
+
+                Generation gen = new Generation();
+
+                // 在 2.22.9 版本中，流式调用返回 Flowable（RxJava）
+                Flowable<GenerationResult> flowable = gen.streamCall(param);
+
+                // 订阅 RxJava Flowable 并转换为 Reactor Flux
+                flowable.subscribe(new Subscriber<GenerationResult>() {
+                    private Subscription subscription;
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        this.subscription = s;
+                        s.request(Long.MAX_VALUE); // 请求所有数据
+                    }
+                    @Override
+                    public void onNext(GenerationResult result) {
+                        if (result.getOutput() != null &&
+                                result.getOutput().getChoices() != null &&
+                                !result.getOutput().getChoices().isEmpty()) {
+
+                            String content = result.getOutput().getChoices()
+                                    .get(0).getMessage().getContent();
+                            if (content != null && !content.isEmpty()) {
+                                sink.next(content);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        log.error("流式调用出错: {}", t.getMessage(), t);
+                        sink.error(t);
+                    }
+                    @Override
+                    public void onComplete() {
+                        sink.complete();
+                    }
+                });
+            } catch (Exception e) {
+                log.error("初始化流式调用出错: {}", e.getMessage(), e);
+                sink.error(e);
+            }
+        });
     }
 
     /**
@@ -159,6 +232,7 @@ public class ChatManager {
      * @param chatId
      * @return
      */
+    @Deprecated
     public String doChatWithRag(ChatClient chatClient, VectorStore appVectorStore, String message, String chatId) {
         ChatResponse chatResponse = chatClient.prompt()
                 .user(message)
@@ -185,6 +259,7 @@ public class ChatManager {
      * @param chatId
      * @return
      */
+    @Deprecated
     public String doChatWithRag(ChatClient chatClient, VectorStore appVectorStore, VectorStore pgVectorStore,
                                 String message, String chatId) {
         ChatResponse chatResponse = chatClient.prompt()
@@ -204,6 +279,34 @@ public class ChatManager {
         String content = chatResponse.getResult().getOutput().getText();
         log.info("content: {}", content);
         return content;
+    }
+
+    /**
+     * RAG知识库流式对话（开启本地增强）
+     *
+     * @param chatClient AI客户端
+     * @param appVectorStore 本地知识库
+     * @param pgVectorStore 向量数据库
+     * @param message 传入消息
+     * @param chatId
+     * @return
+     */
+    public Flux<String> doChatWithRagStream(ChatClient chatClient, VectorStore appVectorStore, VectorStore pgVectorStore,
+                                String message, String chatId) {
+        return chatClient.prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 24))
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
+                // RAG知识库问答
+                .advisors(new QuestionAnswerAdvisor(appVectorStore))
+                // RAG检索增强（基于PgVector向量存储）
+                .advisors(new QuestionAnswerAdvisor(pgVectorStore))
+                // 自定义检索增强（文档查询器 + 上下文增强器）
+                // .advisors(RagCustomAdvisorFactory.createRagCustomAdvisor(appVectorStore, "学习"))
+                .stream()
+                .content();
     }
 
     /**

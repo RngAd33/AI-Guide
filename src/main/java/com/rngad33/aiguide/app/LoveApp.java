@@ -23,7 +23,7 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class LoveApp {
+public class LoveApp implements App {
 
     @Resource
     private ChatManager chatManager;
@@ -114,11 +114,25 @@ public class LoveApp {
      * @param chatId
      * @return
      */
+    @Deprecated
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
         return chatManager.doChatWithRag(chatClient, loveMariaDbVectorStore, loveAppVectorStore, rewritedMessage, chatId);
+    }
+
+    /**
+     * RAG知识库对话（流式输出）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public Flux<String> doChatWithRagStream(String message, String chatId) {
+        // 查询重写
+        String rewritedMessage = queryRewriter.doRewrite(message);
+        return chatManager.doChatWithRagStream(chatClient, loveMariaDbVectorStore, loveAppVectorStore, rewritedMessage, chatId);
     }
 
     /**

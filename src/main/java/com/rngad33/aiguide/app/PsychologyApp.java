@@ -25,7 +25,7 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class PsychologyApp {
+public class PsychologyApp implements App {
 
     @Resource
     private ChatManager chatManager;
@@ -115,11 +115,25 @@ public class PsychologyApp {
      * @param message 查询语句
      * @param chatId
      */
+    @Deprecated
     public String doChatWithRag(String message, String chatId) {
         // 查询重写
         String rewroteMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
         return chatManager.doChatWithRag(chatClient, psychologyMariaDbVectorStore, psychologyAppVectorStore, rewroteMessage, chatId);
+    }
+
+    /**
+     * RAG知识库对话（流式输出）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public Flux<String> doChatWithRagStream(String message, String chatId) {
+        // 查询重写
+        String rewritedMessage = queryRewriter.doRewrite(message);
+        return chatManager.doChatWithRagStream(chatClient, psychologyMariaDbVectorStore, psychologyAppVectorStore, rewritedMessage, chatId);
     }
 
     /**

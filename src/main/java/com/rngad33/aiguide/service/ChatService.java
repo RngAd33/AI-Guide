@@ -5,6 +5,8 @@ import com.rngad33.aiguide.model.entity.Chat;
 import com.rngad33.aiguide.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * 对话记录服务接口
  */
@@ -19,7 +21,7 @@ public interface ChatService extends IService<Chat> {
      * @param loginUser
      * @return
      */
-    boolean saveAsync(String message, String chatRoomId, String answer, UserVO loginUser);
+    CompletableFuture<Boolean> saveAsync(String message, String chatRoomId, String answer, UserVO loginUser);
 
     /**
      * 删除对话记录

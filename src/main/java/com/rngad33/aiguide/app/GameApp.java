@@ -24,7 +24,7 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class GameApp {
+public class GameApp implements App {
 
     @Resource
     private ChatManager chatManager;
@@ -120,6 +120,16 @@ public class GameApp {
         String rewritedMessage = queryRewriter.doRewrite(message);
         // 采用重写后的查询
         return chatManager.doChatWithRag(chatClient, gameMariaDbVectorStore, gameAppVectorStore, rewritedMessage, chatId);
+    }
+
+    /**
+     * RAG知识库对话（流式输出）
+     *
+     * @param message 查询语句
+     * @param chatId
+     */
+    public Flux<String> doChatWithRagStream(String message, String chatId) {
+        return chatManager.doChatWithRagStream(chatClient, gameMariaDbVectorStore, gameAppVectorStore, message, chatId);
     }
 
     /**
