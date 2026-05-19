@@ -1,17 +1,29 @@
 {
   "mcpServers": {
-    "my-image-search-mcp-server": {
-      "command": "java",
-      "args": [
-        "-Dspring.ai.mcp.server.stdio=true",
-        "-Dspring.main.web-application-type=none",
-        "-Dlogging.pattern.console=",
-        "-Dspring.profiles.active=stdio",
-        "-jar",
-        "my-image-search-mcp-server/target/my-image-search-mcp-server-0.0.1-SNAPSHOT.jar"
-      ],
-      "env": {
-        "author": "Created by RngAd33"
+//    "my-image-search-mcp-server": {
+//      "command": "java",
+//      "args": [
+//        "-Dspring.ai.mcp.server.stdio=true",
+//        "-Dspring.main.web-application-type=none",
+//        "-Dlogging.pattern.console=",
+//        "-Dspring.profiles.active=stdio",
+//        "-jar",
+//        "my-image-search-mcp-server/target/my-image-search-mcp-server-0.0.1-SNAPSHOT.jar"
+//      ],
+//      "env": {
+//        "author": "Created by RngAd33"
+//      }
+//    },
+    "WebSearch": {
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/WebSearch/sse",
+      "headers": {
+        "Authorization": "Bearer sk-5ef48fe5fb5e4b32a0d3aa63d2fe53f7"
+      }
+    },
+    "amap-maps": {
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/amap-maps/sse",
+      "headers": {
+        "Authorization": "Bearer sk-5ef48fe5fb5e4b32a0d3aa63d2fe53f7"
       }
     }
   }
